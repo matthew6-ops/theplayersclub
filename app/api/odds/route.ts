@@ -1,43 +1,45 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const sport = searchParams.get("sport") || "";
+
+  if (!sport) {
+    return NextResponse.json(
+      { error: "Missing sport parameter" },
+      { status: 400 }
+    );
+  }
+
+  const apiKey = process.env.ODDS_API_KEY;
+
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: "ODDS_API_KEY missing" },
+      { status: 500 }
+    );
+  }
+
+  const markets = "h2h,spreads,totals";
+
+  const url = `https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${apiKey}&regions=us&markets=${markets}&oddsFormat=decimal&bookmakers=draftkings,fanduel,betmgm,caesars`;
+
   try {
-    const url = new URL(req.url);
-    const sport = url.searchParams.get("sport") || "basketball_nba";
-    const markets = "h2h,spreads,totals";
-
-    const apiKey = process.env.ODDS_API_KEY;
-
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "ODDS_API_KEY is missing" },
-        { status: 500 }
-      );
-    }
-
-    const apiUrl = `https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${apiKey}&regions=us&markets=${markets}&oddsFormat=decimal&bookmakers=fanduel,draftkings,betmgm,caesars`;
-
-    const res = await fetch(apiUrl, { cache: "no-store" });
+    const res = await fetch(url, { cache: "no-store" });
 
     if (!res.ok) {
-      const err = await res.text();
+      const msg = await res.text();
       return NextResponse.json(
-        { error: "Failed to fetch Odds API", details: err },
+        { error: "API request failed", details: msg },
         { status: 500 }
       );
     }
 
     const data = await res.json();
-
-    return NextResponse.json({
-      sport,
-      markets,
-      count: data.length,
-      odds: data
-    });
+    return NextResponse.json({ sport, odds: data });
   } catch (err: any) {
     return NextResponse.json(
-      { error: "Unexpected server error", details: err.message },
+      { error: "Unexpected error", details: err.message },
       { status: 500 }
     );
   }
