@@ -1,4 +1,256 @@
-[00:00:01.858] Server  LOG      ✓ Ready in 1210ms
-[00:00:04.781] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:10.475] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:09:51.958] Server  LOG      ✓ Compiled in 12ms
+[00:00:01.919] Server  LOG      ✓ Ready in 1252ms
+[00:00:05.230] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:03.991] Server  LOG      ✓ Compiled in 29ms
+[00:01:04.923] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:09.509] Server  ERROR    ⨯ ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+
+
+[00:01:09.625] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:10.535] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:10.535] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:11.562] Browser ERROR   uncaughtError: Error: ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+
+
+[00:01:11.676] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:11.776] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:20.823] Browser ERROR   ./app/components/OddsFetcher.tsx:22:8
+Parsing ecmascript source code failed
+  20 |   {
+  21 |         cache: "no-store"
+> 22 |       });
+     |        ^
+  23 |
+  24 |       const json = await res.json();
+  25 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:01:35.517] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:53.360] Server  LOG      ✓ Compiled in 10ms
+[00:01:53.924] Browser ERROR   ./app/components/OddsFetcher.tsx:21:8
+Parsing ecmascript source code failed
+  19 |       const res = await fetch(`/api/odds?sport=${sport}`); {
+  20 |         cache: "no-store"
+> 21 |       });
+     |        ^
+  22 |
+  23 |       const json = await res.json();
+  24 |
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:02:00.897] Server  LOG      ✓ Compiled in 11ms
+[00:02:01.922] Browser ERROR   ./app/components/OddsFetcher.tsx:19:58
+Parsing ecmascript source code failed
+  17 |       setError(null);
+  18 |
+> 19 |       const res = await fetch(`/api/odds?sport=${sport}` {
+     |                                                          ^
+  20 |         cache: "no-store"
+  21 |       });
+  22 |
+
+Expected ',', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsFetcher.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsFetcher.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[00:02:27.564] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:29.055] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:31.005] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:32.478] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

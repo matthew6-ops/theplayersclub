@@ -6,6 +6,13 @@ import {
   getCacheTtlMs
 } from "../../../lib/oddsCache"
 
+// Map friendly UI sport codes → Odds API sport keys
+const SPORT_MAP: Record<string, string> = {
+  nba: "basketball_nba",
+  nfl: "americanfootball_nfl",
+  nhl: "icehockey_nhl",
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
 
@@ -20,8 +27,9 @@ export async function GET(req: Request) {
     )
   }
 
-  const apiKey = process.env.ODDS_API_KEY
+  const apiSport = SPORT_MAP[sport] ?? sport // fallback if we ever pass full ID
 
+  const apiKey = process.env.ODDS_API_KEY
   if (!apiKey) {
     return NextResponse.json(
       { error: "ODDS_API_KEY_MISSING" },
@@ -29,7 +37,7 @@ export async function GET(req: Request) {
     )
   }
 
-  const cacheKey = `${sport}|${marketsParam}`
+  const cacheKey = `${apiSport}|${marketsParam}`
 
   // 1) Try cache first (unless force refresh)
   if (!force) {
@@ -38,18 +46,18 @@ export async function GET(req: Request) {
       return NextResponse.json({
         ok: true,
         source: "cache",
-        sport,
+        sport: apiSport,
         markets: marketsParam.split(","),
         ageMs: cached.ageMs,
         ttlMs: getCacheTtlMs(),
-        odds: cached.data
+        odds: cached.data,
       })
     }
   }
 
   // 2) Cache miss or force refresh → call The Odds API
   const url = new URL(
-    `https://api.the-odds-api.com/v4/sports/${sport}/odds`
+    `https://api.the-odds-api.com/v4/sports/${apiSport}/odds`
   )
 
   url.searchParams.set("apiKey", apiKey)
@@ -59,8 +67,7 @@ export async function GET(req: Request) {
   url.searchParams.set("bookmakers", "fanduel,draftkings,betmgm,caesars")
 
   const upstreamRes = await fetch(url.toString(), {
-    // don't let any caching layer get in the way
-    cache: "no-store"
+    cache: "no-store",
   })
 
   if (!upstreamRes.ok) {
@@ -69,7 +76,7 @@ export async function GET(req: Request) {
       {
         error: "ODDS_API_REQUEST_FAILED",
         status: upstreamRes.status,
-        body: text
+        body: text,
       },
       { status: 500 }
     )
@@ -83,10 +90,10 @@ export async function GET(req: Request) {
   return NextResponse.json({
     ok: true,
     source: "live",
-    sport,
+    sport: apiSport,
     markets: marketsParam.split(","),
     ageMs: 0,
     ttlMs: getCacheTtlMs(),
-    odds: oddsJson
+    odds: oddsJson,
   })
 }

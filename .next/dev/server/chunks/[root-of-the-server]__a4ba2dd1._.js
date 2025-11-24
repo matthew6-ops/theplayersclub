@@ -90,6 +90,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/oddsCache.ts [app-route] (ecmascript)");
 ;
 ;
+// Map friendly UI sport codes → Odds API sport keys
+const SPORT_MAP = {
+    nba: "basketball_nba",
+    nfl: "americanfootball_nfl",
+    nhl: "icehockey_nhl"
+};
 async function GET(req) {
     const { searchParams } = new URL(req.url);
     const sport = searchParams.get("sport");
@@ -102,6 +108,8 @@ async function GET(req) {
             status: 400
         });
     }
+    const apiSport = SPORT_MAP[sport] ?? sport // fallback if we ever pass full ID
+    ;
     const apiKey = process.env.ODDS_API_KEY;
     if (!apiKey) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -110,7 +118,7 @@ async function GET(req) {
             status: 500
         });
     }
-    const cacheKey = `${sport}|${marketsParam}`;
+    const cacheKey = `${apiSport}|${marketsParam}`;
     // 1) Try cache first (unless force refresh)
     if (!force) {
         const cached = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCachedOdds"])(cacheKey);
@@ -118,7 +126,7 @@ async function GET(req) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 ok: true,
                 source: "cache",
-                sport,
+                sport: apiSport,
                 markets: marketsParam.split(","),
                 ageMs: cached.ageMs,
                 ttlMs: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCacheTtlMs"])(),
@@ -127,14 +135,13 @@ async function GET(req) {
         }
     }
     // 2) Cache miss or force refresh → call The Odds API
-    const url = new URL(`https://api.the-odds-api.com/v4/sports/${sport}/odds`);
+    const url = new URL(`https://api.the-odds-api.com/v4/sports/${apiSport}/odds`);
     url.searchParams.set("apiKey", apiKey);
     url.searchParams.set("regions", "us");
     url.searchParams.set("markets", marketsParam);
     url.searchParams.set("oddsFormat", "decimal");
     url.searchParams.set("bookmakers", "fanduel,draftkings,betmgm,caesars");
     const upstreamRes = await fetch(url.toString(), {
-        // don't let any caching layer get in the way
         cache: "no-store"
     });
     if (!upstreamRes.ok) {
@@ -153,7 +160,7 @@ async function GET(req) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
         ok: true,
         source: "live",
-        sport,
+        sport: apiSport,
         markets: marketsParam.split(","),
         ageMs: 0,
         ttlMs: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCacheTtlMs"])(),

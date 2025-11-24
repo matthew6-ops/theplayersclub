@@ -16,9 +16,8 @@ export default function OddsFetcher({ sport }: OddsFetcherProps) {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(`/api/odds?sport=${sport}`, {
-        cache: "no-store"
-      });
+     const res = await fetch(`/api/odds?sport=${sport}`);
+
 
       const json = await res.json();
 
