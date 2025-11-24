@@ -13,9 +13,7 @@ export default function OpportunitiesView({
   initialResults,
 }: OpportunitiesViewProps) {
   const [results, setResults] = useState<any[]>(initialResults ?? []);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(
-    initialResults?.length ? new Date() : null
-  );
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
   const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev">("all");
@@ -40,6 +38,12 @@ export default function OpportunitiesView({
       label,
     }));
   }, [results]);
+
+  useEffect(() => {
+    if (!lastUpdated && (initialResults?.length ?? 0) > 0) {
+      setLastUpdated(new Date());
+    }
+  }, [initialResults, lastUpdated]);
 
   const filteredResults = useMemo(() => {
     if (activeSport === "all") return results;
