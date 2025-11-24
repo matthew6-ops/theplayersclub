@@ -21,9 +21,6 @@ export default function HomePage() {
           Open Odds Dashboard
         </Link>
 
-        <p className="text-xs text-slate-500">
-          Paper bankroll only. If you ruin your life, that&apos;s on you.
-        </p>
       </div>
     </main>
   );
