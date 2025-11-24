@@ -62,14 +62,14 @@ export default function OddsList({ data }: OddsListProps) {
               {away} @ {home}
             </h3>
 
-            {/* Arbitrage Alert */}
+            {/* Arbitrage Banner */}
             {arb?.exists && (
               <div className="p-2 mb-3 bg-green-700 text-white font-bold rounded">
-                Arbitrage Opportunity Detected (+{arb.profit.toFixed(2)}% Profit)
+                Arbitrage Opportunity Detected (+{arb?.profit?.toFixed(2)}% Profit)
               </div>
             )}
 
-            {/* Table */}
+            {/* Odds Table */}
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-neutral-700 text-left">
@@ -89,7 +89,6 @@ export default function OddsList({ data }: OddsListProps) {
                     <tr key={bm.key} className="border-b border-neutral-800">
                       <td className="py-2">{bm.title}</td>
 
-                      {/* Away price */}
                       <td
                         className={
                           awayOutcome?.price === best[away]
@@ -100,7 +99,6 @@ export default function OddsList({ data }: OddsListProps) {
                         {awayOutcome?.price ?? "-"}
                       </td>
 
-                      {/* Home price */}
                       <td
                         className={
                           homeOutcome?.price === best[home]
