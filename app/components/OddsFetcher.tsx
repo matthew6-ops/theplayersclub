@@ -94,7 +94,9 @@ export default function OddsFetcher({ sport }: OddsFetcherProps) {
         </p>
       )}
 
-      {!loading && !error && data && <OddsList data={data} />}
+      {!loading && !error && data && (
+        <OddsList results={data?.odds ?? []} />
+      )}
     </div>
   );
 }

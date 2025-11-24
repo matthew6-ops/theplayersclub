@@ -45,8 +45,12 @@ module.exports = mod;
 "use strict";
 
 __turbopack_context__.s([
+    "default",
+    ()=>getOpportunities,
     "detectArbitrageWithStakes",
-    ()=>detectArbitrageWithStakes
+    ()=>detectArbitrageWithStakes,
+    "getOpportunities",
+    ()=>getOpportunities
 ]);
 function detectArbitrageWithStakes(best) {
     const teams = Object.keys(best);
@@ -80,6 +84,52 @@ function detectArbitrageWithStakes(best) {
         ]
     };
 }
+async function getOpportunities() {
+    const API_KEY = process.env.ODDS_API_KEY;
+    if (!API_KEY) {
+        console.error("Missing ODDS_API_KEY");
+        return [];
+    }
+    const url = `https://api.the-odds-api.com/v4/sports/basketball_nba/odds?apiKey=${API_KEY}&regions=us&markets=h2h&oddsFormat=decimal`;
+    const res = await fetch(url, {
+        next: {
+            revalidate: 10
+        }
+    });
+    if (!res.ok) {
+        console.error("Error fetching odds:", res.status);
+        return [];
+    }
+    const data = await res.json();
+    const games = data.map((game)=>{
+        const bookmakers = game.bookmakers ?? [];
+        const best = {};
+        bookmakers.forEach((bm)=>{
+            bm.markets?.forEach((m)=>{
+                if (m.key !== "h2h") return;
+                m.outcomes?.forEach((o)=>{
+                    if (!best[o.name] || o.price > best[o.name]) {
+                        best[o.name] = o.price;
+                    }
+                });
+            });
+        });
+        const arb = detectArbitrageWithStakes(best);
+        return {
+            id: game.id,
+            sport_key: game.sport_key,
+            sport_title: game.sport_title,
+            home_team: game.home_team,
+            away_team: game.away_team,
+            commence_time: game.commence_time,
+            bookmakers,
+            best,
+            arb
+        };
+    });
+    return games;
+}
+;
 }),
 "[project]/app/api/opportunities/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -89,12 +139,12 @@ __turbopack_context__.s([
     ()=>GET
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/arbitrage.ts [app-route] (ecmascript)"); // uses your existing logic
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/arbitrage.ts [app-route] (ecmascript)");
 ;
 ;
 async function GET() {
     try {
-        const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"])();
+        const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getOpportunities"])();
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
     } catch (err) {
         console.error("API /opportunities error:", err);

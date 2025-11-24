@@ -76,22 +76,24 @@ export default function OpportunitiesView({
   }, [API_URL]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Top bar */}
-      <div className="flex flex-col gap-3 border-b border-slate-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5/0 bg-gradient-to-br from-white/4 via-white/2 to-transparent px-5 py-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <h2 className="text-lg font-semibold">
-            Odds Dashboard
+          <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
+            Live Trading Desk
+          </p>
+          <h2 className="text-2xl font-semibold text-white">
+            Arbitrage &amp; EV Opportunities
           </h2>
-          <p className="text-xs text-slate-400">
-            Auto-refreshing crypto-style board. Filter by sport, scan edges,
-            fire fake bullets.
+          <p className="text-sm text-white/60">
+            Filter by sport, monitor real-time edges, and size your simulated stakes.
           </p>
         </div>
 
-        <div className="flex flex-col items-start text-xs text-slate-400 sm:items-end">
+        <div className="flex flex-col items-start text-xs text-white/65 sm:items-end">
           {lastUpdated && (
-            <span>
+            <span className="text-sm font-medium text-amber-200">
               Updated{" "}
               {lastUpdated.toLocaleTimeString(undefined, {
                 hour: "numeric",
@@ -100,7 +102,7 @@ export default function OpportunitiesView({
               })}
             </span>
           )}
-          <span className="text-[11px] text-slate-500">
+          <span className="text-[11px] text-white/45">
             Auto refresh in {secondsToRefresh}s
           </span>
         </div>
@@ -115,7 +117,7 @@ export default function OpportunitiesView({
 
       {/* Content */}
       {filteredResults.length === 0 ? (
-        <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-[#050509] px-4 py-6 text-center text-sm text-slate-400">
+        <div className="mt-4 rounded-3xl border border-dashed border-white/15 bg-white/5 px-6 py-8 text-center text-sm text-white/60">
           No opportunities right now. Either the books are sharp, or your
           scraper is asleep.
         </div>

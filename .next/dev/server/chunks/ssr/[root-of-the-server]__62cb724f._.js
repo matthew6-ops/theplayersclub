@@ -75,22 +75,47 @@ async function fetchResults() {
 async function OddsPage() {
     const results = await fetchResults();
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen bg-slate-950 text-slate-100",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-            className: "mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunitiesView$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                initialResults: results
-            }, void 0, false, {
+        className: "relative min-h-screen overflow-hidden bg-gradient-to-br from-[#0b0a13] via-[#050308] to-[#010103] text-[#f7f3e6]",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "pointer-events-none absolute inset-0 opacity-60",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute -top-32 left-10 h-72 w-72 rounded-full bg-[#f5c66d]/20 blur-[120px]"
+                    }, void 0, false, {
+                        fileName: "[project]/app/odds/page.tsx",
+                        lineNumber: 32,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[#6d62ff]/20 blur-[140px]"
+                    }, void 0, false, {
+                        fileName: "[project]/app/odds/page.tsx",
+                        lineNumber: 33,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/odds/page.tsx",
                 lineNumber: 31,
-                columnNumber: 9
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+                className: "relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunitiesView$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
+                    initialResults: results
+                }, void 0, false, {
+                    fileName: "[project]/app/odds/page.tsx",
+                    lineNumber: 36,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/odds/page.tsx",
+                lineNumber: 35,
+                columnNumber: 7
             }, this)
-        }, void 0, false, {
-            fileName: "[project]/app/odds/page.tsx",
-            lineNumber: 30,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+        ]
+    }, void 0, true, {
         fileName: "[project]/app/odds/page.tsx",
         lineNumber: 29,
         columnNumber: 5

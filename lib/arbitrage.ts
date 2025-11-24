@@ -1,8 +1,3 @@
-import { revalidateTag } from "next/cache";
-
-/**
- * Your pure math helper (kept unchanged)
- */
 export function detectArbitrageWithStakes(best: Record<string, number>) {
   const teams = Object.keys(best);
   if (teams.length !== 2) return null;
@@ -38,10 +33,7 @@ export function detectArbitrageWithStakes(best: Record<string, number>) {
   };
 }
 
-/**
- * Fetch + process odds + compute EV & arbitrage
- */
-export async function getOpportunities() {
+export default async function getOpportunities() {
   const API_KEY = process.env.ODDS_API_KEY;
   if (!API_KEY) {
     console.error("Missing ODDS_API_KEY");
@@ -50,7 +42,9 @@ export async function getOpportunities() {
 
   const url = `https://api.the-odds-api.com/v4/sports/basketball_nba/odds?apiKey=${API_KEY}&regions=us&markets=h2h&oddsFormat=decimal`;
 
-  const res = await fetch(url, { next: { revalidate: 10 } });
+  const res = await fetch(url, {
+    next: { revalidate: 10 }
+  });
 
   if (!res.ok) {
     console.error("Error fetching odds:", res.status);
@@ -59,11 +53,9 @@ export async function getOpportunities() {
 
   const data = await res.json();
 
-  // Process each game
   const games = data.map((game: any) => {
     const bookmakers = game.bookmakers ?? [];
 
-    // collect best prices
     const best: Record<string, number> = {};
 
     bookmakers.forEach((bm: any) => {
@@ -78,7 +70,6 @@ export async function getOpportunities() {
       });
     });
 
-    // compute arbitrage
     const arb = detectArbitrageWithStakes(best);
 
     return {
@@ -96,3 +87,5 @@ export async function getOpportunities() {
 
   return games;
 }
+
+export { getOpportunities };

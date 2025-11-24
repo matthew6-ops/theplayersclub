@@ -24,13 +24,13 @@ function SportTabs({ activeSport, onChange, sports }) {
         ...sports
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "-mx-4 border-b border-slate-900/60 bg-[#050509]/90 px-4 pb-2 pt-2 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8",
+        className: "-mx-4 border-y border-white/5 bg-white/5/0 bg-gradient-to-r from-[#0c0a12]/70 via-[#09080f]/50 to-[#0b0a14]/70 px-4 pb-3 pt-3 backdrop-blur lg:-mx-10 lg:px-10",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex gap-2 overflow-x-auto pb-1 text-xs",
+            className: "flex gap-2 overflow-x-auto pb-1 text-[11px] uppercase tracking-[0.15em] text-white/70",
             children: allTabs.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                     type: "button",
                     onClick: ()=>onChange(s.key),
-                    className: `whitespace-nowrap rounded-full px-3 py-1.5 font-medium transition ${activeSport === s.key ? "bg-emerald-500 text-black shadow shadow-emerald-500/40" : "bg-[#111119] text-slate-300 hover:bg-[#151521]"}`,
+                    className: `whitespace-nowrap rounded-full px-4 py-2 font-semibold transition ${activeSport === s.key ? "bg-gradient-to-r from-[#fcd37b] to-[#f29d38] text-black shadow-lg shadow-[#fcd37b]/40" : "bg-white/5 text-white/70 hover:bg-white/10"}`,
                     children: s.label
                 }, s.key, false, {
                     fileName: "[project]/app/components/SportTabs.tsx",
@@ -57,98 +57,26 @@ __turbopack_context__.s([
     ()=>OddsList
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module './GameCard'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+;
 ;
 function OddsList({ results }) {
-    if (!results || results.length === 0) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-            className: "text-gray-500 text-center mt-10",
-            children: "No odds available. Your API key is probably crying again."
-        }, void 0, false, {
-            fileName: "[project]/app/components/OddsList.tsx",
-            lineNumber: 4,
-            columnNumber: 7
-        }, this);
-    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "space-y-6",
-        children: results.map((game, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "card",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "text-lg font-semibold mb-1 neon",
-                        children: [
-                            game.home_team,
-                            " @ ",
-                            game.away_team
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 14,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-xs text-gray-400 mb-3",
-                        children: [
-                            "Start: ",
-                            game.commence_time
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 18,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-3 gap-3 text-sm",
-                        children: game.bookmakers.map((bm, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "bg-[#161618] p-3 rounded-lg",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "font-semibold mb-1 text-gray-300",
-                                        children: bm.title
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/OddsList.tsx",
-                                        lineNumber: 25,
-                                        columnNumber: 17
-                                    }, this),
-                                    bm.markets?.[0]?.outcomes?.map((o, j)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-gray-400",
-                                            children: [
-                                                o.name,
-                                                ": ",
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "neon",
-                                                    children: o.price
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/components/OddsList.tsx",
-                                                    lineNumber: 29,
-                                                    columnNumber: 31
-                                                }, this)
-                                            ]
-                                        }, j, true, {
-                                            fileName: "[project]/app/components/OddsList.tsx",
-                                            lineNumber: 28,
-                                            columnNumber: 19
-                                        }, this))
-                                ]
-                            }, i, true, {
-                                fileName: "[project]/app/components/OddsList.tsx",
-                                lineNumber: 24,
-                                columnNumber: 15
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 22,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, idx, true, {
+        className: "mt-3 grid gap-4 md:grid-cols-2",
+        children: results.map((game, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(GameCard, {
+                game: game
+            }, game.id ?? `${game.sport_key}-${game.home_team}-${game.away_team}-${idx}`, false, {
                 fileName: "[project]/app/components/OddsList.tsx",
-                lineNumber: 13,
+                lineNumber: 11,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/OddsList.tsx",
-        lineNumber: 11,
+        lineNumber: 9,
         columnNumber: 5
     }, this);
 }
@@ -174,7 +102,7 @@ function OpportunitiesView({ initialResults }) {
     const [lastUpdated, setLastUpdated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(initialResults?.length ? new Date() : null);
     const [secondsToRefresh, setSecondsToRefresh] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(15);
     const [activeSport, setActiveSport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("all");
-    const apiUrl = ("TURBOPACK compile-time value", "http://localhost:3001") ?? "http://localhost:8000";
+    const API_URL = ("TURBOPACK compile-time value", "http://localhost:3000");
     // derive sports from data
     const sports = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
         const map = new Map();
@@ -202,9 +130,7 @@ function OpportunitiesView({ initialResults }) {
         let cancelled = false;
         async function refresh() {
             try {
-                const res = await fetch(`${apiUrl}/opportunities`, {
-                    cache: "no-store"
-                });
+                const res = await fetch(`${API_URL}/api/opportunities`);
                 if (!res.ok) return;
                 const json = await res.json();
                 if (!cancelled) {
@@ -227,43 +153,52 @@ function OpportunitiesView({ initialResults }) {
             clearInterval(countdownTimer);
         };
     }, [
-        apiUrl
+        API_URL
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "space-y-4",
+        className: "space-y-5",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex flex-col gap-3 border-b border-slate-800 pb-3 sm:flex-row sm:items-center sm:justify-between",
+                className: "flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5/0 bg-gradient-to-br from-white/4 via-white/2 to-transparent px-5 py-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-1",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-lg font-semibold",
-                                children: "Odds Dashboard"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[11px] uppercase tracking-[0.3em] text-white/60",
+                                children: "Live Trading Desk"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 85,
+                                lineNumber: 83,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: "text-2xl font-semibold text-white",
+                                children: "Arbitrage & EV Opportunities"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunitiesView.tsx",
+                                lineNumber: 86,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-xs text-slate-400",
-                                children: "Auto-refreshing crypto-style board. Filter by sport, scan edges, fire fake bullets."
+                                className: "text-sm text-white/60",
+                                children: "Filter by sport, monitor real-time edges, and size your simulated stakes."
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 88,
+                                lineNumber: 89,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 84,
+                        lineNumber: 82,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col items-start text-xs text-slate-400 sm:items-end",
+                        className: "flex flex-col items-start text-xs text-white/65 sm:items-end",
                         children: [
                             lastUpdated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "text-sm font-medium text-amber-200",
                                 children: [
                                     "Updated",
                                     " ",
@@ -279,7 +214,7 @@ function OpportunitiesView({ initialResults }) {
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "text-[11px] text-slate-500",
+                                className: "text-[11px] text-white/45",
                                 children: [
                                     "Auto refresh in ",
                                     secondsToRefresh,
@@ -299,7 +234,7 @@ function OpportunitiesView({ initialResults }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 83,
+                lineNumber: 81,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SportTabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -312,7 +247,7 @@ function OpportunitiesView({ initialResults }) {
                 columnNumber: 7
             }, this),
             filteredResults.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mt-4 rounded-2xl border border-dashed border-slate-800 bg-[#050509] px-4 py-6 text-center text-sm text-slate-400",
+                className: "mt-4 rounded-3xl border border-dashed border-white/15 bg-white/5 px-6 py-8 text-center text-sm text-white/60",
                 children: "No opportunities right now. Either the books are sharp, or your scraper is asleep."
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
@@ -328,7 +263,7 @@ function OpportunitiesView({ initialResults }) {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/OpportunitiesView.tsx",
-        lineNumber: 81,
+        lineNumber: 79,
         columnNumber: 5
     }, this);
 }

@@ -1,29 +1,106 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 type GameCardProps = {
   game: any;
 };
+
+type LineInfo = {
+  price: number;
+  bookmaker: string;
+};
+
+const STAKE_UNIT = 100;
 
 function formatTime(commence: string | undefined) {
   if (!commence) return "TBD";
   const dt = new Date(commence);
   if (Number.isNaN(dt.getTime())) return commence;
   return dt.toLocaleString(undefined, {
-    weekday: "short",
+    weekday: "long",
     hour: "numeric",
     minute: "2-digit",
   });
 }
 
+function decimalToAmerican(decimal?: number | null) {
+  if (!decimal || decimal <= 1) return "-";
+  if (decimal >= 2) return `+${Math.round((decimal - 1) * 100)}`;
+  return `${Math.round(-100 / (decimal - 1))}`;
+}
+
+function buildBestLines(bookmakers: any[], teams: string[]): Record<string, LineInfo | null> {
+  const best: Record<string, LineInfo | null> = {};
+  teams.forEach((t) => (best[t] = null));
+
+  bookmakers?.forEach((bm: any) => {
+    const h2h = bm?.markets?.find?.((m: any) => m?.key === "h2h");
+    h2h?.outcomes?.forEach((o: any) => {
+      if (!o?.name || typeof o.price !== "number") return;
+      if (!teams.includes(o.name)) return;
+      if (!best[o.name] || o.price > (best[o.name]?.price ?? 0)) {
+        best[o.name] = {
+          price: o.price,
+          bookmaker: bm?.title ?? bm?.key ?? "Book",
+        };
+      }
+    });
+  });
+
+  return best;
+}
+
+function computeFairProbabilities(best: Record<string, number>) {
+  const entries = Object.entries(best).filter(([, price]) => price > 0);
+  const implied = entries.map(([team, price]) => [team, 1 / price] as const);
+  const total = implied.reduce((sum, [, p]) => sum + p, 0);
+  if (!total) return {} as Record<string, number>;
+  return implied.reduce((acc, [team, imp]) => {
+    acc[team] = imp / total;
+    return acc;
+  }, {} as Record<string, number>);
+}
+
+function calcEvPercent(fairProb: number | undefined, decimalOdds: number | undefined) {
+  if (!fairProb || !decimalOdds) return null;
+  const ev = fairProb * (decimalOdds - 1) - (1 - fairProb);
+  return ev * 100;
+}
+
+function calcArbBreakdown(best: Record<string, number>, stake: number) {
+  const teams = Object.keys(best);
+  if (teams.length !== 2) return null;
+  const [teamA, teamB] = teams;
+  const priceA = best[teamA];
+  const priceB = best[teamB];
+  if (!priceA || !priceB) return null;
+
+  const invA = 1 / priceA;
+  const invB = 1 / priceB;
+  const sum = invA + invB;
+  if (sum >= 1) return null;
+
+  const stakeA = (stake * invA) / sum;
+  const stakeB = (stake * invB) / sum;
+  const profitPercent = (1 - sum) * 100;
+
+  return {
+    profitPercent,
+    stakes: {
+      [teamA]: stakeA,
+      [teamB]: stakeB,
+    },
+  } as const;
+}
+
 export default function GameCard({ game }: GameCardProps) {
-  const [expanded, setExpanded] = useState(false);
+  const home = game?.home_team ?? "Home";
+  const away = game?.away_team ?? "Away";
+  const bookmakers = game?.bookmakers ?? [];
 
   const bestPrices = useMemo(() => {
     const best: Record<string, number> = {};
-    const bookmakers = game?.bookmakers ?? [];
-
     bookmakers.forEach((bm: any) => {
       bm.markets?.forEach((m: any) => {
         if (m.key !== "h2h") return;
@@ -35,116 +112,106 @@ export default function GameCard({ game }: GameCardProps) {
         });
       });
     });
-
     return best;
-  }, [game]);
+  }, [bookmakers]);
 
-  const home = game?.home_team ?? "Home";
-  const away = game?.away_team ?? "Away";
+  const bestLines = useMemo(() => buildBestLines(bookmakers, [home, away]), [bookmakers, home, away]);
+  const fair = useMemo(() => computeFairProbabilities(bestPrices), [bestPrices]);
+
+  const homeEv = calcEvPercent(fair[home], bestLines[home]?.price ?? undefined);
+  const awayEv = calcEvPercent(fair[away], bestLines[away]?.price ?? undefined);
+  const evPercent = Math.max(homeEv ?? -Infinity, awayEv ?? -Infinity);
+
+  const arb = useMemo(() => calcArbBreakdown(bestPrices, STAKE_UNIT), [bestPrices]);
+  const arbPercent = arb?.profitPercent ?? null;
+  const guaranteedProfit = arbPercent ? (STAKE_UNIT * arbPercent) / 100 : null;
+
+  const lines = [away, home]
+    .map((team) => {
+      const line = bestLines[team];
+      if (!line) return null;
+      const stake = arb?.stakes?.[team];
+      return {
+        team,
+        bookmaker: line.bookmaker,
+        price: line.price,
+        american: decimalToAmerican(line.price),
+        stake: stake ?? null,
+      };
+    })
+    .filter(Boolean) as Array<{
+      team: string;
+      bookmaker: string;
+      price: number;
+      american: string;
+      stake: number | null;
+    }>;
 
   return (
-    <article className="group rounded-2xl border border-slate-800 bg-gradient-to-br from-[#11111a] via-[#090914] to-[#050509] p-4 shadow-lg shadow-emerald-500/5 transition hover:-translate-y-0.5 hover:border-emerald-500/60 hover:shadow-emerald-500/20">
-      {/* Header */}
+    <article className="rounded-[26px] border border-white/8 bg-gradient-to-br from-[#1c1a24]/95 via-[#0d0c13]/95 to-[#050307]/95 p-5 text-sm shadow-[0_20px_45px_rgba(5,3,7,0.6)]">
       <header className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-            {game?.sport_title ?? game?.sport_key ?? "Matchup"}
+          <p className="text-[11px] uppercase tracking-[0.35em] text-white/45">
+            {game?.sport_title?.toUpperCase() ?? game?.sport_key ?? "Matchup"} · H2H
           </p>
-          <h3 className="mt-1 text-sm font-semibold sm:text-base">
-            <span className="text-slate-50">{home}</span>
-            <span className="mx-1 text-slate-500">@</span>
-            <span className="text-slate-50">{away}</span>
+          <h3 className="mt-2 text-lg font-semibold text-white">
+            {away} @ {home}
           </h3>
-          <p className="mt-1 text-xs text-slate-400">
-            Start: {formatTime(game?.commence_time)}
-          </p>
+          <p className="text-xs text-white/55">{formatTime(game?.commence_time)}</p>
         </div>
-
-        {/* Small EV/flag stub for future use */}
-        <div className="flex flex-col items-end gap-1">
-          {game?.edge && (
-            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-400">
-              +EV {game.edge.toFixed?.(1)}%
-            </span>
-          )}
-          {game?.is_arb && (
-            <span className="rounded-full bg-violet-500/15 px-2 py-0.5 text-[11px] font-semibold text-violet-300">
-              ARB FOUND
-            </span>
-          )}
+        <div className="rounded-full bg-gradient-to-r from-[#ffd36f] to-[#f0922c] px-3 py-1 text-[11px] font-semibold text-black shadow-md shadow-[#fbd384]/40">
+          ARB + EV
         </div>
       </header>
 
-      {/* Best lines row */}
-      <section className="mt-3 rounded-xl border border-slate-800 bg-[#090912] p-3 text-xs sm:text-[13px]">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-          Best Moneyline
-        </p>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <span className="text-slate-400">Home</span>
-            <span className="font-semibold text-emerald-400">
-              {bestPrices[home] ? bestPrices[home].toFixed(2) : "-"}
-            </span>
-          </div>
-          <div className="flex flex-col text-right">
-            <span className="text-slate-400">Away</span>
-            <span className="font-semibold text-cyan-300">
-              {bestPrices[away] ? bestPrices[away].toFixed(2) : "-"}
-            </span>
-          </div>
+      <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-white/65 sm:grid-cols-4">
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">EV %</p>
+          <p className="mt-1 text-base font-semibold text-amber-200">
+            {Number.isFinite(evPercent) ? `${evPercent!.toFixed(2)}%` : "--"}
+          </p>
         </div>
-      </section>
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Arb %</p>
+          <p className="mt-1 text-base font-semibold text-amber-200">
+            {arbPercent ? `${arbPercent.toFixed(2)}%` : "--"}
+          </p>
+        </div>
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Guaranteed profit</p>
+          <p className="mt-1 text-base font-semibold text-white">
+            {guaranteedProfit ? `$${guaranteedProfit.toFixed(2)}` : "--"}
+          </p>
+          <p className="text-[10px] text-white/40">Simulated @ ${STAKE_UNIT}</p>
+        </div>
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Stake</p>
+          <p className="mt-1 text-base font-semibold text-white">
+            ${STAKE_UNIT.toFixed(0)}.00
+          </p>
+        </div>
+      </div>
 
-      {/* Expand button */}
-      <button
-        type="button"
-        onClick={() => setExpanded((e) => !e)}
-        className="mt-3 inline-flex w-full items-center justify-between rounded-xl border border-slate-800 bg-[#050509] px-3 py-2 text-xs font-medium text-slate-300 hover:border-emerald-500/60 hover:bg-[#070711]"
-      >
-        <span>{expanded ? "Hide full board" : "View full book breakdown"}</span>
-        <span className="text-[10px] text-slate-500">
-          {game?.bookmakers?.length ?? 0} books
-        </span>
-      </button>
-
-      {/* Expanded odds table */}
-      {expanded && (
-        <section className="mt-3 space-y-2 rounded-xl bg-[#050509] p-3 text-xs">
-          {(game?.bookmakers ?? []).map((bm: any, idx: number) => (
-            <div
-              key={bm?.key ?? idx}
-              className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#090912] px-3 py-2"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-slate-100">
-                  {bm?.title ?? bm?.key ?? "Book"}
-                </span>
-                {bm?.last_update && (
-                  <span className="text-[10px] text-slate-500">
-                    {new Date(bm.last_update).toLocaleTimeString(undefined, {
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                )}
+      <div className="mt-4 space-y-3">
+        {lines.map((line) => (
+          <div
+            key={line.team}
+            className="rounded-2xl border border-white/5 bg-white/5/0 bg-gradient-to-r from-white/[0.06] to-transparent px-4 py-3 text-sm"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[13px] font-semibold text-white">
+                  {line.team} @ {line.american}
+                </p>
+                <p className="text-[11px] text-white/55">{line.bookmaker}</p>
               </div>
-              <div className="flex gap-4 text-[11px] text-slate-300">
-                {(bm?.markets?.[0]?.outcomes ?? []).map(
-                  (o: any, i: number) => (
-                    <div key={i} className="flex flex-col">
-                      <span className="text-slate-400">{o?.name}</span>
-                      <span className="font-semibold">
-                        {typeof o?.price === "number" ? o.price : "-"}
-                      </span>
-                    </div>
-                  )
-                )}
+              <div className="text-right text-[12px] text-white/70">
+                <p>Stake {line.stake ? `$${line.stake.toFixed(2)}` : "--"}</p>
               </div>
             </div>
-          ))}
-        </section>
-      )}
+          </div>
+        ))}
+      </div>
     </article>
   );
 }
