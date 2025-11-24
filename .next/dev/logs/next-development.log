@@ -288,3 +288,8 @@ Import traces:
 [00:40:57.623] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:46:48.954] Server  LOG      ✓ Compiled in 18ms
 [00:51:34.125] Server  LOG      ✓ Compiled in 17ms
+[00:52:00.829] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:52:06.156] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:53:49.237] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:54:10.727] Server  LOG      ✓ Compiled in 22ms
+[00:55:07.615] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

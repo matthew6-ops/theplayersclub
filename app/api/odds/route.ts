@@ -43,6 +43,10 @@ export async function GET(req: Request) {
   if (!force) {
     const cached = getCachedOdds(cacheKey)
     if (cached) {
+      const cachedPayload: any = cached.data
+      const oddsFromCache = Array.isArray(cachedPayload?.odds)
+        ? cachedPayload.odds
+        : cachedPayload
       return NextResponse.json({
         ok: true,
         source: "cache",
@@ -50,7 +54,7 @@ export async function GET(req: Request) {
         markets: marketsParam.split(","),
         ageMs: cached.ageMs,
         ttlMs: getCacheTtlMs(),
-        odds: cached.data,
+        odds: oddsFromCache,
       })
     }
   }
@@ -84,8 +88,51 @@ export async function GET(req: Request) {
 
   const oddsJson = await upstreamRes.json()
 
+  // Also pull real-time scoreboard data for current sport so we can
+  // show game status (quarter, clock, etc.) alongside the odds list.
+  let scoreboardJson: any[] = []
+  try {
+    const scoreboardUrl = new URL(
+      `https://api.the-odds-api.com/v4/sports/${apiSport}/scores`
+    )
+    scoreboardUrl.searchParams.set("apiKey", apiKey)
+    scoreboardUrl.searchParams.set("daysFrom", "2")
+
+    const scoreboardRes = await fetch(scoreboardUrl.toString(), {
+      cache: "no-store",
+    })
+
+    if (scoreboardRes.ok) {
+      scoreboardJson = await scoreboardRes.json()
+    }
+  } catch (err) {
+    console.error("Failed to load scoreboard data", err)
+  }
+
+  const scoreboardMap = new Map<string, any>()
+  scoreboardJson.forEach((game: any) => {
+    if (!game) return
+    const key = game.id ?? `${game.home_team}|${game.away_team}`
+    if (key) {
+      scoreboardMap.set(key, game)
+    }
+  })
+
+  const oddsWithScoreboard = oddsJson.map((game: any) => {
+    const scoreboard =
+      scoreboardMap.get(game.id) ??
+      scoreboardMap.get(`${game.home_team}|${game.away_team}`)
+
+    return {
+      ...game,
+      scoreboard,
+    }
+  })
+
   // 3) Save to cache
-  setCachedOdds(cacheKey, oddsJson)
+  setCachedOdds(cacheKey, {
+    odds: oddsWithScoreboard,
+  })
 
   return NextResponse.json({
     ok: true,
@@ -94,6 +141,6 @@ export async function GET(req: Request) {
     markets: marketsParam.split(","),
     ageMs: 0,
     ttlMs: getCacheTtlMs(),
-    odds: oddsJson,
+    odds: oddsWithScoreboard,
   })
 }

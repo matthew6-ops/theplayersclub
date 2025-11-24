@@ -15,6 +15,70 @@ function decimalToAmerican(decimal: number): string {
   }
 }
 
+function formatStartTime(commenceTime?: string) {
+  if (!commenceTime) return null;
+  const parsed = new Date(commenceTime);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleString(undefined, {
+    weekday: "short",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function formatLiveStatus(scoreboard: any) {
+  if (!scoreboard) return null;
+  const parts: string[] = [];
+
+  const status =
+    scoreboard.status ??
+    (scoreboard.completed ? "Final" : scoreboard.in_progress ? "Live" : null);
+  if (status) parts.push(status);
+
+  const period =
+    scoreboard.period ??
+    scoreboard.stage ??
+    scoreboard.current_period ??
+    scoreboard.quarter ??
+    scoreboard.inning ??
+    scoreboard.half;
+  if (period) {
+    const label = typeof period === "number" ? `Period ${period}` : String(period);
+    parts.push(label);
+  }
+
+  const clock =
+    scoreboard.display_clock ??
+    scoreboard.clock ??
+    scoreboard.minutes_remaining ??
+    scoreboard.time_remaining ??
+    scoreboard.time;
+  if (clock) {
+    const formatted = typeof clock === "number" ? `${clock} min` : String(clock);
+    parts.push(formatted);
+  }
+
+  return parts.length ? parts.join(" • ") : null;
+}
+
+function getTeamScore(scoreboard: any, teamName: string, fallback: "home" | "away") {
+  if (!scoreboard) return null;
+
+  if (Array.isArray(scoreboard.scores)) {
+    const entry = scoreboard.scores.find((s: any) => s?.name === teamName);
+    if (entry?.score !== undefined && entry.score !== null) {
+      return entry.score;
+    }
+  }
+
+  const directKey = fallback === "home" ? "home_score" : "away_score";
+  if (scoreboard[directKey] !== undefined && scoreboard[directKey] !== null) {
+    return scoreboard[directKey];
+  }
+
+  return null;
+}
+
 // Return best price for each outcome across all books
 function getBestPrices(bookmakers: any[]) {
   const best: Record<string, number> = {};
@@ -68,12 +132,28 @@ export default function OddsList({ data }: OddsListProps) {
 
         const best = getBestPrices(game.bookmakers);
         const arb = detectArbitrage(best);
+        const scoreboard = game.scoreboard;
+        const startTime = formatStartTime(game.commence_time);
+        const liveStatus = formatLiveStatus(scoreboard);
+        const awayScore = getTeamScore(scoreboard, away, "away");
+        const homeScore = getTeamScore(scoreboard, home, "home");
 
         return (
           <div key={game.id} className="p-4 border border-neutral-600 rounded">
             <h3 className="text-lg font-bold mb-2">
               {away} @ {home}
             </h3>
+
+            <div className="text-sm text-neutral-400 space-y-1 mb-3">
+              {startTime && <div>Start: {startTime}</div>}
+              {liveStatus && <div>{liveStatus}</div>}
+              {(awayScore || homeScore) && (
+                <div className="text-neutral-200">
+                  {away}: <span className="font-semibold">{awayScore ?? "-"}</span> • {home}:{" "}
+                  <span className="font-semibold">{homeScore ?? "-"}</span>
+                </div>
+              )}
+            </div>
 
             {/* Arbitrage Notice */}
             {arb && arb.exists && typeof arb.profit === "number" && arb.profit > 0 && (

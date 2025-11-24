@@ -65,6 +65,47 @@ function decimalToAmerican(decimal) {
         return `${Math.round(-100 / (decimal - 1))}`;
     }
 }
+function formatStartTime(commenceTime) {
+    if (!commenceTime) return null;
+    const parsed = new Date(commenceTime);
+    if (Number.isNaN(parsed.getTime())) return null;
+    return parsed.toLocaleString(undefined, {
+        weekday: "short",
+        hour: "numeric",
+        minute: "2-digit"
+    });
+}
+function formatLiveStatus(scoreboard) {
+    if (!scoreboard) return null;
+    const parts = [];
+    const status = scoreboard.status ?? (scoreboard.completed ? "Final" : scoreboard.in_progress ? "Live" : null);
+    if (status) parts.push(status);
+    const period = scoreboard.period ?? scoreboard.stage ?? scoreboard.current_period ?? scoreboard.quarter ?? scoreboard.inning ?? scoreboard.half;
+    if (period) {
+        const label = typeof period === "number" ? `Period ${period}` : String(period);
+        parts.push(label);
+    }
+    const clock = scoreboard.display_clock ?? scoreboard.clock ?? scoreboard.minutes_remaining ?? scoreboard.time_remaining ?? scoreboard.time;
+    if (clock) {
+        const formatted = typeof clock === "number" ? `${clock} min` : String(clock);
+        parts.push(formatted);
+    }
+    return parts.length ? parts.join(" • ") : null;
+}
+function getTeamScore(scoreboard, teamName, fallback) {
+    if (!scoreboard) return null;
+    if (Array.isArray(scoreboard.scores)) {
+        const entry = scoreboard.scores.find((s)=>s?.name === teamName);
+        if (entry?.score !== undefined && entry.score !== null) {
+            return entry.score;
+        }
+    }
+    const directKey = fallback === "home" ? "home_score" : "away_score";
+    if (scoreboard[directKey] !== undefined && scoreboard[directKey] !== null) {
+        return scoreboard[directKey];
+    }
+    return null;
+}
 // Return best price for each outcome across all books
 function getBestPrices(bookmakers) {
     const best = {};
@@ -107,7 +148,7 @@ function OddsList({ data }) {
         children: "No odds available."
     }, void 0, false, {
         fileName: "[project]/app/components/OddsList.tsx",
-        lineNumber: 61,
+        lineNumber: 125,
         columnNumber: 29
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -117,6 +158,11 @@ function OddsList({ data }) {
             const away = game.away_team;
             const best = getBestPrices(game.bookmakers);
             const arb = detectArbitrage(best);
+            const scoreboard = game.scoreboard;
+            const startTime = formatStartTime(game.commence_time);
+            const liveStatus = formatLiveStatus(scoreboard);
+            const awayScore = getTeamScore(scoreboard, away, "away");
+            const homeScore = getTeamScore(scoreboard, home, "home");
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "p-4 border border-neutral-600 rounded",
                 children: [
@@ -129,7 +175,64 @@ function OddsList({ data }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 74,
+                        lineNumber: 143,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-sm text-neutral-400 space-y-1 mb-3",
+                        children: [
+                            startTime && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    "Start: ",
+                                    startTime
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/OddsList.tsx",
+                                lineNumber: 148,
+                                columnNumber: 29
+                            }, this),
+                            liveStatus && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: liveStatus
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OddsList.tsx",
+                                lineNumber: 149,
+                                columnNumber: 30
+                            }, this),
+                            (awayScore || homeScore) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-neutral-200",
+                                children: [
+                                    away,
+                                    ": ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "font-semibold",
+                                        children: awayScore ?? "-"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/OddsList.tsx",
+                                        lineNumber: 152,
+                                        columnNumber: 27
+                                    }, this),
+                                    " • ",
+                                    home,
+                                    ":",
+                                    " ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "font-semibold",
+                                        children: homeScore ?? "-"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/OddsList.tsx",
+                                        lineNumber: 153,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/OddsList.tsx",
+                                lineNumber: 151,
+                                columnNumber: 17
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OddsList.tsx",
+                        lineNumber: 147,
                         columnNumber: 13
                     }, this),
                     arb && arb.exists && typeof arb.profit === "number" && arb.profit > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -141,7 +244,7 @@ function OddsList({ data }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 80,
+                        lineNumber: 160,
                         columnNumber: 15
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -156,7 +259,7 @@ function OddsList({ data }) {
                                             children: "Bookmaker"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/OddsList.tsx",
-                                            lineNumber: 88,
+                                            lineNumber: 168,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -164,7 +267,7 @@ function OddsList({ data }) {
                                             children: away
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/OddsList.tsx",
-                                            lineNumber: 89,
+                                            lineNumber: 169,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -172,18 +275,18 @@ function OddsList({ data }) {
                                             children: home
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/OddsList.tsx",
-                                            lineNumber: 90,
+                                            lineNumber: 170,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/OddsList.tsx",
-                                    lineNumber: 87,
+                                    lineNumber: 167,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OddsList.tsx",
-                                lineNumber: 86,
+                                lineNumber: 166,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -201,7 +304,7 @@ function OddsList({ data }) {
                                                 children: bm.title
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OddsList.tsx",
-                                                lineNumber: 110,
+                                                lineNumber: 190,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -209,7 +312,7 @@ function OddsList({ data }) {
                                                 children: awayOutcome ? decimalToAmerican(awayOutcome.price) : "-"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OddsList.tsx",
-                                                lineNumber: 113,
+                                                lineNumber: 193,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -217,37 +320,37 @@ function OddsList({ data }) {
                                                 children: homeOutcome ? decimalToAmerican(homeOutcome.price) : "-"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OddsList.tsx",
-                                                lineNumber: 126,
+                                                lineNumber: 206,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, bm.key, true, {
                                         fileName: "[project]/app/components/OddsList.tsx",
-                                        lineNumber: 109,
+                                        lineNumber: 189,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OddsList.tsx",
-                                lineNumber: 94,
+                                lineNumber: 174,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 85,
+                        lineNumber: 165,
                         columnNumber: 13
                     }, this)
                 ]
             }, game.id, true, {
                 fileName: "[project]/app/components/OddsList.tsx",
-                lineNumber: 73,
+                lineNumber: 142,
                 columnNumber: 11
             }, this);
         })
     }, void 0, false, {
         fileName: "[project]/app/components/OddsList.tsx",
-        lineNumber: 64,
+        lineNumber: 128,
         columnNumber: 5
     }, this);
 }

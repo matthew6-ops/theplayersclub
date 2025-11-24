@@ -123,6 +123,8 @@ async function GET(req) {
     if (!force) {
         const cached = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCachedOdds"])(cacheKey);
         if (cached) {
+            const cachedPayload = cached.data;
+            const oddsFromCache = Array.isArray(cachedPayload?.odds) ? cachedPayload.odds : cachedPayload;
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 ok: true,
                 source: "cache",
@@ -130,7 +132,7 @@ async function GET(req) {
                 markets: marketsParam.split(","),
                 ageMs: cached.ageMs,
                 ttlMs: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCacheTtlMs"])(),
-                odds: cached.data
+                odds: oddsFromCache
             });
         }
     }
@@ -155,8 +157,41 @@ async function GET(req) {
         });
     }
     const oddsJson = await upstreamRes.json();
+    // Also pull real-time scoreboard data for current sport so we can
+    // show game status (quarter, clock, etc.) alongside the odds list.
+    let scoreboardJson = [];
+    try {
+        const scoreboardUrl = new URL(`https://api.the-odds-api.com/v4/sports/${apiSport}/scores`);
+        scoreboardUrl.searchParams.set("apiKey", apiKey);
+        scoreboardUrl.searchParams.set("daysFrom", "2");
+        const scoreboardRes = await fetch(scoreboardUrl.toString(), {
+            cache: "no-store"
+        });
+        if (scoreboardRes.ok) {
+            scoreboardJson = await scoreboardRes.json();
+        }
+    } catch (err) {
+        console.error("Failed to load scoreboard data", err);
+    }
+    const scoreboardMap = new Map();
+    scoreboardJson.forEach((game)=>{
+        if (!game) return;
+        const key = game.id ?? `${game.home_team}|${game.away_team}`;
+        if (key) {
+            scoreboardMap.set(key, game);
+        }
+    });
+    const oddsWithScoreboard = oddsJson.map((game)=>{
+        const scoreboard = scoreboardMap.get(game.id) ?? scoreboardMap.get(`${game.home_team}|${game.away_team}`);
+        return {
+            ...game,
+            scoreboard
+        };
+    });
     // 3) Save to cache
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["setCachedOdds"])(cacheKey, oddsJson);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["setCachedOdds"])(cacheKey, {
+        odds: oddsWithScoreboard
+    });
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
         ok: true,
         source: "live",
@@ -164,7 +199,7 @@ async function GET(req) {
         markets: marketsParam.split(","),
         ageMs: 0,
         ttlMs: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsCache$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getCacheTtlMs"])(),
-        odds: oddsJson
+        odds: oddsWithScoreboard
     });
 }
 }),
