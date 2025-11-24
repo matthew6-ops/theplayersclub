@@ -18,8 +18,8 @@ export default function OpportunitiesView({
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
 
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+
 
   // derive sports from data
   const sports = useMemo(() => {
@@ -48,9 +48,7 @@ export default function OpportunitiesView({
 
     async function refresh() {
       try {
-        const res = await fetch(`${apiUrl}/opportunities`, {
-          cache: "no-store",
-        });
+        const res = await fetch(`${API_URL}/api/opportunities`);
         if (!res.ok) return;
         const json = await res.json();
         if (!cancelled) {
@@ -75,7 +73,7 @@ export default function OpportunitiesView({
       clearInterval(refreshTimer);
       clearInterval(countdownTimer);
     };
-  }, [apiUrl]);
+  }, [API_URL]);
 
   return (
     <div className="space-y-4">

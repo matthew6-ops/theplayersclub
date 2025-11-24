@@ -1,3 +1,8 @@
+import { revalidateTag } from "next/cache";
+
+/**
+ * Your pure math helper (kept unchanged)
+ */
 export function detectArbitrageWithStakes(best: Record<string, number>) {
   const teams = Object.keys(best);
   if (teams.length !== 2) return null;
@@ -31,4 +36,63 @@ export function detectArbitrageWithStakes(best: Record<string, number>) {
     stakeCalc: stake,
     teams: [t1, t2]
   };
+}
+
+/**
+ * Fetch + process odds + compute EV & arbitrage
+ */
+export async function getOpportunities() {
+  const API_KEY = process.env.ODDS_API_KEY;
+  if (!API_KEY) {
+    console.error("Missing ODDS_API_KEY");
+    return [];
+  }
+
+  const url = `https://api.the-odds-api.com/v4/sports/basketball_nba/odds?apiKey=${API_KEY}&regions=us&markets=h2h&oddsFormat=decimal`;
+
+  const res = await fetch(url, { next: { revalidate: 10 } });
+
+  if (!res.ok) {
+    console.error("Error fetching odds:", res.status);
+    return [];
+  }
+
+  const data = await res.json();
+
+  // Process each game
+  const games = data.map((game: any) => {
+    const bookmakers = game.bookmakers ?? [];
+
+    // collect best prices
+    const best: Record<string, number> = {};
+
+    bookmakers.forEach((bm: any) => {
+      bm.markets?.forEach((m: any) => {
+        if (m.key !== "h2h") return;
+
+        m.outcomes?.forEach((o: any) => {
+          if (!best[o.name] || o.price > best[o.name]) {
+            best[o.name] = o.price;
+          }
+        });
+      });
+    });
+
+    // compute arbitrage
+    const arb = detectArbitrageWithStakes(best);
+
+    return {
+      id: game.id,
+      sport_key: game.sport_key,
+      sport_title: game.sport_title,
+      home_team: game.home_team,
+      away_team: game.away_team,
+      commence_time: game.commence_time,
+      bookmakers,
+      best,
+      arb
+    };
+  });
+
+  return games;
 }
