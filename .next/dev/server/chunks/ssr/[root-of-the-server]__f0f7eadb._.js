@@ -9,7 +9,7 @@ module.exports = mod;
 
 __turbopack_context__.n(__turbopack_context__.i("[project]/app/layout.tsx [app-rsc] (ecmascript)"));
 }),
-"[project]/app/page.tsx [app-rsc] (ecmascript)", ((__turbopack_context__) => {
+"[project]/app/odds/page.tsx [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
@@ -31,9 +31,7 @@ async function fetchResults() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/opportunities`, {
         cache: "no-store"
     });
-    if (!res.ok) {
-        return [];
-    }
+    if (!res.ok) return [];
     return res.json();
 }
 async function OpportunitiesPage() {
@@ -45,26 +43,26 @@ async function OpportunitiesPage() {
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(OpportunitiesView, {
                 initialResults: results
             }, void 0, false, {
-                fileName: "[project]/app/page.tsx",
-                lineNumber: 26,
+                fileName: "[project]/app/odds/page.tsx",
+                lineNumber: 21,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
-            fileName: "[project]/app/page.tsx",
-            lineNumber: 25,
+            fileName: "[project]/app/odds/page.tsx",
+            lineNumber: 20,
             columnNumber: 7
         }, this)
     }, void 0, false, {
-        fileName: "[project]/app/page.tsx",
-        lineNumber: 24,
+        fileName: "[project]/app/odds/page.tsx",
+        lineNumber: 19,
         columnNumber: 5
     }, this);
 }
 }),
-"[project]/app/page.tsx [app-rsc] (ecmascript, Next.js Server Component)", ((__turbopack_context__) => {
+"[project]/app/odds/page.tsx [app-rsc] (ecmascript, Next.js Server Component)", ((__turbopack_context__) => {
 
-__turbopack_context__.n(__turbopack_context__.i("[project]/app/page.tsx [app-rsc] (ecmascript)"));
+__turbopack_context__.n(__turbopack_context__.i("[project]/app/odds/page.tsx [app-rsc] (ecmascript)"));
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__f1627132._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__f0f7eadb._.js.map
