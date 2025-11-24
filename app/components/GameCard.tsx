@@ -72,18 +72,22 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
   const arb = useMemo(() => calcArbBreakdown(bestPrices, stakeUnit), [bestPrices, stakeUnit]);
   const arbPercent = arb?.profitPercent ?? null;
   const guaranteedProfit = arbPercent ? (stakeUnit * arbPercent) / 100 : null;
+  const hasArb = typeof arbPercent === "number" && arbPercent > 0;
 
   const lines = [away, home]
     .map((team) => {
       const line = bestLines[team];
       if (!line) return null;
       const stake = arb?.stakes?.[team];
+      const simProfit =
+        typeof line?.price === "number" ? stakeUnit * (line.price - 1) : null;
       return {
         team,
         bookmaker: line.bookmaker,
         price: line.price,
         american: decimalToAmerican(line.price),
         stake: stake ?? null,
+        simProfit,
       };
     })
     .filter(Boolean) as Array<{
@@ -92,7 +96,11 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
       price: number;
       american: string;
       stake: number | null;
+      simProfit: number | null;
     }>;
+
+  const hasPositiveEv = Number.isFinite(evPercent) && (evPercent ?? 0) > 0;
+  const badgeLabel = hasArb ? "ARB" : hasPositiveEv ? "+EV" : "VALUE";
 
   return (
     <article className="opportunity-card">
@@ -107,8 +115,10 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
           <p className="opportunity-card__time">{formatTime(game?.commence_time)}</p>
         </div>
         <div className="opportunity-card__badge-wrap">
-          <div className="opportunity-card__badge">ARB + EV</div>
-          <div className="opportunity-card__books">{bookCount} BOOKS</div>
+          <div className="opportunity-card__badge">{badgeLabel}</div>
+          <div className="opportunity-card__books" title="Number of sportsbooks included">
+            {bookCount} BOOKS
+          </div>
         </div>
       </header>
 
@@ -119,7 +129,7 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
         </div>
         <div>
           <span className="opportunity-card__metric-label">Arb %</span>
-          <strong>{arbPercent ? `${arbPercent.toFixed(2)}%` : "--"}</strong>
+          <strong>{hasArb ? `${arbPercent?.toFixed(2)}%` : "--"}</strong>
         </div>
         <div>
           <span className="opportunity-card__metric-label">Guaranteed profit</span>
@@ -138,6 +148,9 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
             {line.team} @ {line.american}
             <span>
               {line.bookmaker} · Stake {line.stake ? `$${line.stake.toFixed(2)}` : "--"}
+            </span>
+            <span className="line-pill__profit">
+              Sim profit {line.simProfit !== null ? `$${line.simProfit.toFixed(2)}` : "--"}
             </span>
           </div>
         ))}

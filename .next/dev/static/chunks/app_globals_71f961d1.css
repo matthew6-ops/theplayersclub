@@ -366,6 +366,12 @@ button {
   display: block;
 }
 
+.line-pill__profit {
+  color: #f7d7a0e6;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
 .empty-card {
   text-align: center;
   color: #ffffffa6;

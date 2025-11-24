@@ -41,3 +41,21 @@ https://react.dev/link/hydration-mismatch
 
 [00:04:03.604] Server  LOG      ✓ Compiled in 23ms
 [00:04:14.324] Server  LOG      ✓ Compiled in 43ms
+[00:09:28.558] Server  LOG      ✓ Compiled in 30ms
+[00:10:59.650] Server  LOG      ✓ Compiled in 15ms
+[00:11:13.961] Server  LOG      ✓ Compiled in 24ms
+[00:11:25.957] Server  LOG      ✓ Compiled in 14ms
+[00:17:22.440] Server  LOG      ✓ Compiled in 32ms
+[00:17:42.968] Server  LOG      ✓ Compiled in 16ms
+[00:20:50.172] Server  LOG      ✓ Compiled in 21ms
+[00:20:50.665] Browser ERROR   uncaughtError: ReferenceError: calculatePriorityScore is not defined
+[00:21:03.289] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:21:03.329] Server  LOG      ✓ Compiled in 56ms
+[00:21:04.138] Server  ERROR    ⨯ ReferenceError: calculatePriorityScore is not defined
+[00:21:04.171] Browser ERROR   uncaughtError: ReferenceError: calculatePriorityScore is not defined
+[00:21:05.131] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:21:05.337] Browser ERROR   uncaughtError: ReferenceError: calculatePriorityScore is not defined
+[00:21:15.599] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:21:15.625] Server  LOG      ✓ Compiled in 52ms
+[00:21:16.991] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:25:34.326] Server  LOG      ✓ Compiled in 22ms

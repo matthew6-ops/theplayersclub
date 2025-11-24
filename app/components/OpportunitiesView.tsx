@@ -16,8 +16,9 @@ export default function OpportunitiesView({
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
-  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev">("all");
-  const [stakeUnit, setStakeUnit] = useState<number>(100);
+  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev" | "value">("all");
+  const [stakeUnit, setStakeUnit] = useState<number>(50);
+  const [stakeInput, setStakeInput] = useState<string>("50");
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<string[] | null>(null);
   const bookMenuRef = useRef<HTMLDivElement | null>(null);
@@ -89,26 +90,29 @@ export default function OpportunitiesView({
 
   const preparedResults = useMemo(() => {
     const base = filteredResults ?? [];
-    const withMeta = base.map((game: any) => ({
-      ...game,
-      _evScore: calculateEvScore(game, activeBooks),
-    }));
+    const withMeta = base.map((game: any) => {
+      const evScore = calculateEvScore(game, activeBooks);
+      const valueScore = calculateValueScore(game, activeBooks);
+      return {
+        ...game,
+        _evScore: evScore,
+        _valueScore: valueScore,
+        _priorityScore: calculatePriorityScore(game, evScore, valueScore),
+      };
+    });
 
     let filtered = withMeta;
     if (filterMode === "arb") {
       filtered = filtered.filter((g) => g?.arb?.exists);
     } else if (filterMode === "ev") {
       filtered = filtered.filter((g) => Number.isFinite(g._evScore));
+    } else if (filterMode === "value") {
+      filtered = filtered.filter((g) => g._valueScore !== null);
     }
 
-    const sorted = [...filtered];
-    if (filterMode === "arb") {
-      sorted.sort(
-        (a, b) => (b?.arb?.profitPercent ?? -Infinity) - (a?.arb?.profitPercent ?? -Infinity)
-      );
-    } else if (filterMode === "ev") {
-      sorted.sort((a, b) => (b?._evScore ?? -Infinity) - (a?._evScore ?? -Infinity));
-    }
+    const sorted = [...filtered].sort(
+      (a, b) => (b?._priorityScore ?? -Infinity) - (a?._priorityScore ?? -Infinity)
+    );
 
     return sorted;
   }, [filteredResults, filterMode, activeBooks]);
@@ -173,8 +177,27 @@ export default function OpportunitiesView({
           <input
             type="number"
             className="bet-simulator__input"
-            value={stakeUnit}
-            onChange={(e) => setStakeUnit(Math.max(10, Number(e.target.value) || 0))}
+            value={stakeInput}
+            placeholder="50"
+            onChange={(e) => {
+              const next = e.target.value;
+              setStakeInput(next);
+              if (next === "") {
+                setStakeUnit(50);
+                return;
+              }
+              const parsed = Number(next);
+              if (Number.isNaN(parsed) || parsed <= 0) {
+                setStakeUnit(50);
+              } else {
+                setStakeUnit(parsed);
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.currentTarget.blur();
+              }
+            }}
           />
         </div>
       </div>
@@ -232,7 +255,7 @@ export default function OpportunitiesView({
 
       <div className="filter-chips">
         {[
-          { key: "all", label: "All edges" },
+          { key: "value", label: "All bets" },
           { key: "arb", label: "Arb only" },
           { key: "ev", label: "+EV only" },
         ].map((chip) => (
@@ -240,7 +263,7 @@ export default function OpportunitiesView({
             key={chip.key}
             type="button"
             className={`filter-chip${filterMode === chip.key ? " active" : ""}`}
-            onClick={() => setFilterMode(chip.key as "all" | "arb" | "ev")}
+            onClick={() => setFilterMode(chip.key as "arb" | "ev" | "value")}
           >
             {chip.label}
           </button>
@@ -285,4 +308,42 @@ function calculateEvScore(game: any, allowedBooks: string[]) {
   const evs = [homeEv, awayEv].filter((val) => typeof val === "number");
   if (!evs.length) return null;
   return Math.max(...(evs as number[]));
+}
+
+function calculateValueScore(game: any, allowedBooks: string[]) {
+  const home = game?.home_team;
+  const away = game?.away_team;
+  if (!home || !away) return null;
+
+  const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
+  const filteredBooks = (game?.bookmakers ?? []).filter((bm: any) => {
+    if (!allowedSet) return true;
+    return allowedSet.has(bm?.title ?? bm?.key ?? "");
+  });
+
+  const bestLines = buildBestLines(filteredBooks, [home, away]);
+  const prices = [bestLines[home]?.price, bestLines[away]?.price].filter(
+    (val): val is number => typeof val === "number"
+  );
+  if (!prices.length) return null;
+  return Math.max(...prices);
+}
+
+function calculatePriorityScore(game: any, evScore: number | null, valueScore: number | null) {
+  const arbPercent =
+    typeof game?.arb?.profitPercent === "number" ? game.arb.profitPercent : null;
+
+  if (arbPercent !== null && arbPercent > 0) {
+    return 3000 + arbPercent;
+  }
+
+  if (typeof evScore === "number" && evScore > 0) {
+    return 2000 + evScore;
+  }
+
+  if (valueScore !== null) {
+    return 1000 + valueScore;
+  }
+
+  return 0;
 }
