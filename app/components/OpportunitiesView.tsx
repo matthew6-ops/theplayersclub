@@ -21,7 +21,7 @@ export default function OpportunitiesView({
   const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev">("all");
   const [stakeUnit, setStakeUnit] = useState<number>(100);
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
-  const [selectedBooks, setSelectedBooks] = useState<string[]>([]);
+  const [selectedBooks, setSelectedBooks] = useState<string[] | null>(null);
   const bookMenuRef = useRef<HTMLDivElement | null>(null);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -61,11 +61,9 @@ export default function OpportunitiesView({
 
   useEffect(() => {
     setSelectedBooks((prev) => {
-      if (prev.length) {
-        const filtered = prev.filter((book) => bookmakerOptions.includes(book));
-        if (filtered.length) return filtered;
-      }
-      return bookmakerOptions;
+      if (prev === null) return bookmakerOptions;
+      const filtered = prev.filter((book) => bookmakerOptions.includes(book));
+      return filtered;
     });
   }, [bookmakerOptions]);
 
@@ -83,7 +81,7 @@ export default function OpportunitiesView({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [bookMenuOpen]);
 
-  const activeBooks = selectedBooks.length ? selectedBooks : bookmakerOptions;
+  const activeBooks = selectedBooks ?? bookmakerOptions;
 
   const preparedResults = useMemo(() => {
     const base = filteredResults ?? [];
@@ -210,10 +208,11 @@ export default function OpportunitiesView({
                         checked={checked}
                         onChange={() => {
                           setSelectedBooks((prev) => {
+                            const list = prev ?? [];
                             if (checked) {
-                              return prev.filter((b) => b !== book);
+                              return list.filter((b) => b !== book);
                             }
-                            return Array.from(new Set([...prev, book]));
+                            return Array.from(new Set([...list, book]));
                           });
                         }}
                       />
