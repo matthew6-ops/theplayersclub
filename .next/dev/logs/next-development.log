@@ -626,3 +626,8 @@ Module not found: Can't resolve './globals.css'
   4 | export const metadata = {
 
 https://nextjs.org/docs/messages/module-not-found
+[01:19:08.718] Server  LOG      ✓ Compiled in 270ms
+[00:11:17.327] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:39.340] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:41.926] Server  ERROR   API error fetching opportunities: 404
+[00:17:21.885] Server  LOG      ✓ Compiled in 23ms
