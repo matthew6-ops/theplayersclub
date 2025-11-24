@@ -56,87 +56,183 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 "use client";
 ;
+// Return best price for each outcome across all books
+function getBestPrices(bookmakers) {
+    const best = {};
+    bookmakers.forEach((bm)=>{
+        bm.markets?.forEach((m)=>{
+            m.outcomes?.forEach((o)=>{
+                if (!best[o.name] || o.price > best[o.name]) {
+                    best[o.name] = o.price;
+                }
+            });
+        });
+    });
+    return best;
+}
+// Detect arbitrage between the two sides
+function detectArbitrage(best) {
+    const teams = Object.keys(best);
+    if (teams.length !== 2) return null;
+    const a = best[teams[0]];
+    const b = best[teams[1]];
+    const impliedA = 1 / a;
+    const impliedB = 1 / b;
+    if (impliedA + impliedB < 1) {
+        return {
+            exists: true,
+            profit: (1 - (impliedA + impliedB)) * 100
+        };
+    }
+    return {
+        exists: false
+    };
+}
 function OddsList({ data }) {
-    if (!data || !data.odds) return null;
+    const games = data?.odds || [];
+    if (!games.length) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+        children: "No odds available."
+    }, void 0, false, {
+        fileName: "[project]/app/components/OddsList.tsx",
+        lineNumber: 48,
+        columnNumber: 29
+    }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "mt-6 space-y-6",
-        children: data.odds.map((game)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "border border-neutral-700 p-4 rounded-lg bg-neutral-900",
+        className: "space-y-8",
+        children: games.map((game)=>{
+            const home = game.home_team;
+            const away = game.away_team;
+            const best = getBestPrices(game.bookmakers);
+            const arb = detectArbitrage(best);
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "p-4 border border-neutral-600 rounded",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "text-lg font-semibold mb-2",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                        className: "text-lg font-bold mb-2",
                         children: [
-                            game.home_team,
-                            " vs ",
-                            game.away_team
+                            away,
+                            " @ ",
+                            home
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OddsList.tsx",
-                        lineNumber: 17,
-                        columnNumber: 11
+                        lineNumber: 61,
+                        columnNumber: 13
                     }, this),
-                    game.bookmakers.map((book)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-3",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "font-semibold text-neutral-400",
-                                    children: book.title
-                                }, void 0, false, {
+                    arb?.exists && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "p-2 mb-3 bg-green-700 text-white font-bold rounded",
+                        children: [
+                            "Arbitrage Opportunity Detected (+",
+                            arb.profit.toFixed(2),
+                            "% Profit)"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OddsList.tsx",
+                        lineNumber: 67,
+                        columnNumber: 15
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                        className: "w-full text-sm border-collapse",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                    className: "border-b border-neutral-700 text-left",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                            className: "py-2",
+                                            children: "Bookmaker"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/OddsList.tsx",
+                                            lineNumber: 76,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                            className: "py-2",
+                                            children: away
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/OddsList.tsx",
+                                            lineNumber: 77,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                            className: "py-2",
+                                            children: home
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/OddsList.tsx",
+                                            lineNumber: 78,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/OddsList.tsx",
-                                    lineNumber: 23,
-                                    columnNumber: 15
-                                }, this),
-                                book.markets.map((market)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "ml-4 mt-2 text-sm text-neutral-300",
+                                    lineNumber: 75,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OddsList.tsx",
+                                lineNumber: 74,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                children: game.bookmakers.map((bm)=>{
+                                    const h2h = bm.markets.find((m)=>m.key === "h2h");
+                                    const awayOutcome = h2h?.outcomes?.find((o)=>o.name === away);
+                                    const homeOutcome = h2h?.outcomes?.find((o)=>o.name === home);
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                        className: "border-b border-neutral-800",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "uppercase font-bold",
-                                                children: market.key
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-2",
+                                                children: bm.title
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OddsList.tsx",
-                                                lineNumber: 32,
-                                                columnNumber: 19
+                                                lineNumber: 90,
+                                                columnNumber: 23
                                             }, this),
-                                            market.outcomes.map((o)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "ml-2",
-                                                    children: [
-                                                        o.name,
-                                                        ": ",
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "font-mono",
-                                                            children: o.price
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/components/OddsList.tsx",
-                                                            lineNumber: 36,
-                                                            columnNumber: 33
-                                                        }, this)
-                                                    ]
-                                                }, o.name, true, {
-                                                    fileName: "[project]/app/components/OddsList.tsx",
-                                                    lineNumber: 35,
-                                                    columnNumber: 21
-                                                }, this))
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: awayOutcome?.price === best[away] ? "text-green-400 font-bold" : "",
+                                                children: awayOutcome?.price ?? "-"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/OddsList.tsx",
+                                                lineNumber: 93,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: homeOutcome?.price === best[home] ? "text-green-400 font-bold" : "",
+                                                children: homeOutcome?.price ?? "-"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/OddsList.tsx",
+                                                lineNumber: 104,
+                                                columnNumber: 23
+                                            }, this)
                                         ]
-                                    }, market.key, true, {
+                                    }, bm.key, true, {
                                         fileName: "[project]/app/components/OddsList.tsx",
-                                        lineNumber: 28,
-                                        columnNumber: 17
-                                    }, this))
-                            ]
-                        }, book.key, true, {
-                            fileName: "[project]/app/components/OddsList.tsx",
-                            lineNumber: 22,
-                            columnNumber: 13
-                        }, this))
+                                        lineNumber: 89,
+                                        columnNumber: 21
+                                    }, this);
+                                })
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OddsList.tsx",
+                                lineNumber: 82,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OddsList.tsx",
+                        lineNumber: 73,
+                        columnNumber: 13
+                    }, this)
                 ]
             }, game.id, true, {
                 fileName: "[project]/app/components/OddsList.tsx",
-                lineNumber: 13,
-                columnNumber: 9
-            }, this))
+                lineNumber: 60,
+                columnNumber: 11
+            }, this);
+        })
     }, void 0, false, {
         fileName: "[project]/app/components/OddsList.tsx",
-        lineNumber: 11,
+        lineNumber: 51,
         columnNumber: 5
     }, this);
 }
