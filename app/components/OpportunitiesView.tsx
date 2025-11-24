@@ -16,7 +16,7 @@ export default function OpportunitiesView({
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
-  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev" | "value">("all");
+  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev" | "value">("value");
   const [stakeUnit, setStakeUnit] = useState<number>(50);
   const [stakeInput, setStakeInput] = useState<string>("50");
   const [bookMenuOpen, setBookMenuOpen] = useState(false);

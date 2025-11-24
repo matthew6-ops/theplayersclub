@@ -134,7 +134,10 @@ __turbopack_context__.s([
     ()=>GameCard
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/oddsMath.ts [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
@@ -148,9 +151,11 @@ const formatStartTime = (iso)=>new Date(iso).toLocaleString(undefined, {
         minute: "2-digit"
     });
 function GameCard({ game, stakeUnit, allowedBooks }) {
+    _s();
     const home = game.home_team;
     const away = game.away_team;
     const allowedSet = allowedBooks.length ? new Set(allowedBooks) : null;
+    const [showAllBooks, setShowAllBooks] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const filteredBooks = (game.bookmakers ?? []).filter((bm)=>{
         if (!allowedSet) return true;
         const label = bm.title ?? bm.key ?? "";
@@ -203,6 +208,17 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
         };
     }).filter((line)=>Boolean(line));
     const bookCount = filteredBooks.length || game.bookmakers?.length || 0;
+    const bookBreakdowns = filteredBooks.map((bm)=>{
+        const market = bm.markets?.find((m)=>m.key === "h2h");
+        return {
+            title: bm.title ?? bm.key ?? "Sportsbook",
+            outcomes: market?.outcomes?.map((outcome)=>({
+                    team: outcome.name,
+                    decimal: outcome.price,
+                    american: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["decimalToAmerican"])(outcome.price ?? 0)
+                })) ?? []
+        };
+    });
     const badgeLabel = hasArb ? "ARB + EV" : hasPositiveEv ? "+EV" : "VALUE";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
         className: "opportunity-card",
@@ -217,7 +233,7 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: (game.sport_title ?? game.sport_key).toUpperCase()
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 134,
+                                lineNumber: 149,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -228,7 +244,7 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 137,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -236,13 +252,13 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: formatStartTime(game.commence_time)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 140,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 133,
+                        lineNumber: 148,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -253,7 +269,7 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: badgeLabel
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 143,
+                                lineNumber: 158,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -263,26 +279,26 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                     " ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                         fileName: "[project]/app/components/GameCard.tsx",
-                                        lineNumber: 145,
+                                        lineNumber: 160,
                                         columnNumber: 25
                                     }, this),
                                     "BOOKS"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 144,
+                                lineNumber: 159,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 142,
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 132,
+                lineNumber: 147,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -295,7 +311,7 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: "EV %"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 153,
+                                lineNumber: 168,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
@@ -305,13 +321,13 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: typeof evPercent === "number" ? `${evPercent.toFixed(2)}%` : "n/a"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 154,
+                                lineNumber: 169,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 152,
+                        lineNumber: 167,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -321,20 +337,20 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: "Arb %"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 159,
+                                lineNumber: 174,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                 children: hasArb ? `${arbPercent?.toFixed(2)}%` : "n/a"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 160,
+                                lineNumber: 175,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 158,
+                        lineNumber: 173,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -344,14 +360,14 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: "Guaranteed profit"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 163,
+                                lineNumber: 178,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                 children: hasArb && guaranteedProfit ? formatMoney(guaranteedProfit) : "n/a"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 164,
+                                lineNumber: 179,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -362,13 +378,13 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 167,
+                                lineNumber: 182,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 162,
+                        lineNumber: 177,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -378,26 +394,26 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: "Stake"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 172,
+                                lineNumber: 187,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                 children: formatMoney(stakeUnit)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 173,
+                                lineNumber: 188,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 171,
+                        lineNumber: 186,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 151,
+                lineNumber: 166,
                 columnNumber: 7
             }, this),
             hasArb && stakeEntries.length === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -411,18 +427,18 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 children: formatMoney(stake)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 182,
+                                lineNumber: 197,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, team, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 180,
+                        lineNumber: 195,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 178,
+                lineNumber: 193,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -442,7 +458,7 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 192,
+                                lineNumber: 207,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -453,35 +469,155 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 196,
+                                lineNumber: 211,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, line.team, true, {
                         fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 190,
+                        lineNumber: 205,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 188,
+                lineNumber: 203,
                 columnNumber: 7
+            }, this),
+            bookBreakdowns.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "space-y-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        className: "text-xs uppercase tracking-[0.3em] text-white/50 hover:text-white transition",
+                        onClick: ()=>setShowAllBooks((prev)=>!prev),
+                        children: showAllBooks ? "Hide full board" : "View full board"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/GameCard.tsx",
+                        lineNumber: 220,
+                        columnNumber: 11
+                    }, this),
+                    showAllBooks && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "overflow-x-auto rounded-3xl border border-white/10 bg-[#130c1f]",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                            className: "min-w-full text-sm text-white/70",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                        className: "text-xs uppercase tracking-[0.3em] text-white/40",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                className: "px-4 py-3 text-left",
+                                                children: "Sportsbook"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/GameCard.tsx",
+                                                lineNumber: 232,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                className: "px-4 py-3 text-left",
+                                                children: away
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/GameCard.tsx",
+                                                lineNumber: 233,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                className: "px-4 py-3 text-left",
+                                                children: home
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/GameCard.tsx",
+                                                lineNumber: 234,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/GameCard.tsx",
+                                        lineNumber: 231,
+                                        columnNumber: 19
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/GameCard.tsx",
+                                    lineNumber: 230,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                    children: bookBreakdowns.map((book)=>{
+                                        const awayLine = book.outcomes.find((o)=>o.team === away);
+                                        const homeLine = book.outcomes.find((o)=>o.team === home);
+                                        const awayBest = bestLines[away]?.price === awayLine?.decimal;
+                                        const homeBest = bestLines[home]?.price === homeLine?.decimal;
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                            className: "border-t border-white/5",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                    className: "px-4 py-3 font-semibold",
+                                                    children: book.title
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/GameCard.tsx",
+                                                    lineNumber: 245,
+                                                    columnNumber: 25
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                    className: `px-4 py-3 ${awayBest ? "text-amber-200 font-semibold" : ""}`,
+                                                    children: awayLine ? `${awayLine.american} (${awayLine.decimal.toFixed(2)})` : "n/a"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/GameCard.tsx",
+                                                    lineNumber: 246,
+                                                    columnNumber: 25
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                    className: `px-4 py-3 ${homeBest ? "text-amber-200 font-semibold" : ""}`,
+                                                    children: homeLine ? `${homeLine.american} (${homeLine.decimal.toFixed(2)})` : "n/a"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/GameCard.tsx",
+                                                    lineNumber: 255,
+                                                    columnNumber: 25
+                                                }, this)
+                                            ]
+                                        }, book.title, true, {
+                                            fileName: "[project]/app/components/GameCard.tsx",
+                                            lineNumber: 244,
+                                            columnNumber: 23
+                                        }, this);
+                                    })
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/GameCard.tsx",
+                                    lineNumber: 237,
+                                    columnNumber: 17
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/GameCard.tsx",
+                            lineNumber: 229,
+                            columnNumber: 15
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/GameCard.tsx",
+                        lineNumber: 228,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/GameCard.tsx",
+                lineNumber: 219,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                 className: "text-xs text-white/50",
                 children: statusCopy
             }, void 0, false, {
                 fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 203,
+                lineNumber: 274,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/GameCard.tsx",
-        lineNumber: 131,
+        lineNumber: 146,
         columnNumber: 5
     }, this);
 }
+_s(GameCard, "EGY8GzOd/MDynIY1aXNSJVIqRM8=");
 _c = GameCard;
 var _c;
 __turbopack_context__.k.register(_c, "GameCard");
@@ -552,7 +688,7 @@ function OpportunitiesView({ initialResults }) {
     const [lastUpdated, setLastUpdated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [secondsToRefresh, setSecondsToRefresh] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(15);
     const [activeSport, setActiveSport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("all");
-    const [filterMode, setFilterMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("all");
+    const [filterMode, setFilterMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("value");
     const [stakeUnit, setStakeUnit] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(50);
     const [stakeInput, setStakeInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("50");
     const [bookMenuOpen, setBookMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -1036,7 +1172,7 @@ function OpportunitiesView({ initialResults }) {
         columnNumber: 5
     }, this);
 }
-_s(OpportunitiesView, "GYwEhtrhrokhnpxRK847eID6neY=");
+_s(OpportunitiesView, "hqzUUjPXLxeBnwbAAIMIVQ48g/o=");
 _c = OpportunitiesView;
 function calculateEvScore(game, allowedBooks) {
     const home = game?.home_team;

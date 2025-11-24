@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import {
   buildBestLines,
   calcArbBreakdown,
@@ -54,6 +55,7 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
   const home = game.home_team;
   const away = game.away_team;
   const allowedSet = allowedBooks.length ? new Set(allowedBooks) : null;
+  const [showAllBooks, setShowAllBooks] = useState(false);
 
   const filteredBooks = (game.bookmakers ?? []).filter((bm) => {
     if (!allowedSet) return true;
@@ -124,6 +126,19 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
     .filter((line): line is NonNullable<typeof line> => Boolean(line));
 
   const bookCount = filteredBooks.length || game.bookmakers?.length || 0;
+
+  const bookBreakdowns = filteredBooks.map((bm) => {
+    const market = bm.markets?.find((m) => m.key === "h2h");
+    return {
+      title: bm.title ?? bm.key ?? "Sportsbook",
+      outcomes:
+        market?.outcomes?.map((outcome) => ({
+          team: outcome.name,
+          decimal: outcome.price,
+          american: decimalToAmerican(outcome.price ?? 0)
+        })) ?? []
+    };
+  });
 
   const badgeLabel = hasArb ? "ARB + EV" : hasPositiveEv ? "+EV" : "VALUE";
 
@@ -199,6 +214,62 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
           </div>
         ))}
       </section>
+
+      {bookBreakdowns.length > 0 && (
+        <section className="space-y-2">
+          <button
+            type="button"
+            className="text-xs uppercase tracking-[0.3em] text-white/50 hover:text-white transition"
+            onClick={() => setShowAllBooks((prev) => !prev)}
+          >
+            {showAllBooks ? "Hide full board" : "View full board"}
+          </button>
+          {showAllBooks && (
+            <div className="overflow-x-auto rounded-3xl border border-white/10 bg-[#130c1f]">
+              <table className="min-w-full text-sm text-white/70">
+                <thead>
+                  <tr className="text-xs uppercase tracking-[0.3em] text-white/40">
+                    <th className="px-4 py-3 text-left">Sportsbook</th>
+                    <th className="px-4 py-3 text-left">{away}</th>
+                    <th className="px-4 py-3 text-left">{home}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookBreakdowns.map((book) => {
+                    const awayLine = book.outcomes.find((o) => o.team === away);
+                    const homeLine = book.outcomes.find((o) => o.team === home);
+                    const awayBest = bestLines[away]?.price === awayLine?.decimal;
+                    const homeBest = bestLines[home]?.price === homeLine?.decimal;
+                    return (
+                      <tr key={book.title} className="border-t border-white/5">
+                        <td className="px-4 py-3 font-semibold">{book.title}</td>
+                        <td
+                          className={`px-4 py-3 ${
+                            awayBest ? "text-amber-200 font-semibold" : ""
+                          }`}
+                        >
+                          {awayLine
+                            ? `${awayLine.american} (${awayLine.decimal.toFixed(2)})`
+                            : "n/a"}
+                        </td>
+                        <td
+                          className={`px-4 py-3 ${
+                            homeBest ? "text-amber-200 font-semibold" : ""
+                          }`}
+                        >
+                          {homeLine
+                            ? `${homeLine.american} (${homeLine.decimal.toFixed(2)})`
+                            : "n/a"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      )}
 
       <p className="text-xs text-white/50">{statusCopy}</p>
     </article>
