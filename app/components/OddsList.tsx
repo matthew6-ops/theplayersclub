@@ -4,20 +4,18 @@ type OddsListProps = {
   data: any;
 };
 
-// Convert decimal odds → American (+150 / -120 etc.)
+// Convert decimal odds → American
 function decimalToAmerican(decimal: number | null | undefined): string {
   if (!decimal || decimal <= 1) return "-";
 
   if (decimal >= 2) {
-    // Plus money
     return `+${Math.round((decimal - 1) * 100)}`;
   } else {
-    // Minus money
     return `${Math.round(-100 / (decimal - 1))}`;
   }
 }
 
-// Best price for each team
+// Best price for each team across all books
 function getBestPrices(bookmakers: any[]): Record<string, number> {
   const best: Record<string, number> = {};
 
@@ -36,7 +34,7 @@ function getBestPrices(bookmakers: any[]): Record<string, number> {
   return best;
 }
 
-// Fair probabilities from best prices (remove vig)
+// Fair probabilities (remove vig)
 function getFairProbabilities(best: Record<string, number>): Record<string, number> {
   const teams = Object.keys(best);
   if (teams.length !== 2) return {};
@@ -51,13 +49,12 @@ function getFairProbabilities(best: Record<string, number>): Record<string, numb
   });
 
   const fair: Record<string, number> = {};
-  teams.forEach((team) => {
-    fair[team] = implied[team] / sum;
-  });
+  teams.forEach((team) => (fair[team] = implied[team] / sum));
 
   return fair;
 }
 
+// Arbitrage result type
 type ArbResult =
   | { exists: false }
   | {
@@ -67,11 +64,11 @@ type ArbResult =
       priceA: number;
       priceB: number;
       profitPercent: number;
-      stakeA: number; // % of bankroll on team A
-      stakeB: number; // % of bankroll on team B
+      stakeA: number;
+      stakeB: number;
     };
 
-// Simple two-way arbitrage check using best prices
+// Two-way arbitrage checker
 function detectArbitrage(best: Record<string, number>): ArbResult {
   const teams = Object.keys(best);
   if (teams.length !== 2) return { exists: false };
@@ -84,16 +81,14 @@ function detectArbitrage(best: Record<string, number>): ArbResult {
   const invB = 1 / priceB;
   const sum = invA + invB;
 
-  if (sum >= 1) {
-    return { exists: false };
-  }
+  if (sum >= 1) return { exists: false };
 
-  // Use a $100 notional bankroll for stake split
   const bankroll = 100;
+
   const stakeA = (bankroll * priceB) / (priceA + priceB);
   const stakeB = (bankroll * priceA) / (priceA + priceB);
 
-  const payout = stakeA * priceA; // same as stakeB * priceB
+  const payout = stakeA * priceA;
   const profit = payout - bankroll;
   const profitPercent = (profit / bankroll) * 100;
 
@@ -109,9 +104,8 @@ function detectArbitrage(best: Record<string, number>): ArbResult {
   };
 }
 
-// EV for a $1 bet given fair probability & decimal odds
+// EV calculator
 function calcEvPercent(fairProb: number, decimalOdds: number): number {
-  // EV = p * (odds - 1) - (1 - p)
   const ev = fairProb * (decimalOdds - 1) - (1 - fairProb);
   return ev * 100;
 }
@@ -137,20 +131,16 @@ export default function OddsList({ data }: OddsListProps) {
               {away} @ {home}
             </h3>
 
-            {/* Arbitrage banner */}
+            {/* Arbitrage Banner */}
             {arb.exists && (
               <div className="p-3 mb-4 rounded-md bg-emerald-900/70 text-emerald-50 text-sm">
                 <div className="font-semibold">
                   Arbitrage Opportunity: +{arb.profitPercent.toFixed(2)}% guaranteed
                 </div>
-                <div className="mt-1 text-xs text-emerald-100/80">
-                  Example with $100 total:
-                  <br />
-                  • Bet ${arb.stakeA.toFixed(2)} on <span className="font-semibold">{arb.teamA}</span> at{" "}
-                  {arb.priceA.toFixed(2)} (dec)
-                  <br />
-                  • Bet ${arb.stakeB.toFixed(2)} on <span className="font-semibold">{arb.teamB}</span> at{" "}
-                  {arb.priceB.toFixed(2)} (dec)
+                <div className="mt-1 text-xs text-emerald-200/80">
+                  Example using $100:
+                  <br />• Bet ${arb.stakeA.toFixed(2)} on <b>{arb.teamA}</b> @ {arb.priceA.toFixed(2)}
+                  <br />• Bet ${arb.stakeB.toFixed(2)} on <b>{arb.teamB}</b> @ {arb.priceB.toFixed(2)}
                 </div>
               </div>
             )}
@@ -181,6 +171,7 @@ export default function OddsList({ data }: OddsListProps) {
                     awayOutcome && awayFairProb
                       ? calcEvPercent(awayFairProb, awayOutcome.price)
                       : null;
+
                   const homeEv =
                     homeOutcome && homeFairProb
                       ? calcEvPercent(homeFairProb, homeOutcome.price)
@@ -188,27 +179,28 @@ export default function OddsList({ data }: OddsListProps) {
 
                   const awayIsBest = !!awayOutcome && awayOutcome.price === awayBest;
                   const homeIsBest = !!homeOutcome && homeOutcome.price === homeBest;
+
                   const awayIsPlusEv = awayEv !== null && awayEv > 0;
                   const homeIsPlusEv = homeEv !== null && homeEv > 0;
 
                   return (
                     <tr key={bm.key} className="border-b border-neutral-800">
-                      <td className="py-2 pr-2 align-top">{bm.title}</td>
+                      <td className="py-2 pr-2">{bm.title}</td>
 
-                      {/* Away cell */}
+                      {/* Away Price (+EV + Best Line Highlighting) */}
                       <td
                         className={
-                          "py-2 pr-2 align-top" +
+                          "py-2 pr-2" +
                           (awayIsBest ? " text-green-400 font-bold" : "") +
                           (awayIsPlusEv ? " bg-emerald-900/30" : "")
                         }
                       >
                         {awayOutcome ? (
-                          <div className="flex flex-col gap-0.5">
+                          <div className="flex flex-col">
                             <span>{decimalToAmerican(awayOutcome.price)}</span>
-                            {awayIsPlusEv && awayEv !== null && (
+                            {awayIsPlusEv && (
                               <span className="text-xs text-emerald-300">
-                                +{awayEv.toFixed(1)}% EV
+                                +{awayEv!.toFixed(1)}% EV
                               </span>
                             )}
                           </div>
@@ -217,20 +209,20 @@ export default function OddsList({ data }: OddsListProps) {
                         )}
                       </td>
 
-                      {/* Home cell */}
+                      {/* Home Price */}
                       <td
                         className={
-                          "py-2 pr-2 align-top" +
+                          "py-2 pr-2" +
                           (homeIsBest ? " text-green-400 font-bold" : "") +
                           (homeIsPlusEv ? " bg-emerald-900/30" : "")
                         }
                       >
                         {homeOutcome ? (
-                          <div className="flex flex-col gap-0.5">
+                          <div className="flex flex-col">
                             <span>{decimalToAmerican(homeOutcome.price)}</span>
-                            {homeIsPlusEv && homeEv !== null && (
+                            {homeIsPlusEv && (
                               <span className="text-xs text-emerald-300">
-                                +{homeEv.toFixed(1)}% EV
+                                +{homeEv!.toFixed(1)}% EV
                               </span>
                             )}
                           </div>
