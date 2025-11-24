@@ -9,7 +9,7 @@ export default function OddsList({ results, data }: OddsListProps) {
   const games = results ?? data?.odds ?? [];
 
   return (
-    <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <div className="opps-grid">
       {games.map((game: any, idx: number) => (
         <GameCard
           key={

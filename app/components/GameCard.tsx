@@ -98,6 +98,7 @@ export default function GameCard({ game }: GameCardProps) {
   const home = game?.home_team ?? "Home";
   const away = game?.away_team ?? "Away";
   const bookmakers = game?.bookmakers ?? [];
+  const bookCount = bookmakers.length;
 
   const bestPrices = useMemo(() => {
     const best: Record<string, number> = {};
@@ -148,67 +149,48 @@ export default function GameCard({ game }: GameCardProps) {
     }>;
 
   return (
-    <article className="rounded-[26px] border border-white/8 bg-gradient-to-br from-[#1c1a24]/95 via-[#0d0c13]/95 to-[#050307]/95 p-5 text-sm shadow-[0_20px_45px_rgba(5,3,7,0.6)]">
-      <header className="flex items-start justify-between gap-3">
+    <article className="opportunity-card">
+      <header style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
         <div>
-          <p className="text-[11px] uppercase tracking-[0.35em] text-white/45">
-            {game?.sport_title?.toUpperCase() ?? game?.sport_key ?? "Matchup"} · H2H
-          </p>
-          <h3 className="mt-2 text-lg font-semibold text-white">
+          <small style={{ color: "rgba(255,255,255,0.45)", letterSpacing: "0.3em" }}>
+            {(game?.sport_title ?? game?.sport_key ?? "Matchup").toUpperCase()}
+          </small>
+          <h3>
             {away} @ {home}
           </h3>
-          <p className="text-xs text-white/55">{formatTime(game?.commence_time)}</p>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)" }}>{formatTime(game?.commence_time)}</p>
         </div>
-        <div className="rounded-full bg-gradient-to-r from-[#ffd36f] to-[#f0922c] px-3 py-1 text-[11px] font-semibold text-black shadow-md shadow-[#fbd384]/40">
-          ARB + EV
+        <div style={{ textAlign: "right" }}>
+          <div className="opportunity-card__badge">ARB + EV</div>
+          <div style={{ fontSize: "10px", letterSpacing: "0.3em", marginTop: "10px", color: "rgba(255,255,255,0.4)" }}>
+            {bookCount} BOOKS
+          </div>
         </div>
       </header>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-white/65 sm:grid-cols-4">
+      <div className="opportunity-card__metrics">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">EV %</p>
-          <p className="mt-1 text-base font-semibold text-amber-200">
-            {Number.isFinite(evPercent) ? `${evPercent!.toFixed(2)}%` : "--"}
-          </p>
+          EV %<strong>{Number.isFinite(evPercent) ? `${evPercent!.toFixed(2)}%` : "--"}</strong>
         </div>
         <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Arb %</p>
-          <p className="mt-1 text-base font-semibold text-amber-200">
-            {arbPercent ? `${arbPercent.toFixed(2)}%` : "--"}
-          </p>
+          ARB %<strong>{arbPercent ? `${arbPercent.toFixed(2)}%` : "--"}</strong>
         </div>
         <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Guaranteed profit</p>
-          <p className="mt-1 text-base font-semibold text-white">
-            {guaranteedProfit ? `$${guaranteedProfit.toFixed(2)}` : "--"}
-          </p>
-          <p className="text-[10px] text-white/40">Simulated @ ${STAKE_UNIT}</p>
+          Guaranteed profit<strong>{guaranteedProfit ? `$${guaranteedProfit.toFixed(2)}` : "--"}</strong>
+          <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)" }}>Simulated @ ${STAKE_UNIT}</span>
         </div>
         <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Stake</p>
-          <p className="mt-1 text-base font-semibold text-white">
-            ${STAKE_UNIT.toFixed(0)}.00
-          </p>
+          Stake<strong>${STAKE_UNIT.toFixed(0)}.00</strong>
         </div>
       </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="opportunity-card__lines">
         {lines.map((line) => (
-          <div
-            key={line.team}
-            className="rounded-2xl border border-white/5 bg-white/5/0 bg-gradient-to-r from-white/[0.06] to-transparent px-4 py-3 text-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[13px] font-semibold text-white">
-                  {line.team} @ {line.american}
-                </p>
-                <p className="text-[11px] text-white/55">{line.bookmaker}</p>
-              </div>
-              <div className="text-right text-[12px] text-white/70">
-                <p>Stake {line.stake ? `$${line.stake.toFixed(2)}` : "--"}</p>
-              </div>
-            </div>
+          <div key={line.team} className="line-pill">
+            {line.team} @ {line.american}
+            <span>
+              {line.bookmaker} · Stake {line.stake ? `$${line.stake.toFixed(2)}` : "--"}
+            </span>
           </div>
         ))}
       </div>

@@ -1,72 +1,17 @@
-[00:00:02.244] Server  LOG      ✓ Ready in 1479ms
-[02:17:06.993] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:07.001] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:07.296] Browser ERROR   ./app/api/opportunities/route.ts:2:1
-Export default doesn't exist in target module
-  1 | import { NextResponse } from "next/server";
-> 2 | import getOpportunities from "@/lib/arbitrage"; // uses your existing logic
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  3 |
-  4 | export async function GET() {
-  5 |   try {
+[00:00:02.252] Server  LOG      ✓ Ready in 1502ms
+[00:00:06.556] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:06.801] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:08.262] Server  ERROR    ⨯ ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-The export default was not found in module [project]/lib/arbitrage.ts [app-route] (ecmascript).
-Did you mean to import detectArbitrageWithStakes?
-All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-[02:17:14.301] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:14.303] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:15.297] Browser ERROR   ./app/api/opportunities/route.ts:2:1
-Export default doesn't exist in target module
-  1 | import { NextResponse } from "next/server";
-> 2 | import getOpportunities from "@/lib/arbitrage"; // uses your existing logic
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  3 |
-  4 | export async function GET() {
-  5 |   try {
-
-The export default was not found in module [project]/lib/arbitrage.ts [app-route] (ecmascript).
-Did you mean to import detectArbitrageWithStakes?
-All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-[02:17:15.634] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:15.635] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:16.296] Browser ERROR   ./app/api/opportunities/route.ts:2:1
-Export default doesn't exist in target module
-  1 | import { NextResponse } from "next/server";
-> 2 | import getOpportunities from "@/lib/arbitrage"; // uses your existing logic
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  3 |
-  4 | export async function GET() {
-  5 |   try {
-
-The export default was not found in module [project]/lib/arbitrage.ts [app-route] (ecmascript).
-Did you mean to import detectArbitrageWithStakes?
-All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-[02:17:41.262] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:41.263] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:54.713] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:17:54.715] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:19:58.076] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:19:58.078] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:05.629] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:05.631] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:13.276] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:13.278] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:14.333] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:14.335] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:20:17.626] Server  LOG      ✓ Compiled in 13ms
-[00:03:17.589] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:26.708] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:34.834] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:42.463] Server  ERROR   API error fetching opportunities: 404
-[02:22:42.123] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -81,18 +26,138 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
 
-https://nextjs.org/docs/messages/module-not-found
 
+[00:00:08.382] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-[02:22:42.124] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
+the name `games` is defined multiple times
 
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
 
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:08.997] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:09.288] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:09.389] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:09.767] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:09.778] Server  ERROR    ⨯ ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -107,18 +172,114 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
 
-https://nextjs.org/docs/messages/module-not-found
 
+[00:00:10.007] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-[02:22:42.125] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
+the name `games` is defined multiple times
 
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
 
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:10.007] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:10.007] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:10.007] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/components/OddsList.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Client Component Browser]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/OddsList.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Client Component SSR]
+    ./app/components/OpportunitiesView.tsx [Server Component]
+    ./app/odds/page.tsx [Server Component]
+[00:00:10.509] Browser ERROR   uncaughtError: Error: ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
+
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -133,44 +294,18 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
 
-https://nextjs.org/docs/messages/module-not-found
 
+[00:00:10.629] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-[02:22:42.126] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.176] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -184,19 +319,17 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Client Component SSR]
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
+[00:00:10.733] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.177] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -210,19 +343,17 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Client Component SSR]
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
+[00:00:10.997] Browser ERROR   ./app/components/OddsList.tsx:11:9
+Ecmascript file had an error
+   9 |   const games = results ?? data?.odds ?? [];
+  10 |
+> 11 |   const games = results ?? [];
+     |         ^^^^^
+  12 |
+  13 |   return (
+  14 |     <div className="opps-grid">
 
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.179] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
+the name `games` is defined multiple times
 
 Import traces:
   Client Component Browser:
@@ -236,275 +367,41 @@ Import traces:
     ./app/components/OpportunitiesView.tsx [Client Component SSR]
     ./app/components/OpportunitiesView.tsx [Server Component]
     ./app/odds/page.tsx [Server Component]
+[00:00:51.098] Server  LOG      ✓ Compiled in 5ms
+[00:00:52.098] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:52.307] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div>
+                          <div className="dashboard-...">
+                            <div>
+                            <div style={{...}}>
+                              <p>
++                               11:55:15 PM
+-                               11:55:14 PM
+                              ...
+                          ...
+              ...
+            ...
 
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.184] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.193] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.194] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.195] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.196] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.199] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.200] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.201] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.202] Server  ERROR    ⨯ ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:05:38.224] Server  LOG      ✓ Compiled in 74ms
-[00:05:38.328] Browser ERROR   ./app/components/OddsList.tsx:1:1
-Module not found: Can't resolve './GameCard'
-> 1 | import GameCard from "./GameCard";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | type OddsListProps = {
-  4 |   results: any[];
-
-Import traces:
-  Client Component Browser:
-    ./app/components/OddsList.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Client Component Browser]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/components/OddsList.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Client Component SSR]
-    ./app/components/OpportunitiesView.tsx [Server Component]
-    ./app/odds/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-[02:22:46.572] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:22:46.574] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:23:01.566] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:23:01.568] Server  WARN    Could not find files for /_error in .next/build-manifest.json
-[02:23:15.500] Server  LOG      ✓ Compiled in 111ms
-[00:06:11.792] Server  ERROR   API error fetching opportunities: 404
-[00:06:18.724] Server  LOG      ✓ Compiled in 13ms
-[00:07:04.023] Server  ERROR   API error fetching opportunities: 404
-[00:07:04.686] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:07:13.023] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:11:24.356] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

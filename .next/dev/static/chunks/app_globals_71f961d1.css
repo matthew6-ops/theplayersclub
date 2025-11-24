@@ -31,4 +31,139 @@ button {
   cursor: pointer;
 }
 
+.odds-shell {
+  color: #f7f0db;
+  background: radial-gradient(circle at 15% 10%, #f3c06d40, #0000 40%), radial-gradient(circle at 90% 80%, #2f4d834d, #0000 45%), linear-gradient(135deg, #050307, #030205 60%, #090614);
+  min-height: 100vh;
+  padding: 48px 16px;
+  position: relative;
+}
+
+.odds-shell main {
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dashboard-panel {
+  background: linear-gradient(135deg, #1d1523f2, #0a070cf2);
+  border: 1px solid #ffffff14;
+  border-radius: 30px;
+  padding: 32px;
+  box-shadow: 0 30px 60px #0000008c;
+}
+
+.dashboard-panel h2 {
+  color: #fff4d8;
+  margin: 8px 0 4px;
+  font-size: 32px;
+}
+
+.dashboard-panel small {
+  color: #c7b58b;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+.sport-tabs {
+  border-bottom: 1px solid #ffffff14;
+  gap: 8px;
+  margin: 12px 0 6px;
+  padding-bottom: 12px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.sport-tab {
+  color: #f5f1e6;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  background: #14101d;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sport-tab.active {
+  color: #140b05;
+  background: linear-gradient(120deg, #fcd57a, #f3a02c);
+  box-shadow: 0 6px 18px #f3a02c59;
+}
+
+.opps-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+  display: grid;
+}
+
+.opportunity-card {
+  background: radial-gradient(circle at top, #ffffff14, #0000 65%), linear-gradient(#1b1523, #0b0811 80%);
+  border: 1px solid #ffffff14;
+  border-radius: 26px;
+  padding: 24px;
+  box-shadow: inset 0 1px #ffffff0a, 0 25px 45px #030204e6;
+}
+
+.opportunity-card h3 {
+  color: #fff7e5;
+  margin: 6px 0;
+  font-size: 20px;
+}
+
+.opportunity-card__badge {
+  color: #241200;
+  background: radial-gradient(circle at 30% 30%, #ffe8b5, #f3a620);
+  border-radius: 999px;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  box-shadow: 0 12px 25px #f2a62040;
+}
+
+.opportunity-card__metrics {
+  color: #ffffffa6;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+  font-size: 12px;
+  display: grid;
+}
+
+.opportunity-card__metrics div strong {
+  color: #fff3d6;
+  margin-top: 4px;
+  font-size: 18px;
+  display: block;
+}
+
+.opportunity-card__lines {
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  display: flex;
+}
+
+.line-pill {
+  color: #ffffffd9;
+  background: linear-gradient(#1a1521, #09060c);
+  border: 1px solid #ffffff14;
+  border-radius: 18px;
+  padding: 12px 16px;
+  font-size: 13px;
+  box-shadow: inset 0 1px #ffffff0a;
+}
+
+.line-pill span {
+  color: #ffffff8c;
+  font-size: 11px;
+  display: block;
+}
+
 /*# sourceMappingURL=app_globals_71f961d1.css.map*/

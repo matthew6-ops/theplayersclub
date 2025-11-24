@@ -76,48 +76,25 @@ export default function OpportunitiesView({
   }, [API_URL]);
 
   return (
-    <div className="space-y-5">
-      {/* Top bar */}
-      <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5/0 bg-gradient-to-br from-white/4 via-white/2 to-transparent px-5 py-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
-            Live Trading Desk
-          </p>
-          <h2 className="text-2xl font-semibold text-white">
-            Arbitrage &amp; EV Opportunities
-          </h2>
-          <p className="text-sm text-white/60">
-            Filter by sport, monitor real-time edges, and size your simulated stakes.
-          </p>
+    <div>
+      <div className="dashboard-panel">
+        <div>
+          <small>Live board</small>
+          <h2>Arbitrage Radar</h2>
+          <p>Scan every book for two-way edges and instantly size simulated stakes.</p>
         </div>
-
-        <div className="flex flex-col items-start text-xs text-white/65 sm:items-end">
-          {lastUpdated && (
-            <span className="text-sm font-medium text-amber-200">
-              Updated{" "}
-              {lastUpdated.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                minute: "2-digit",
-                second: "2-digit",
-              })}
-            </span>
-          )}
-          <span className="text-[11px] text-white/45">
-            Auto refresh in {secondsToRefresh}s
-          </span>
+        <div style={{ marginTop: "18px", fontSize: "13px", color: "rgba(255,255,255,0.65)" }}>
+          {lastUpdated && <p>Updated {lastUpdated.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })}</p>}
+          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)" }}>Auto refresh in {secondsToRefresh}s</p>
         </div>
       </div>
 
       {/* Sport tabs */}
-      <SportTabs
-        activeSport={activeSport}
-        onChange={(sport) => setActiveSport(sport)}
-        sports={sports}
-      />
+      <SportTabs activeSport={activeSport} onChange={(sport) => setActiveSport(sport)} sports={sports} />
 
       {/* Content */}
       {filteredResults.length === 0 ? (
-        <div className="mt-4 rounded-3xl border border-dashed border-white/15 bg-white/5 px-6 py-8 text-center text-sm text-white/60">
+        <div className="mt-4 rounded-3xl border border-dashed border-[#2f273d] bg-[#120f19] px-6 py-8 text-center text-sm text-white/60">
           No opportunities right now. Either the books are sharp, or your
           scraper is asleep.
         </div>
