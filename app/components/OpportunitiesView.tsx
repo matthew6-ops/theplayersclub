@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SportTabs from "./SportTabs";
 import OddsList from "./OddsList";
+import { buildBestLines, calcEvPercent, computeFairProbabilities } from "@/lib/oddsMath";
 
 type OpportunitiesViewProps = {
   initialResults: any[];
@@ -17,6 +18,11 @@ export default function OpportunitiesView({
   );
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
+  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev">("all");
+  const [stakeUnit, setStakeUnit] = useState<number>(100);
+  const [bookMenuOpen, setBookMenuOpen] = useState(false);
+  const [selectedBooks, setSelectedBooks] = useState<string[]>([]);
+  const bookMenuRef = useRef<HTMLDivElement | null>(null);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -41,6 +47,69 @@ export default function OpportunitiesView({
       (g: any) => g.sport_key === activeSport
     );
   }, [results, activeSport]);
+
+  const bookmakerOptions = useMemo(() => {
+    const set = new Set<string>();
+    (results ?? []).forEach((game: any) => {
+      (game?.bookmakers ?? []).forEach((bm: any) => {
+        const label = bm?.title ?? bm?.key;
+        if (label) set.add(label);
+      });
+    });
+    return Array.from(set).sort();
+  }, [results]);
+
+  useEffect(() => {
+    setSelectedBooks((prev) => {
+      if (prev.length) {
+        const filtered = prev.filter((book) => bookmakerOptions.includes(book));
+        if (filtered.length) return filtered;
+      }
+      return bookmakerOptions;
+    });
+  }, [bookmakerOptions]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (!bookMenuRef.current) return;
+      if (!(e.target instanceof Node)) return;
+      if (!bookMenuRef.current.contains(e.target)) {
+        setBookMenuOpen(false);
+      }
+    }
+    if (bookMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [bookMenuOpen]);
+
+  const activeBooks = selectedBooks.length ? selectedBooks : bookmakerOptions;
+
+  const preparedResults = useMemo(() => {
+    const base = filteredResults ?? [];
+    const withMeta = base.map((game: any) => ({
+      ...game,
+      _evScore: calculateEvScore(game, activeBooks),
+    }));
+
+    let filtered = withMeta;
+    if (filterMode === "arb") {
+      filtered = filtered.filter((g) => g?.arb?.exists);
+    } else if (filterMode === "ev") {
+      filtered = filtered.filter((g) => Number.isFinite(g._evScore));
+    }
+
+    const sorted = [...filtered];
+    if (filterMode === "arb") {
+      sorted.sort(
+        (a, b) => (b?.arb?.profitPercent ?? -Infinity) - (a?.arb?.profitPercent ?? -Infinity)
+      );
+    } else if (filterMode === "ev") {
+      sorted.sort((a, b) => (b?._evScore ?? -Infinity) - (a?._evScore ?? -Infinity));
+    }
+
+    return sorted;
+  }, [filteredResults, filterMode, activeBooks]);
 
   // auto-refresh loop
   useEffect(() => {
@@ -76,31 +145,141 @@ export default function OpportunitiesView({
   }, [API_URL]);
 
   return (
-    <div>
+    <div className="opportunities-view">
       <div className="dashboard-panel">
         <div>
           <small>Live board</small>
           <h2>Arbitrage Radar</h2>
           <p>Scan every book for two-way edges and instantly size simulated stakes.</p>
         </div>
-        <div style={{ marginTop: "18px", fontSize: "13px", color: "rgba(255,255,255,0.65)" }}>
-          {lastUpdated && <p>Updated {lastUpdated.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })}</p>}
-          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)" }}>Auto refresh in {secondsToRefresh}s</p>
+        <div className="dashboard-panel__meta">
+          {lastUpdated && (
+            <p>
+              Updated {lastUpdated.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })}
+            </p>
+          )}
+          <p className="dashboard-panel__refresh">Auto refresh in {secondsToRefresh}s</p>
         </div>
       </div>
 
-      {/* Sport tabs */}
+      <div className="bet-simulator">
+        <div>
+          <p className="bet-simulator__label">Bet simulator</p>
+          <p className="bet-simulator__hint">Enter a bankroll to preview recommended stakes per play.</p>
+        </div>
+        <div className="bet-simulator__controls">
+          <input
+            type="number"
+            className="bet-simulator__input"
+            value={stakeUnit}
+            onChange={(e) => setStakeUnit(Math.max(10, Number(e.target.value) || 0))}
+          />
+        </div>
+      </div>
+
       <SportTabs activeSport={activeSport} onChange={(sport) => setActiveSport(sport)} sports={sports} />
 
+      {bookmakerOptions.length > 0 && (
+        <div className="book-filter" ref={bookMenuRef}>
+          <button type="button" className="book-filter__button" onClick={() => setBookMenuOpen((o) => !o)}>
+            Sportsbooks ({activeBooks.length})
+          </button>
+          {bookMenuOpen && (
+            <div className="book-filter__menu">
+              <button
+                type="button"
+                className="book-filter__menu-action"
+                onClick={() => setSelectedBooks(bookmakerOptions)}
+              >
+                Select all
+              </button>
+              <button
+                type="button"
+                className="book-filter__menu-action"
+                onClick={() => setSelectedBooks([])}
+              >
+                Clear all
+              </button>
+              <div className="book-filter__options">
+                {bookmakerOptions.map((book) => {
+                  const checked = activeBooks.includes(book);
+                  return (
+                    <label key={book}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => {
+                          setSelectedBooks((prev) => {
+                            if (checked) {
+                              return prev.filter((b) => b !== book);
+                            }
+                            return Array.from(new Set([...prev, book]));
+                          });
+                        }}
+                      />
+                      <span>{book}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="filter-chips">
+        {[
+          { key: "all", label: "All edges" },
+          { key: "arb", label: "Arb only" },
+          { key: "ev", label: "+EV only" },
+        ].map((chip) => (
+          <button
+            key={chip.key}
+            type="button"
+            className={`filter-chip${filterMode === chip.key ? " active" : ""}`}
+            onClick={() => setFilterMode(chip.key as "all" | "arb" | "ev")}
+          >
+            {chip.label}
+          </button>
+        ))}
+      </div>
+
       {/* Content */}
-      {filteredResults.length === 0 ? (
-        <div className="mt-4 rounded-3xl border border-dashed border-[#2f273d] bg-[#120f19] px-6 py-8 text-center text-sm text-white/60">
+      {preparedResults.length === 0 ? (
+        <div className="empty-card">
           No opportunities right now. Either the books are sharp, or your
           scraper is asleep.
         </div>
       ) : (
-        <OddsList results={filteredResults} />
+        <OddsList results={preparedResults} stakeUnit={stakeUnit} allowedBooks={activeBooks} />
       )}
     </div>
   );
+}
+
+function calculateEvScore(game: any, allowedBooks: string[]) {
+  const home = game?.home_team;
+  const away = game?.away_team;
+  if (!home || !away) return null;
+
+  const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
+  const filteredBooks = (game?.bookmakers ?? []).filter((bm: any) => {
+    if (!allowedSet) return true;
+    return allowedSet.has(bm?.title ?? bm?.key ?? "");
+  });
+
+  const bestLines = buildBestLines(filteredBooks, [home, away]);
+  const best: Record<string, number> = {};
+  [home, away].forEach((team) => {
+    const line = bestLines[team];
+    if (line?.price) best[team] = line.price;
+  });
+  if (Object.keys(best).length < 2) return null;
+
+  const fair = computeFairProbabilities(best);
+  const homeEv = calcEvPercent(fair[home], best[home]);
+  const awayEv = calcEvPercent(fair[away], best[away]);
+  const evs = [homeEv, awayEv].filter((val) => typeof val === "number");
+  if (!evs.length) return null;
+  return Math.max(...(evs as number[]));
 }

@@ -9,6 +9,7 @@ body {
   color: #f8f4eb;
   font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   letter-spacing: -0.01em;
+  line-height: 1.5;
 }
 
 * {
@@ -52,12 +53,21 @@ button {
   z-index: 1;
 }
 
+.opportunities-view {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
 .dashboard-panel {
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(135deg, rgba(29, 21, 35, 0.95), rgba(10, 7, 12, 0.95));
   padding: 32px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .dashboard-panel h2 {
@@ -66,14 +76,67 @@ button {
   color: #fff4d8;
 }
 
+.dashboard-panel p {
+  margin: 4px 0;
+}
+
 .dashboard-panel small {
   color: #c7b58b;
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
 
+.dashboard-panel__meta {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dashboard-panel__refresh {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.bet-simulator {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px;
+  background: linear-gradient(120deg, rgba(26, 20, 35, 0.9), rgba(11, 8, 15, 0.9));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bet-simulator__label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #f1c77a;
+}
+
+.bet-simulator__hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+}
+
+.bet-simulator__controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bet-simulator__input {
+  width: 110px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #100b16;
+  color: #fff;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
 .sport-tabs {
-  margin: 12px 0 6px;
+  margin: 16px 0 12px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
@@ -86,17 +149,106 @@ button {
   color: #f5f1e6;
   border: none;
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 9px 20px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease;
 }
 
 .sport-tab.active {
   background: linear-gradient(120deg, #fcd57a, #f3a02c);
   color: #140b05;
   box-shadow: 0 6px 18px rgba(243, 160, 44, 0.35);
+}
+
+.sport-tab:hover {
+  transform: scale(1.05);
+}
+
+.filter-chips {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-chip {
+  border-radius: 999px;
+  padding: 7px 18px;
+  background: #160f1c;
+  color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.filter-chip.active {
+  background: linear-gradient(120deg, #f7d17e, #f39c2d);
+  color: #1f1104;
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(243, 156, 45, 0.35);
+}
+
+.book-filter {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.book-filter__button {
+  border-radius: 16px;
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(120deg, rgba(26, 20, 35, 0.9), rgba(14, 10, 18, 0.9));
+  color: #f6ead3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.book-filter__menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #120d18;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-filter__menu-action {
+  background: none;
+  border: none;
+  color: #f1c77a;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.book-filter__options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.book-filter__options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .opps-grid {
@@ -113,12 +265,36 @@ button {
     linear-gradient(180deg, #1b1523, #0b0811 80%);
   padding: 24px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 25px 45px rgba(3, 2, 4, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .opportunity-card h3 {
   margin: 6px 0;
   font-size: 20px;
   color: #fff7e5;
+}
+
+.opportunity-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.opportunity-card__sport {
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.3em;
+}
+
+.opportunity-card__time {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+}
+
+.opportunity-card__badge-wrap {
+  text-align: right;
 }
 
 .opportunity-card__badge {
@@ -134,20 +310,45 @@ button {
   box-shadow: 0 12px 25px rgba(242, 166, 32, 0.25);
 }
 
+.opportunity-card__books {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
 .opportunity-card__metrics {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
 }
 
+
+.opportunity-card__metrics div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.opportunity-card__metric-label {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 11px;
+}
+
 .opportunity-card__metrics div strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 18px;
+  font-size: 19px;
   color: #fff3d6;
+}
+
+.opportunity-card__hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  display: block;
+  margin-top: 2px;
 }
 
 .opportunity-card__lines {
@@ -165,10 +366,21 @@ button {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  line-height: 1.4;
 }
 
 .line-pill span {
   display: block;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.55);
+}
+
+.empty-card {
+  border-radius: 28px;
+  border: 1px dashed #3a2f45;
+  background: #140f1b;
+  padding: 36px;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 }

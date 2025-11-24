@@ -405,3 +405,433 @@ https://react.dev/link/hydration-mismatch
               ...
             ...
 
+[00:01:45.205] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:11.025] Server  ERROR    ⨯ Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:03:12.001] Browser ERROR   uncaughtError: Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:03:20.931] Server  ERROR    ⨯ Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:03:22.123] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:22.998] Browser ERROR   uncaughtError: Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:06:13.893] Server  ERROR    ⨯ Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:06:14.564] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:14.564] Browser ERROR   uncaughtError: Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:06:23.480] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:25.351] Server  ERROR    ⨯ Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:06:25.508] Browser ERROR   uncaughtError: Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server". Or maybe you meant to call this function rather than return it.
+  {exists: true, profitPercent: ..., stakeCalc: function stake, teams: ...}
+                                                ^^^^^^^^^^^^^^
+[00:07:28.647] Server  LOG      ✓ Compiled in 26ms
+[00:07:30.000] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:30.997] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div>
+                          <div className="dashboard-...">
+                            <div>
+                            <div style={{...}}>
+                              <p>
++                               12:01:53 AM
+-                               12:01:52 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:08:31.151] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:31.453] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div>
+                          <div className="dashboard-...">
+                            <div>
+                            <div style={{...}}>
+                              <p>
++                               12:02:54 AM
+-                               12:02:53 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:10:04.696] Server  LOG      ✓ Compiled in 23ms
+[00:10:17.657] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:10:17.941] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:04:40 AM
+-                               12:04:39 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:10:30.686] Server  LOG      ✓ Compiled in 22ms
+[00:11:11.368] Server  LOG      ✓ Compiled in 20ms
+[00:11:22.718] Server  LOG      ✓ Compiled in 6ms
+[00:11:45.847] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:46.086] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:06:09 AM
+-                               12:06:08 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:12:28.812] Server  LOG      ✓ Compiled in 27ms
+[00:12:43.550] Server  LOG      ✓ Compiled in 27ms
+[00:13:26.606] Server  LOG      ✓ Compiled in 12ms
+[00:35:06.161] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:35:06.442] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:29:29 AM
+-                               12:29:28 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:37:43.515] Server  LOG      ✓ Compiled in 61ms
+[00:37:43.609] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:00.730] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:38:00.766] Server  LOG      ✓ Compiled in 10ms
+[00:38:01.092] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:01.112] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:01.747] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:38:01.885] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:39.948] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:40.595] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:38:40.726] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:41.898] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:42.541] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:38:42.671] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'toFixed')
+[00:38:50.885] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:38:51.248] Server  LOG      ✓ Compiled in 46ms
+[00:38:52.497] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:38:52.998] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:33:15 AM
+-                               12:33:14 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:39:08.583] Server  LOG      ✓ Compiled in 10ms
+[00:40:40.848] Server  LOG      ✓ Compiled in 23ms
+[00:40:53.419] Server  LOG      ✓ Compiled in 14ms
+[00:41:06.332] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:41:06.659] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:35:29 AM
+-                               12:35:28 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:42:32.278] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:42:32.522] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:36:55 AM
+-                               12:36:54 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:43:15.659] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:43:15.942] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:37:38 AM
+-                               12:37:37 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:43:19.020] Server  LOG      ✓ Compiled in 27ms
+[00:43:30.799] Server  LOG      ✓ Compiled in 11ms
+[00:44:23.203] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:44:23.264] Server  LOG      ✓ Compiled in 2ms
+[00:44:23.528] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="odds/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/odds" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="odds/page.tsx">
+                <SegmentTrieNode>
+                <OddsPage>
+                  <div className="odds-shell">
+                    <main>
+                      <OpportunitiesView initialResults={[...]}>
+                        <div className="opportunit...">
+                          <div className="dashboard-...">
+                            <div>
+                            <div className="dashboard-...">
+                              <p>
++                               12:38:46 AM
+-                               12:38:45 AM
+                              ...
+                          ...
+              ...
+            ...
+
+[00:44:46.300] Server  LOG      ✓ Compiled in 26ms
+[00:45:31.306] Server  LOG      ✓ Compiled in 8ms

@@ -95,7 +95,7 @@ export default function OddsFetcher({ sport }: OddsFetcherProps) {
       )}
 
       {!loading && !error && data && (
-        <OddsList results={data?.odds ?? []} />
+        <OddsList results={data?.odds ?? []} stakeUnit={100} />
       )}
     </div>
   );

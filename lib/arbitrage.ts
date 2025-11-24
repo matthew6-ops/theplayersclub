@@ -15,22 +15,32 @@ export function detectArbitrageWithStakes(best: Record<string, number>) {
 
   const profitPercent = (1 - sumImp) * 100;
 
-  function stake(total: number) {
-    const s1 = (total * imp1) / sumImp;
-    const s2 = (total * imp2) / sumImp;
-    return {
-      stake1: s1,
-      stake2: s2,
-      guaranteedProfit: total - (s1 + s2)
-    };
-  }
-
   return {
     exists: true,
     profitPercent,
-    stakeCalc: stake,
     teams: [t1, t2]
   };
+}
+
+const DEFAULT_SPORTS = [
+  "basketball_nba",
+  "americanfootball_nfl",
+  "icehockey_nhl"
+];
+
+async function fetchOddsForSport(apiKey: string, sportKey: string) {
+  const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds?apiKey=${apiKey}&regions=us&markets=h2h&oddsFormat=decimal`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 10 }
+  });
+
+  if (!res.ok) {
+    console.error("Error fetching odds:", sportKey, res.status);
+    return [];
+  }
+
+  return res.json();
 }
 
 export default async function getOpportunities() {
@@ -40,20 +50,19 @@ export default async function getOpportunities() {
     return [];
   }
 
-  const url = `https://api.the-odds-api.com/v4/sports/basketball_nba/odds?apiKey=${API_KEY}&regions=us&markets=h2h&oddsFormat=decimal`;
+  const configuredSports = process.env.ODDS_SPORTS?.split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const sportKeys = configuredSports?.length ? configuredSports : DEFAULT_SPORTS;
 
-  const res = await fetch(url, {
-    next: { revalidate: 10 }
-  });
+  const resultsBySport = await Promise.all(
+    sportKeys.map((sport) => fetchOddsForSport(API_KEY, sport))
+  );
 
-  if (!res.ok) {
-    console.error("Error fetching odds:", res.status);
-    return [];
-  }
-
-  const data = await res.json();
-
-  const games = data.map((game: any) => {
+  const games = resultsBySport
+    .flat()
+    .filter(Boolean)
+    .map((game: any) => {
     const bookmakers = game.bookmakers ?? [];
 
     const best: Record<string, number> = {};

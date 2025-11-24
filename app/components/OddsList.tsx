@@ -3,9 +3,11 @@ import GameCard from "./GameCard";
 type OddsListProps = {
   results?: any[];
   data?: { odds?: any[] } | null;
+  stakeUnit: number;
+  allowedBooks: string[];
 };
 
-export default function OddsList({ results, data }: OddsListProps) {
+export default function OddsList({ results, data, stakeUnit, allowedBooks }: OddsListProps) {
   const games = results ?? data?.odds ?? [];
 
   return (
@@ -17,6 +19,8 @@ export default function OddsList({ results, data }: OddsListProps) {
             `${game.sport_key}-${game.home_team}-${game.away_team}-${idx}`
           }
           game={game}
+          stakeUnit={stakeUnit}
+          allowedBooks={allowedBooks}
         />
       ))}
     </div>

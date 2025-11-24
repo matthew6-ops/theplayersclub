@@ -7,6 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: Inter, SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
 }
 
 * {
@@ -46,11 +47,20 @@ button {
   position: relative;
 }
 
+.opportunities-view {
+  flex-direction: column;
+  gap: 28px;
+  display: flex;
+}
+
 .dashboard-panel {
   background: linear-gradient(135deg, #1d1523f2, #0a070cf2);
   border: 1px solid #ffffff14;
   border-radius: 30px;
+  flex-direction: column;
+  gap: 18px;
   padding: 32px;
+  display: flex;
   box-shadow: 0 30px 60px #0000008c;
 }
 
@@ -60,16 +70,69 @@ button {
   font-size: 32px;
 }
 
+.dashboard-panel p {
+  margin: 4px 0;
+}
+
 .dashboard-panel small {
   color: #c7b58b;
   letter-spacing: .3em;
   text-transform: uppercase;
 }
 
+.dashboard-panel__meta {
+  color: #ffffffa6;
+  font-size: 13px;
+}
+
+.dashboard-panel__refresh {
+  color: #fff6;
+  font-size: 11px;
+}
+
+.bet-simulator {
+  background: linear-gradient(120deg, #1a1423e6, #0b080fe6);
+  border: 1px solid #ffffff14;
+  border-radius: 24px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  display: flex;
+}
+
+.bet-simulator__label {
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  color: #f1c77a;
+  font-size: 14px;
+}
+
+.bet-simulator__hint {
+  color: #fff9;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.bet-simulator__controls {
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.bet-simulator__input {
+  color: #fff;
+  background: #100b16;
+  border: 1px solid #ffffff26;
+  border-radius: 12px;
+  width: 110px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
 .sport-tabs {
   border-bottom: 1px solid #ffffff14;
   gap: 8px;
-  margin: 12px 0 6px;
+  margin: 16px 0 12px;
   padding-bottom: 12px;
   display: flex;
   overflow-x: auto;
@@ -82,15 +145,103 @@ button {
   background: #14101d;
   border: none;
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 9px 20px;
   font-size: 11px;
   font-weight: 600;
+  transition: transform .15s, box-shadow .15s, background .15s;
 }
 
 .sport-tab.active {
   color: #140b05;
   background: linear-gradient(120deg, #fcd57a, #f3a02c);
   box-shadow: 0 6px 18px #f3a02c59;
+}
+
+.sport-tab:hover {
+  transform: scale(1.05);
+}
+
+.filter-chips {
+  gap: 10px;
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.filter-chip {
+  color: #ffffffa6;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  background: #160f1c;
+  border: 1px solid #ffffff14;
+  border-radius: 999px;
+  padding: 7px 18px;
+  font-size: 12px;
+}
+
+.filter-chip.active {
+  color: #1f1104;
+  background: linear-gradient(120deg, #f7d17e, #f39c2d);
+  border-color: #0000;
+  box-shadow: 0 10px 25px #f39c2d59;
+}
+
+.book-filter {
+  margin-bottom: 12px;
+  display: inline-block;
+  position: relative;
+}
+
+.book-filter__button {
+  color: #f6ead3;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  background: linear-gradient(120deg, #1a1423e6, #0e0a12e6);
+  border: 1px solid #ffffff26;
+  border-radius: 16px;
+  padding: 8px 18px;
+  font-size: 11px;
+}
+
+.book-filter__menu {
+  z-index: 20;
+  background: #120d18;
+  border: 1px solid #ffffff1a;
+  border-radius: 20px;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 240px;
+  padding: 12px;
+  display: flex;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  box-shadow: 0 25px 45px #0009;
+}
+
+.book-filter__menu-action {
+  color: #f1c77a;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  align-self: flex-start;
+  font-size: 11px;
+}
+
+.book-filter__options {
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  display: flex;
+  overflow-y: auto;
+}
+
+.book-filter__options label {
+  color: #fffc;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  display: flex;
 }
 
 .opps-grid {
@@ -104,7 +255,10 @@ button {
   background: radial-gradient(circle at top, #ffffff14, #0000 65%), linear-gradient(#1b1523, #0b0811 80%);
   border: 1px solid #ffffff14;
   border-radius: 26px;
+  flex-direction: column;
+  gap: 20px;
   padding: 24px;
+  display: flex;
   box-shadow: inset 0 1px #ffffff0a, 0 25px 45px #030204e6;
 }
 
@@ -112,6 +266,27 @@ button {
   color: #fff7e5;
   margin: 6px 0;
   font-size: 20px;
+}
+
+.opportunity-card__header {
+  justify-content: space-between;
+  gap: 20px;
+  display: flex;
+}
+
+.opportunity-card__sport {
+  color: #ffffff73;
+  letter-spacing: .3em;
+}
+
+.opportunity-card__time {
+  color: #fff9;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.opportunity-card__badge-wrap {
+  text-align: right;
 }
 
 .opportunity-card__badge {
@@ -127,19 +302,43 @@ button {
   box-shadow: 0 12px 25px #f2a62040;
 }
 
+.opportunity-card__books {
+  letter-spacing: .3em;
+  color: #fff6;
+  margin-top: 10px;
+  font-size: 10px;
+}
+
 .opportunity-card__metrics {
   color: #ffffffa6;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
   margin-top: 20px;
   font-size: 12px;
   display: grid;
 }
 
+.opportunity-card__metrics div {
+  flex-direction: column;
+  gap: 6px;
+  display: flex;
+}
+
+.opportunity-card__metric-label {
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-size: 11px;
+}
+
 .opportunity-card__metrics div strong {
   color: #fff3d6;
-  margin-top: 4px;
-  font-size: 18px;
+  font-size: 19px;
+}
+
+.opportunity-card__hint {
+  color: #ffffff73;
+  margin-top: 2px;
+  font-size: 10px;
   display: block;
 }
 
@@ -157,6 +356,7 @@ button {
   border-radius: 18px;
   padding: 12px 16px;
   font-size: 13px;
+  line-height: 1.4;
   box-shadow: inset 0 1px #ffffff0a;
 }
 
@@ -164,6 +364,16 @@ button {
   color: #ffffff8c;
   font-size: 11px;
   display: block;
+}
+
+.empty-card {
+  text-align: center;
+  color: #ffffffa6;
+  background: #140f1b;
+  border: 1px dashed #3a2f45;
+  border-radius: 28px;
+  padding: 36px;
+  font-size: 14px;
 }
 
 /*# sourceMappingURL=app_globals_71f961d1.css.map*/
