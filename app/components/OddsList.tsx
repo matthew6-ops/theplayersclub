@@ -4,83 +4,21 @@ type OddsListProps = {
   data: any;
 };
 
-// Convert decimal odds → American (+150)
-function decimalToAmerican(decimal: number): string {
+// Convert decimal odds → American (+150 / -120 etc.)
+function decimalToAmerican(decimal: number | null | undefined): string {
   if (!decimal || decimal <= 1) return "-";
 
   if (decimal >= 2) {
+    // Plus money
     return `+${Math.round((decimal - 1) * 100)}`;
   } else {
+    // Minus money
     return `${Math.round(-100 / (decimal - 1))}`;
   }
 }
 
-function formatStartTime(commenceTime?: string) {
-  if (!commenceTime) return null;
-  const parsed = new Date(commenceTime);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return parsed.toLocaleString(undefined, {
-    weekday: "short",
-    hour: "numeric",
-    minute: "2-digit"
-  });
-}
-
-function formatLiveStatus(scoreboard: any) {
-  if (!scoreboard) return null;
-  const parts: string[] = [];
-
-  const status =
-    scoreboard.status ??
-    (scoreboard.completed ? "Final" : scoreboard.in_progress ? "Live" : null);
-  if (status) parts.push(status);
-
-  const period =
-    scoreboard.period ??
-    scoreboard.stage ??
-    scoreboard.current_period ??
-    scoreboard.quarter ??
-    scoreboard.inning ??
-    scoreboard.half;
-  if (period) {
-    const label = typeof period === "number" ? `Period ${period}` : String(period);
-    parts.push(label);
-  }
-
-  const clock =
-    scoreboard.display_clock ??
-    scoreboard.clock ??
-    scoreboard.minutes_remaining ??
-    scoreboard.time_remaining ??
-    scoreboard.time;
-  if (clock) {
-    const formatted = typeof clock === "number" ? `${clock} min` : String(clock);
-    parts.push(formatted);
-  }
-
-  return parts.length ? parts.join(" • ") : null;
-}
-
-function getTeamScore(scoreboard: any, teamName: string, fallback: "home" | "away") {
-  if (!scoreboard) return null;
-
-  if (Array.isArray(scoreboard.scores)) {
-    const entry = scoreboard.scores.find((s: any) => s?.name === teamName);
-    if (entry?.score !== undefined && entry.score !== null) {
-      return entry.score;
-    }
-  }
-
-  const directKey = fallback === "home" ? "home_score" : "away_score";
-  if (scoreboard[directKey] !== undefined && scoreboard[directKey] !== null) {
-    return scoreboard[directKey];
-  }
-
-  return null;
-}
-
-// Return best price for each outcome across all books
-function getBestPrices(bookmakers: any[]) {
+// Best price for each team
+function getBestPrices(bookmakers: any[]): Record<string, number> {
   const best: Record<string, number> = {};
 
   bookmakers.forEach((bm) => {
@@ -98,25 +36,84 @@ function getBestPrices(bookmakers: any[]) {
   return best;
 }
 
-// Detect arbitrage
-function detectArbitrage(best: Record<string, number>) {
+// Fair probabilities from best prices (remove vig)
+function getFairProbabilities(best: Record<string, number>): Record<string, number> {
   const teams = Object.keys(best);
-  if (teams.length !== 2) return null;
+  if (teams.length !== 2) return {};
 
-  const a = best[teams[0]];
-  const b = best[teams[1]];
+  const implied: Record<string, number> = {};
+  let sum = 0;
 
-  const impliedA = 1 / a;
-  const impliedB = 1 / b;
+  teams.forEach((team) => {
+    const p = 1 / best[team];
+    implied[team] = p;
+    sum += p;
+  });
 
-  const sum = impliedA + impliedB;
+  const fair: Record<string, number> = {};
+  teams.forEach((team) => {
+    fair[team] = implied[team] / sum;
+  });
 
-  if (sum < 1) {
-    const profit = (1 - sum) * 100;
-    return { exists: true, profit };
+  return fair;
+}
+
+type ArbResult =
+  | { exists: false }
+  | {
+      exists: true;
+      teamA: string;
+      teamB: string;
+      priceA: number;
+      priceB: number;
+      profitPercent: number;
+      stakeA: number; // % of bankroll on team A
+      stakeB: number; // % of bankroll on team B
+    };
+
+// Simple two-way arbitrage check using best prices
+function detectArbitrage(best: Record<string, number>): ArbResult {
+  const teams = Object.keys(best);
+  if (teams.length !== 2) return { exists: false };
+
+  const [teamA, teamB] = teams;
+  const priceA = best[teamA];
+  const priceB = best[teamB];
+
+  const invA = 1 / priceA;
+  const invB = 1 / priceB;
+  const sum = invA + invB;
+
+  if (sum >= 1) {
+    return { exists: false };
   }
 
-  return { exists: false, profit: 0 };
+  // Use a $100 notional bankroll for stake split
+  const bankroll = 100;
+  const stakeA = (bankroll * priceB) / (priceA + priceB);
+  const stakeB = (bankroll * priceA) / (priceA + priceB);
+
+  const payout = stakeA * priceA; // same as stakeB * priceB
+  const profit = payout - bankroll;
+  const profitPercent = (profit / bankroll) * 100;
+
+  return {
+    exists: true,
+    teamA,
+    teamB,
+    priceA,
+    priceB,
+    profitPercent,
+    stakeA,
+    stakeB
+  };
+}
+
+// EV for a $1 bet given fair probability & decimal odds
+function calcEvPercent(fairProb: number, decimalOdds: number): number {
+  // EV = p * (odds - 1) - (1 - p)
+  const ev = fairProb * (decimalOdds - 1) - (1 - fairProb);
+  return ev * 100;
 }
 
 export default function OddsList({ data }: OddsListProps) {
@@ -132,87 +129,114 @@ export default function OddsList({ data }: OddsListProps) {
 
         const best = getBestPrices(game.bookmakers);
         const arb = detectArbitrage(best);
-        const scoreboard = game.scoreboard;
-        const startTime = formatStartTime(game.commence_time);
-        const liveStatus = formatLiveStatus(scoreboard);
-        const awayScore = getTeamScore(scoreboard, away, "away");
-        const homeScore = getTeamScore(scoreboard, home, "home");
+        const fair = getFairProbabilities(best);
 
         return (
-          <div key={game.id} className="p-4 border border-neutral-600 rounded">
+          <div key={game.id} className="p-4 border border-neutral-700 rounded-lg bg-black/40">
             <h3 className="text-lg font-bold mb-2">
               {away} @ {home}
             </h3>
 
-            <div className="text-sm text-neutral-400 space-y-1 mb-3">
-              {startTime && <div>Start: {startTime}</div>}
-              {liveStatus && <div>{liveStatus}</div>}
-              {(awayScore || homeScore) && (
-                <div className="text-neutral-200">
-                  {away}: <span className="font-semibold">{awayScore ?? "-"}</span> • {home}:{" "}
-                  <span className="font-semibold">{homeScore ?? "-"}</span>
+            {/* Arbitrage banner */}
+            {arb.exists && (
+              <div className="p-3 mb-4 rounded-md bg-emerald-900/70 text-emerald-50 text-sm">
+                <div className="font-semibold">
+                  Arbitrage Opportunity: +{arb.profitPercent.toFixed(2)}% guaranteed
                 </div>
-              )}
-            </div>
-
-            {/* Arbitrage Notice */}
-            {arb && arb.exists && typeof arb.profit === "number" && arb.profit > 0 && (
-              <div className="p-2 mb-3 bg-green-700 text-white font-bold rounded">
-                Arbitrage Opportunity (+{arb.profit.toFixed(2)}%)
+                <div className="mt-1 text-xs text-emerald-100/80">
+                  Example with $100 total:
+                  <br />
+                  • Bet ${arb.stakeA.toFixed(2)} on <span className="font-semibold">{arb.teamA}</span> at{" "}
+                  {arb.priceA.toFixed(2)} (dec)
+                  <br />
+                  • Bet ${arb.stakeB.toFixed(2)} on <span className="font-semibold">{arb.teamB}</span> at{" "}
+                  {arb.priceB.toFixed(2)} (dec)
+                </div>
               </div>
             )}
 
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-neutral-700 text-left">
-                  <th className="py-2">Bookmaker</th>
-                  <th className="py-2">{away}</th>
-                  <th className="py-2">{home}</th>
+                  <th className="py-2 pr-2">Bookmaker</th>
+                  <th className="py-2 pr-2">{away}</th>
+                  <th className="py-2 pr-2">{home}</th>
                 </tr>
               </thead>
 
               <tbody>
                 {game.bookmakers.map((bm: any) => {
-                  const h2h = bm.markets.find((m: any) => m.key === "h2h");
+                  const h2h = bm.markets?.find((m: any) => m.key === "h2h");
 
-                  const awayOutcome = h2h?.outcomes?.find(
-                    (o: any) => o.name === away
-                  );
-                  const homeOutcome = h2h?.outcomes?.find(
-                    (o: any) => o.name === home
-                  );
+                  const awayOutcome = h2h?.outcomes?.find((o: any) => o.name === away);
+                  const homeOutcome = h2h?.outcomes?.find((o: any) => o.name === home);
 
                   const awayBest = best[away];
                   const homeBest = best[home];
 
+                  const awayFairProb = fair[away];
+                  const homeFairProb = fair[home];
+
+                  const awayEv =
+                    awayOutcome && awayFairProb
+                      ? calcEvPercent(awayFairProb, awayOutcome.price)
+                      : null;
+                  const homeEv =
+                    homeOutcome && homeFairProb
+                      ? calcEvPercent(homeFairProb, homeOutcome.price)
+                      : null;
+
+                  const awayIsBest = !!awayOutcome && awayOutcome.price === awayBest;
+                  const homeIsBest = !!homeOutcome && homeOutcome.price === homeBest;
+                  const awayIsPlusEv = awayEv !== null && awayEv > 0;
+                  const homeIsPlusEv = homeEv !== null && homeEv > 0;
+
                   return (
                     <tr key={bm.key} className="border-b border-neutral-800">
-                      <td className="py-2">{bm.title}</td>
+                      <td className="py-2 pr-2 align-top">{bm.title}</td>
 
-                      {/* Away Price (American format) */}
+                      {/* Away cell */}
                       <td
                         className={
-                          awayOutcome?.price === awayBest
-                            ? "text-green-400 font-bold"
-                            : ""
+                          "py-2 pr-2 align-top" +
+                          (awayIsBest ? " text-green-400 font-bold" : "") +
+                          (awayIsPlusEv ? " bg-emerald-900/30" : "")
                         }
                       >
-                        {awayOutcome
-                          ? decimalToAmerican(awayOutcome.price)
-                          : "-"}
+                        {awayOutcome ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span>{decimalToAmerican(awayOutcome.price)}</span>
+                            {awayIsPlusEv && awayEv !== null && (
+                              <span className="text-xs text-emerald-300">
+                                +{awayEv.toFixed(1)}% EV
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          "-"
+                        )}
                       </td>
 
-                      {/* Home Price (American format) */}
+                      {/* Home cell */}
                       <td
                         className={
-                          homeOutcome?.price === homeBest
-                            ? "text-green-400 font-bold"
-                            : ""
+                          "py-2 pr-2 align-top" +
+                          (homeIsBest ? " text-green-400 font-bold" : "") +
+                          (homeIsPlusEv ? " bg-emerald-900/30" : "")
                         }
                       >
-                        {homeOutcome
-                          ? decimalToAmerican(homeOutcome.price)
-                          : "-"}
+                        {homeOutcome ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span>{decimalToAmerican(homeOutcome.price)}</span>
+                            {homeIsPlusEv && homeEv !== null && (
+                              <span className="text-xs text-emerald-300">
+                                +{homeEv.toFixed(1)}% EV
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          "-"
+                        )}
                       </td>
                     </tr>
                   );
