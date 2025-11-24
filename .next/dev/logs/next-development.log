@@ -254,3 +254,10 @@ Import traces:
 [00:02:29.055] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:02:31.005] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:02:32.478] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:19.056] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:13:06.296] Server  LOG      ✓ Compiled in 25ms
+[00:13:06.924] Browser ERROR   uncaughtError: ReferenceError: useState is not defined
+[00:14:04.429] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:14:04.584] Server  LOG      ✓ Compiled in 42ms
+[00:14:05.727] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:15:16.895] Server  LOG      ✓ Compiled in 35ms

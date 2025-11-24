@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OddsList from "./OddsList";
 
 type OddsFetcherProps = {
   sport: "nba" | "nfl" | "nhl";
@@ -16,8 +17,9 @@ export default function OddsFetcher({ sport }: OddsFetcherProps) {
       setLoading(true);
       setError(null);
 
-     const res = await fetch(`/api/odds?sport=${sport}`);
-
+      const res = await fetch(`/api/odds?sport=${sport}`, {
+        cache: "no-store"
+      });
 
       const json = await res.json();
 
@@ -45,11 +47,8 @@ export default function OddsFetcher({ sport }: OddsFetcherProps) {
       {loading && <p className="text-neutral-400">Loading...</p>}
       {error && <p className="text-red-400">{error}</p>}
 
-      {!loading && !error && (
-        <pre className="text-sm bg-black p-4 rounded overflow-x-auto">
-          {JSON.stringify(data, null, 2)}
-        </pre>
-      )}
+      {/* Replace JSON dump with nicely formatted odds list */}
+      {!loading && !error && data && <OddsList data={data} />}
 
       <button
         onClick={loadOdds}
