@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import SportTabs from "./components/SportTabs"
-import OddsFetcher from "./components/OddsFetcher";
-
+import OddsFetcher from "./components/OddsFetcher"
 
 export default function HomePage() {
   const [sport, setSport] = useState<"nba" | "nfl" | "nhl">("nba")
