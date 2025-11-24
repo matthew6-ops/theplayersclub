@@ -4,6 +4,18 @@ type OddsListProps = {
   data: any;
 };
 
+// Convert decimal odds from the API to American odds for display
+function toAmericanOdds(decimal: number | undefined) {
+  if (!decimal || decimal <= 1) return "-";
+
+  const american =
+    decimal >= 2
+      ? Math.round((decimal - 1) * 100)
+      : Math.round(-100 / (decimal - 1));
+
+  return american > 0 ? `+${american}` : `${american}`;
+}
+
 // Return best price for each outcome across all books
 function getBestPrices(bookmakers: any[]) {
   const best: Record<string, number> = {};
@@ -96,7 +108,7 @@ export default function OddsList({ data }: OddsListProps) {
                             : ""
                         }
                       >
-                        {awayOutcome?.price ?? "-"}
+                        {toAmericanOdds(awayOutcome?.price)}
                       </td>
 
                       <td
@@ -106,7 +118,7 @@ export default function OddsList({ data }: OddsListProps) {
                             : ""
                         }
                       >
-                        {homeOutcome?.price ?? "-"}
+                        {toAmericanOdds(homeOutcome?.price)}
                       </td>
                     </tr>
                   );
