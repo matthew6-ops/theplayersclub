@@ -1,43 +1,628 @@
-[00:00:02.134] Server  LOG      ✓ Ready in 1436ms
-[00:03:22.478] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:22.550] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:22.589] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:03:25.678] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:25.729] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:25.758] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:03:26.709] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:26.782] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:26.811] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:03:27.373] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:27.418] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:27.456] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:03:27.502] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:27.543] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:27.571] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:03:28.440] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:28.487] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:03:28.516] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:10:30.575] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:10:30.620] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:10:30.672] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:28.070] Server  LOG      ✓ Compiled in 65ms
-[00:18:34.923] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:34.964] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:35.006] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:35.055] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:35.089] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:36.883] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:36.921] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:36.962] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:37.009] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:37.040] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:37.524] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:37.565] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:37.610] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:37.644] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:37.675] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:54.812] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:54.846] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:54.890] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/app/odds/page/build-manifest.json'
-[00:18:54.934] Server  ERROR    ⨯ Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
-[00:18:54.967] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/matthelfer/Documents/theplayersclub/.next/dev/server/pages/_app/build-manifest.json'
+[00:00:02.334] Server  LOG      ✓ Ready in 1526ms
+[00:00:04.295] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:00:06.858] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:00:07.252] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:00:07.252] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:22.411] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:23.467] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:23.613] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:23.613] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:24.159] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:24.780] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:24.918] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:24.918] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:25.245] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:25.857] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:26.020] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:07:26.020] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:15:57.297] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:03.251] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:15:58.298] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:04.252] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:00.297] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:06.252] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:01.123] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:01.124] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:01.126] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:01.127] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:01.128] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:01.156] Server  LOG      ✓ Compiled in 43ms
+[01:16:01.297] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:02.753] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:02.756] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:02.757] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:02.758] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:02.759] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:02.789] Server  LOG      ✓ Compiled in 16ms
+[01:16:03.296] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:15.354] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:15.985] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:16.138] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:16.138] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:17.010] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:17.642] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:17.786] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:17.786] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:18.709] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:19.057] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:19.296] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:19.296] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:19.774] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:16:19.959] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:19.959] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:19.959] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:19.959] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[01:16:20.296] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:28.244] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:28.714] Server  ERROR    ⨯ ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:29.339] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:29.491] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:29.491] Browser ERROR   ./app/layout.tsx:1:1
+Module not found: Can't resolve './globals.css'
+> 1 | import "./globals.css";
+    | ^^^^^^^^^^^^^^^^^^^^^^^
+  2 | import type { ReactNode } from "react";
+  3 |
+  4 | export const metadata = {
+
+https://nextjs.org/docs/messages/module-not-found

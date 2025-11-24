@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import GameCard from "./GameCard";
+import SportTabs from "./SportTabs";
+import OddsList from "./OddsList";
 
 type OpportunitiesViewProps = {
   initialResults: any[];
@@ -17,86 +18,80 @@ export default function OpportunitiesView({
   const [secondsToRefresh, setSecondsToRefresh] = useState(15);
   const [activeSport, setActiveSport] = useState<string>("all");
 
-  const API_URL =
+  const apiUrl =
     process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
-  // Auto-refresh & countdown
-  useEffect(() => {
-    let isCancelled = false;
-
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${API_URL}/opportunities`);
-        if (!res.ok) return;
-
-        const json = await res.json();
-        if (!isCancelled) {
-          setResults(json);
-          setLastUpdated(new Date());
-        }
-      } catch {
-        // silently eat errors, user can still see last good data
-      }
-    };
-
-    // Initial refresh on mount
-    fetchData();
-
-    const refreshInterval = setInterval(() => {
-      fetchData();
-      setSecondsToRefresh(15);
-    }, 15000);
-
-    const countdownInterval = setInterval(() => {
-      setSecondsToRefresh((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-
-    return () => {
-      isCancelled = true;
-      clearInterval(refreshInterval);
-      clearInterval(countdownInterval);
-    };
-  }, [API_URL]);
-
-  // Collect sports for tabs
+  // derive sports from data
   const sports = useMemo(() => {
-    const set = new Map<string, string>();
-    results?.forEach((g: any) => {
+    const map = new Map<string, string>();
+    for (const g of results ?? []) {
       const key = g.sport_key ?? "unknown";
-      const title = g.sport_title ?? key;
-      if (!set.has(key)) set.set(key, title);
-    });
-    return Array.from(set.entries()).map(([key, label]) => ({
+      const label = g.sport_title ?? key.toUpperCase();
+      if (!map.has(key)) map.set(key, label);
+    }
+    return Array.from(map.entries()).map(([key, label]) => ({
       key,
       label,
     }));
   }, [results]);
 
-  const filteredGames = useMemo(() => {
-    if (activeSport === "all") return results ?? [];
+  const filteredResults = useMemo(() => {
+    if (activeSport === "all") return results;
     return (results ?? []).filter(
       (g: any) => g.sport_key === activeSport
     );
   }, [results, activeSport]);
 
+  // auto-refresh loop
+  useEffect(() => {
+    let cancelled = false;
+
+    async function refresh() {
+      try {
+        const res = await fetch(`${apiUrl}/opportunities`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!cancelled) {
+          setResults(json ?? []);
+          setLastUpdated(new Date());
+          setSecondsToRefresh(15);
+        }
+      } catch {
+        // keep last good data, user doesn't need to see the API crying
+      }
+    }
+
+    refresh();
+
+    const refreshTimer = setInterval(refresh, 15000);
+    const countdownTimer = setInterval(() => {
+      setSecondsToRefresh((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+
+    return () => {
+      cancelled = true;
+      clearInterval(refreshTimer);
+      clearInterval(countdownTimer);
+    };
+  }, [apiUrl]);
+
   return (
     <div className="space-y-4">
-      {/* Header bar */}
-      <div className="flex flex-col gap-4 border-b border-slate-800 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-400">
-            SharpEdge
-          </div>
-          <h1 className="mt-1 text-xl font-semibold text-slate-50 sm:text-2xl">
-            Live arbitrage & EV opportunities
-          </h1>
-          <p className="mt-1 text-xs text-slate-400 sm:text-sm">
-            Dark crypto-style board. Best lines, edge, and sizing in
-            one place.
+      {/* Top bar */}
+      <div className="flex flex-col gap-3 border-b border-slate-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <h2 className="text-lg font-semibold">
+            Odds Dashboard
+          </h2>
+          <p className="text-xs text-slate-400">
+            Auto-refreshing crypto-style board. Filter by sport, scan edges,
+            fire fake bullets.
           </p>
         </div>
 
-        <div className="flex flex-col items-start gap-1 text-xs text-slate-400 sm:items-end">
+        <div className="flex flex-col items-start text-xs text-slate-400 sm:items-end">
           {lastUpdated && (
             <span>
               Updated{" "}
@@ -114,48 +109,20 @@ export default function OpportunitiesView({
       </div>
 
       {/* Sport tabs */}
-      <div className="sticky top-0 z-10 -mx-4 mb-2 bg-slate-950/95 px-4 pt-2 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div className="flex gap-2 overflow-x-auto pb-2 text-xs">
-          <button
-            type="button"
-            onClick={() => setActiveSport("all")}
-            className={`rounded-full px-3 py-1.5 transition ${
-              activeSport === "all"
-                ? "bg-emerald-500 text-slate-950"
-                : "bg-slate-900/90 text-slate-300 hover:bg-slate-800"
-            }`}
-          >
-            All
-          </button>
-          {sports.map((s) => (
-            <button
-              key={s.key}
-              type="button"
-              onClick={() => setActiveSport(s.key)}
-              className={`whitespace-nowrap rounded-full px-3 py-1.5 transition ${
-                activeSport === s.key
-                  ? "bg-emerald-500 text-slate-950"
-                  : "bg-slate-900/90 text-slate-300 hover:bg-slate-800"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SportTabs
+        activeSport={activeSport}
+        onChange={(sport) => setActiveSport(sport)}
+        sports={sports}
+      />
 
       {/* Content */}
-      {filteredGames.length === 0 ? (
-        <div className="mt-6 rounded-2xl border border-dashed border-slate-800 bg-slate-950/80 p-6 text-center text-sm text-slate-400">
-          No opportunities at the moment. Either the books are sharp or
-          your scraper is asleep.
+      {filteredResults.length === 0 ? (
+        <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-[#050509] px-4 py-6 text-center text-sm text-slate-400">
+          No opportunities right now. Either the books are sharp, or your
+          scraper is asleep.
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          {filteredGames.map((game: any) => (
-            <GameCard key={game.id ?? `${game.sport_key}-${game.home_team}-${game.away_team}-${game.commence_time}`} game={game} />
-          ))}
-        </div>
+        <OddsList results={filteredResults} />
       )}
     </div>
   );
