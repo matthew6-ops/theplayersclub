@@ -4,7 +4,9 @@ type OddsListProps = {
   data: any;
 };
 
-// Return best price for each outcome across all books
+// -----------------------------
+// Extract best prices per team
+// -----------------------------
 function getBestPrices(bookmakers: any[]) {
   const best: Record<string, number> = {};
 
@@ -21,34 +23,42 @@ function getBestPrices(bookmakers: any[]) {
   return best;
 }
 
-// Detect arbitrage between the two sides
+// -----------------------------
+// Detect simple 2-way arbitrage
+// -----------------------------
 function detectArbitrage(best: Record<string, number>) {
   const teams = Object.keys(best);
   if (teams.length !== 2) return null;
 
-  const a = best[teams[0]];
-  const b = best[teams[1]];
+  const priceA = best[teams[0]];
+  const priceB = best[teams[1]];
 
-  const impliedA = 1 / a;
-  const impliedB = 1 / b;
+  if (!priceA || !priceB) return null;
 
-  if (impliedA + impliedB < 1) {
-    return {
-      exists: true,
-      profit: (1 - (impliedA + impliedB)) * 100
-    };
+  const impliedA = 1 / priceA;
+  const impliedB = 1 / priceB;
+
+  const sum = impliedA + impliedB;
+
+  if (sum < 1) {
+    const profit = (1 - sum) * 100;
+    return { exists: true, profit };
   }
 
   return { exists: false };
 }
 
+// -----------------------------
+// Main odds list component
+// -----------------------------
 export default function OddsList({ data }: OddsListProps) {
   const games = data?.odds || [];
 
-  if (!games.length) return <p>No odds available.</p>;
+  if (!games.length)
+    return <p className="text-neutral-400 mt-4">No games found.</p>;
 
   return (
-    <div className="space-y-8">
+    <div className="mt-6 space-y-10">
       {games.map((game: any) => {
         const home = game.home_team;
         const away = game.away_team;
@@ -57,62 +67,81 @@ export default function OddsList({ data }: OddsListProps) {
         const arb = detectArbitrage(best);
 
         return (
-          <div key={game.id} className="p-4 border border-neutral-600 rounded">
-            <h3 className="text-lg font-bold mb-2">
+          <div
+            key={game.id}
+            className="p-5 bg-neutral-900 border border-neutral-700 rounded-xl shadow-lg"
+          >
+            <h3 className="text-xl font-bold mb-3 text-white">
               {away} @ {home}
             </h3>
 
             {/* Arbitrage Banner */}
-            {arb?.exists && (
-              <div className="p-2 mb-3 bg-green-700 text-white font-bold rounded">
-                Arbitrage Opportunity Detected (+{arb?.profit?.toFixed(2)}% Profit)
-              </div>
-            )}
+            {arb?.exists === true && (
+  <div className="p-3 mb-4 bg-green-700 text-white font-semibold rounded-lg">
+    Arbitrage Opportunity Detected (+{(arb.profit ?? 0).toFixed(2)}% profit)
+  </div>
+)}
+
 
             {/* Odds Table */}
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="border-b border-neutral-700 text-left">
-                  <th className="py-2">Bookmaker</th>
-                  <th className="py-2">{away}</th>
-                  <th className="py-2">{home}</th>
-                </tr>
-              </thead>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-700 text-left text-neutral-300">
+                    <th className="py-2 w-40">Bookmaker</th>
+                    <th className="py-2">{away}</th>
+                    <th className="py-2">{home}</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {game.bookmakers.map((bm: any) => {
-                  const h2h = bm.markets.find((m: any) => m.key === "h2h");
-                  const awayOutcome = h2h?.outcomes?.find((o: any) => o.name === away);
-                  const homeOutcome = h2h?.outcomes?.find((o: any) => o.name === home);
+                <tbody>
+                  {game.bookmakers.map((bm: any) => {
+                    const h2h = bm.markets.find((m: any) => m.key === "h2h");
 
-                  return (
-                    <tr key={bm.key} className="border-b border-neutral-800">
-                      <td className="py-2">{bm.title}</td>
+                    const awayOutcome = h2h?.outcomes?.find(
+                      (o: any) => o.name === away
+                    );
 
-                      <td
-                        className={
-                          awayOutcome?.price === best[away]
-                            ? "text-green-400 font-bold"
-                            : ""
-                        }
+                    const homeOutcome = h2h?.outcomes?.find(
+                      (o: any) => o.name === home
+                    );
+
+                    return (
+                      <tr
+                        key={bm.key}
+                        className="border-b border-neutral-800 text-white"
                       >
-                        {awayOutcome?.price ?? "-"}
-                      </td>
+                        <td className="py-2 font-medium text-neutral-300">
+                          {bm.title}
+                        </td>
 
-                      <td
-                        className={
-                          homeOutcome?.price === best[home]
-                            ? "text-green-400 font-bold"
-                            : ""
-                        }
-                      >
-                        {homeOutcome?.price ?? "-"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        {/* Away */}
+                        <td
+                          className={`py-2 ${
+                            awayOutcome?.price === best[away]
+                              ? "text-green-400 font-bold"
+                              : ""
+                          }`}
+                        >
+                          {awayOutcome?.price ?? "-"}
+                        </td>
+
+                        {/* Home */}
+                        <td
+                          className={`py-2 ${
+                            homeOutcome?.price === best[home]
+                              ? "text-green-400 font-bold"
+                              : ""
+                          }`}
+                        >
+                          {homeOutcome?.price ?? "-"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       })}
