@@ -310,3 +310,4 @@ Import traces:
 [01:24:36.975] Server  LOG      ✓ Compiled in 21ms
 [01:24:48.911] Server  LOG      ✓ Compiled in 26ms
 [01:24:57.575] Server  LOG      ✓ Compiled in 32ms
+[01:25:30.507] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
