@@ -123,12 +123,12 @@ function calcArbBreakdown(best, stake) {
     };
 }
 }),
-"[project]/app/components/GameCard.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"[project]/app/components/OpportunityCard.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>GameCard
+    ()=>OpportunityCard
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/oddsMath.ts [app-ssr] (ecmascript)");
@@ -144,7 +144,7 @@ const formatStartTime = (iso)=>new Date(iso).toLocaleString(undefined, {
         hour: "numeric",
         minute: "2-digit"
     });
-function GameCard({ game, stakeUnit, allowedBooks }) {
+function OpportunityCard({ game, allowedBooks, stakeUnit }) {
     const home = game.home_team;
     const away = game.away_team;
     const allowedSet = allowedBooks.length ? new Set(allowedBooks) : null;
@@ -178,12 +178,13 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
     ].filter((val)=>typeof val === "number").length > 0 ? Math.max(homeEv ?? -Infinity, awayEv ?? -Infinity) : null;
     const arb = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["calcArbBreakdown"])(bestPrices, stakeUnit);
     const arbPercent = arb?.profitPercent ?? null;
-    const guaranteedProfit = typeof arbPercent === "number" && arbPercent > 0 ? stakeUnit * arbPercent / 100 : null;
-    const stakeEntries = typeof arbPercent === "number" && arbPercent > 0 && arb?.stakes ? Object.entries(arb.stakes) : [];
+    const guaranteedProfit = arbPercent && arbPercent > 0 ? stakeUnit * arbPercent / 100 : null;
     const hasArb = typeof arbPercent === "number" && arbPercent > 0;
     const hasPositiveEv = typeof evPercent === "number" && evPercent > 0;
-    const evColor = typeof evPercent === "number" ? evPercent >= 0 ? "#86efac" : "#fda4af" : "#b8b3c7";
-    const statusCopy = hasArb ? `Bet both sides as shown to lock in ${arbPercent?.toFixed(2)}% profit.` : hasPositiveEv ? "Positive EV detected but the books never cross for arbitrage." : "Market vig overwhelms the edge — this matchup is expected to lose over time.";
+    const evColor = typeof evPercent === "number" ? evPercent >= 0 ? "text-emerald-300" : "text-red-300" : "text-white/60";
+    const statusHeading = hasArb ? `Arbitrage Found (+${arbPercent?.toFixed(2)}%)` : "No Arbitrage Found";
+    const statusBody = hasArb ? "Bet both sides exactly as shown to lock in profit." : hasPositiveEv ? "Positive EV detected but opposing lines do not converge for arbitrage." : "Market vig remains too high; these odds are expected to lose over time.";
+    const recommendation = hasArb ? "Recommended action: Bet both sides to lock profit." : hasPositiveEv ? "Recommended action: Consider a single-side value bet." : "Recommended action: Avoid this market.";
     const lines = [
         away,
         home
@@ -193,289 +194,345 @@ function GameCard({ game, stakeUnit, allowedBooks }) {
         const simProfit = stakeUnit * (line.price - 1);
         return {
             team,
+            decimalOdds: line.price,
             american: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["decimalToAmerican"])(line.price),
             sportsbook: line.bookmaker ?? "Sportsbook",
-            stake: arb?.stakes?.[team] ?? null,
             simProfit
         };
     }).filter((line)=>Boolean(line));
-    const bookCount = filteredBooks.length || game.bookmakers?.length || 0;
-    const badgeLabel = hasArb ? "ARB + EV" : hasPositiveEv ? "+EV" : "VALUE";
+    const stakeEntries = hasArb && arb?.stakes ? Object.entries(arb.stakes) : [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
-        className: "opportunity-card",
+        className: "rounded-[32px] bg-[#0c0715] text-white shadow-[0_30px_70px_rgba(0,0,0,0.65)] border border-white/10 p-6 space-y-6",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                className: "opportunity-card__header",
+                className: "space-y-2",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "opportunity-card__sport",
-                                children: (game.sport_title ?? game.sport_key).toUpperCase()
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 134,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                children: [
-                                    away,
-                                    " @ ",
-                                    home
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 137,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "opportunity-card__time",
-                                children: formatStartTime(game.commence_time)
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 140,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 133,
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs tracking-[0.4em] text-white/50 uppercase",
+                        children: game.sport_title ?? game.sport_key
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "opportunity-card__badge-wrap",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                        className: "text-2xl font-semibold",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "opportunity-card__badge",
-                                children: badgeLabel
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 143,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "opportunity-card__books",
-                                children: [
-                                    bookCount,
-                                    " ",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                        fileName: "[project]/app/components/GameCard.tsx",
-                                        lineNumber: 145,
-                                        columnNumber: 25
-                                    }, this),
-                                    "BOOKS"
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 144,
-                                columnNumber: 11
-                            }, this)
+                            away,
+                            " @ ",
+                            home
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 142,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 132,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "opportunity-card__metrics",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "opportunity-card__metric-label",
-                                children: "EV %"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 153,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                style: {
-                                    color: evColor
-                                },
-                                children: typeof evPercent === "number" ? `${evPercent.toFixed(2)}%` : "n/a"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 154,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
                         lineNumber: 152,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-white/60",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "opportunity-card__metric-label",
-                                children: "Arb %"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 159,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                children: hasArb ? `${arbPercent?.toFixed(2)}%` : "n/a"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 160,
-                                columnNumber: 11
-                            }, this)
+                            "Starts ",
+                            formatStartTime(game.commence_time)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 158,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "opportunity-card__metric-label",
-                                children: "Guaranteed profit"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 163,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                children: hasArb && guaranteedProfit ? formatMoney(guaranteedProfit) : "n/a"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 164,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "opportunity-card__hint",
-                                children: [
-                                    "Simulated @ ",
-                                    formatMoney(stakeUnit)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 167,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 162,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "opportunity-card__metric-label",
-                                children: "Stake"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 172,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                children: formatMoney(stakeUnit)
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 173,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 171,
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 155,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 151,
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 148,
                 columnNumber: 7
             }, this),
-            hasArb && stakeEntries.length === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "opportunity-card__lines",
-                children: stakeEntries.map(([team, stake])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "line-pill",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl bg-gradient-to-r from-[#1d1430] to-[#241637] p-4 space-y-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center justify-between",
                         children: [
-                            "Stake on ",
-                            team,
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                children: formatMoney(stake)
+                                className: "text-lg font-semibold",
+                                children: statusHeading
                             }, void 0, false, {
-                                fileName: "[project]/app/components/GameCard.tsx",
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 161,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: `rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${hasArb ? "bg-amber-300/20 text-amber-200 border border-amber-300/40" : hasPositiveEv ? "bg-emerald-300/20 text-emerald-200 border border-emerald-200/40" : "bg-red-300/20 text-red-200 border border-red-200/40"}`,
+                                children: hasArb ? "Guaranteed" : hasPositiveEv ? "+EV" : "Avoid"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 162,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 160,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-white/70",
+                        children: statusBody
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 174,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-white/50",
+                        children: recommendation
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 175,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 159,
+                columnNumber: 7
+            }, this),
+            hasArb && guaranteedProfit && stakeEntries.length === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl border border-white/10 bg-[#120b1f] p-4 grid gap-4 md:grid-cols-3",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs uppercase tracking-[0.25em] text-white/50",
+                                children: "Guaranteed profit"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
                                 lineNumber: 182,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-2xl font-semibold text-amber-200",
+                                children: formatMoney(guaranteedProfit)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 185,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 181,
+                        columnNumber: 11
+                    }, this),
+                    stakeEntries.map(([team, stake])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs uppercase tracking-[0.25em] text-white/50",
+                                    children: [
+                                        "Stake on ",
+                                        team
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/OpportunityCard.tsx",
+                                    lineNumber: 191,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-lg font-semibold",
+                                    children: formatMoney(stake)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/OpportunityCard.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, team, true, {
+                            fileName: "[project]/app/components/OpportunityCard.tsx",
+                            lineNumber: 190,
+                            columnNumber: 13
+                        }, this))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 180,
+                columnNumber: 9
+            }, this),
+            !hasArb && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl border border-white/10 bg-[#120b1f] p-4 space-y-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center justify-between",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs uppercase tracking-[0.25em] text-white/50",
+                                children: "Expected Value"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 204,
+                                columnNumber: 13
+                            }, this),
+                            typeof evPercent === "number" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: `text-2xl font-semibold ${evColor}`,
+                                children: [
+                                    evPercent.toFixed(2),
+                                    "%"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 208,
                                 columnNumber: 15
                             }, this)
                         ]
-                    }, team, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 180,
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 203,
+                        columnNumber: 11
+                    }, this),
+                    typeof evPercent !== "number" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-white/60",
+                        children: "EV data unavailable for this matchup. Lines are shown for reference."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 214,
                         columnNumber: 13
-                    }, this))
-            }, void 0, false, {
-                fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 178,
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-white/40",
+                        children: [
+                            "Simulation assumes bankroll of ",
+                            formatMoney(stakeUnit),
+                            "."
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 218,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 202,
                 columnNumber: 9
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "opportunity-card__lines",
-                children: lines.map((line)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "line-pill",
+            lines.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "space-y-3",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs uppercase tracking-[0.3em] text-white/45",
+                        children: "Best odds available"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 227,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid gap-3 md:grid-cols-2",
+                        children: lines.map((line)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "rounded-2xl bg-[#140c22] border border-white/10 p-4 space-y-1",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-sm font-semibold",
+                                        children: [
+                                            line.team,
+                                            " @ ",
+                                            line.american
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                                        lineNumber: 236,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-white/60",
+                                        children: [
+                                            "Sportsbook: ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "font-semibold",
+                                                children: line.sportsbook
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                                lineNumber: 240,
+                                                columnNumber: 31
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                                        lineNumber: 239,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-white/60",
+                                        children: [
+                                            "Sim profit:",
+                                            " ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "font-semibold",
+                                                children: formatMoney(line.simProfit)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                                lineNumber: 244,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                                        lineNumber: 242,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, line.team, true, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 232,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 230,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 226,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
+                className: "flex items-center justify-between text-xs text-white/40",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: [
-                            line.team,
-                            " @ ",
-                            line.american,
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                children: [
-                                    line.sportsbook,
-                                    " ·",
-                                    " ",
-                                    line.stake ? `Stake ${formatMoney(line.stake)}` : "Stake flexible"
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 192,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "line-pill__profit",
-                                children: [
-                                    "Sim profit: ",
-                                    formatMoney(line.simProfit)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/GameCard.tsx",
-                                lineNumber: 196,
-                                columnNumber: 13
+                            "Stake: ",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                children: formatMoney(stakeUnit)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/OpportunityCard.tsx",
+                                lineNumber: 254,
+                                columnNumber: 18
                             }, this)
                         ]
-                    }, line.team, true, {
-                        fileName: "[project]/app/components/GameCard.tsx",
-                        lineNumber: 190,
-                        columnNumber: 11
-                    }, this))
-            }, void 0, false, {
-                fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 188,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-xs text-white/50",
-                children: statusCopy
-            }, void 0, false, {
-                fileName: "[project]/app/components/GameCard.tsx",
-                lineNumber: 203,
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 253,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        title: "Number of sportsbooks contributing to these prices",
+                        children: [
+                            filteredBooks.length,
+                            " books scanned"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/OpportunityCard.tsx",
+                        lineNumber: 256,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/OpportunityCard.tsx",
+                lineNumber: 252,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/app/components/GameCard.tsx",
-        lineNumber: 131,
+        fileName: "[project]/app/components/OpportunityCard.tsx",
+        lineNumber: 146,
         columnNumber: 5
     }, this);
 }
@@ -488,14 +545,14 @@ __turbopack_context__.s([
     ()=>OddsList
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$GameCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/GameCard.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunityCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/OpportunityCard.tsx [app-ssr] (ecmascript)");
 ;
 ;
 function OddsList({ results, data, stakeUnit, allowedBooks }) {
     const games = results ?? data?.odds ?? [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "opps-grid",
-        children: games.map((game, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$GameCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+        children: games.map((game, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunityCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                 game: game,
                 stakeUnit: stakeUnit,
                 allowedBooks: allowedBooks
@@ -1069,4 +1126,4 @@ module.exports = __turbopack_context__.r("[project]/node_modules/next/dist/serve
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__063d97dd._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__171cb25e._.js.map

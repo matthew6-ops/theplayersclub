@@ -1,160 +1,206 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   buildBestLines,
   calcArbBreakdown,
   calcEvPercent,
   computeFairProbabilities,
-  decimalToAmerican,
+  decimalToAmerican
 } from "@/lib/oddsMath";
 
+type Outcome = {
+  name: string;
+  price: number;
+};
+
+type Market = {
+  key: string;
+  outcomes?: Outcome[];
+};
+
+type Bookmaker = {
+  title?: string;
+  key?: string;
+  markets?: Market[];
+};
+
+type Game = {
+  id?: string;
+  sport_key: string;
+  sport_title?: string;
+  home_team: string;
+  away_team: string;
+  commence_time: string;
+  bookmakers?: Bookmaker[];
+};
+
 type GameCardProps = {
-  game: any;
+  game: Game;
   stakeUnit: number;
   allowedBooks: string[];
 };
 
-function formatTime(commence: string | undefined) {
-  if (!commence) return "TBD";
-  const dt = new Date(commence);
-  if (Number.isNaN(dt.getTime())) return commence;
-  return dt.toLocaleString(undefined, {
-    weekday: "long",
+const formatMoney = (value: number) =>
+  value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+
+const formatStartTime = (iso: string) =>
+  new Date(iso).toLocaleString(undefined, {
+    weekday: "short",
     hour: "numeric",
-    minute: "2-digit",
+    minute: "2-digit"
   });
-}
 
 export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProps) {
-  const home = game?.home_team ?? "Home";
-  const away = game?.away_team ?? "Away";
-  const bookmakers = game?.bookmakers ?? [];
-  const allowedSet = useMemo(() => {
-    if (!allowedBooks?.length) return null;
-    return new Set(allowedBooks);
-  }, [allowedBooks]);
+  const home = game.home_team;
+  const away = game.away_team;
+  const allowedSet = allowedBooks.length ? new Set(allowedBooks) : null;
 
-  const filteredBooks = useMemo(() => {
-    if (!allowedSet) return bookmakers;
-    return bookmakers.filter((bm: any) =>
-      allowedSet.has(bm?.title ?? bm?.key ?? "")
-    );
-  }, [bookmakers, allowedSet]);
-  const bookCount = filteredBooks.length || bookmakers.length;
+  const filteredBooks = (game.bookmakers ?? []).filter((bm) => {
+    if (!allowedSet) return true;
+    const label = bm.title ?? bm.key ?? "";
+    return allowedSet.has(label);
+  });
 
-  const bestPrices = useMemo(() => {
-    const best: Record<string, number> = {};
-    filteredBooks.forEach((bm: any) => {
-      bm.markets?.forEach((m: any) => {
-        if (m.key !== "h2h") return;
-        m.outcomes?.forEach((o: any) => {
-          if (!o?.name || typeof o.price !== "number") return;
-          if (!best[o.name] || o.price > best[o.name]) {
-            best[o.name] = o.price;
-          }
-        });
+  const bestPrices: Record<string, number> = {};
+  filteredBooks.forEach((bm) => {
+    bm.markets?.forEach((market) => {
+      if (market.key !== "h2h") return;
+      market.outcomes?.forEach((outcome) => {
+        if (!outcome?.name || typeof outcome.price !== "number") return;
+        if (!bestPrices[outcome.name] || outcome.price > bestPrices[outcome.name]) {
+          bestPrices[outcome.name] = outcome.price;
+        }
       });
     });
-    return best;
-  }, [filteredBooks]);
+  });
 
-  const bestLines = useMemo(
-    () => buildBestLines(filteredBooks, [home, away]),
-    [filteredBooks, home, away]
-  );
-  const fair = useMemo(() => computeFairProbabilities(bestPrices), [bestPrices]);
-
+  const bestLines = buildBestLines(filteredBooks, [away, home]);
+  const fair = computeFairProbabilities(bestPrices);
   const homeEv = calcEvPercent(fair[home], bestLines[home]?.price ?? undefined);
   const awayEv = calcEvPercent(fair[away], bestLines[away]?.price ?? undefined);
-  const evPercent = Math.max(homeEv ?? -Infinity, awayEv ?? -Infinity);
+  const evPercent =
+    [homeEv, awayEv].filter((val) => typeof val === "number").length > 0
+      ? Math.max(homeEv ?? -Infinity, awayEv ?? -Infinity)
+      : null;
 
-  const arb = useMemo(() => calcArbBreakdown(bestPrices, stakeUnit), [bestPrices, stakeUnit]);
+  const arb = calcArbBreakdown(bestPrices, stakeUnit);
   const arbPercent = arb?.profitPercent ?? null;
-  const guaranteedProfit = arbPercent ? (stakeUnit * arbPercent) / 100 : null;
+  const guaranteedProfit =
+    typeof arbPercent === "number" && arbPercent > 0
+      ? (stakeUnit * arbPercent) / 100
+      : null;
+  const stakeEntries =
+    typeof arbPercent === "number" && arbPercent > 0 && arb?.stakes
+      ? Object.entries(arb.stakes)
+      : [];
+
   const hasArb = typeof arbPercent === "number" && arbPercent > 0;
+  const hasPositiveEv = typeof evPercent === "number" && evPercent > 0;
+  const evColor = typeof evPercent === "number"
+    ? evPercent >= 0
+      ? "#86efac"
+      : "#fda4af"
+    : "#b8b3c7";
+
+  const statusCopy = hasArb
+    ? `Bet both sides as shown to lock in ${arbPercent?.toFixed(2)}% profit.`
+    : hasPositiveEv
+    ? "Positive EV detected but the books never cross for arbitrage."
+    : "Market vig overwhelms the edge — this matchup is expected to lose over time.";
 
   const lines = [away, home]
     .map((team) => {
       const line = bestLines[team];
-      if (!line) return null;
-      const stake = arb?.stakes?.[team];
-      const simProfit =
-        typeof line?.price === "number" ? stakeUnit * (line.price - 1) : null;
+      if (!line?.price) return null;
+      const simProfit = stakeUnit * (line.price - 1);
       return {
         team,
-        bookmaker: line.bookmaker,
-        price: line.price,
         american: decimalToAmerican(line.price),
-        stake: stake ?? null,
-        simProfit,
+        sportsbook: line.bookmaker ?? "Sportsbook",
+        stake: arb?.stakes?.[team] ?? null,
+        simProfit
       };
     })
-    .filter(Boolean) as Array<{
-      team: string;
-      bookmaker: string;
-      price: number;
-      american: string;
-      stake: number | null;
-      simProfit: number | null;
-    }>;
+    .filter((line): line is NonNullable<typeof line> => Boolean(line));
 
-  const hasPositiveEv = Number.isFinite(evPercent) && (evPercent ?? 0) > 0;
-  const badgeLabel = hasArb ? "ARB" : hasPositiveEv ? "+EV" : "VALUE";
+  const bookCount = filteredBooks.length || game.bookmakers?.length || 0;
+
+  const badgeLabel = hasArb ? "ARB + EV" : hasPositiveEv ? "+EV" : "VALUE";
 
   return (
     <article className="opportunity-card">
       <header className="opportunity-card__header">
         <div>
-          <small className="opportunity-card__sport">
-            {(game?.sport_title ?? game?.sport_key ?? "Matchup").toUpperCase()}
-          </small>
+          <p className="opportunity-card__sport">
+            {(game.sport_title ?? game.sport_key).toUpperCase()}
+          </p>
           <h3>
             {away} @ {home}
           </h3>
-          <p className="opportunity-card__time">{formatTime(game?.commence_time)}</p>
+          <p className="opportunity-card__time">{formatStartTime(game.commence_time)}</p>
         </div>
         <div className="opportunity-card__badge-wrap">
           <div className="opportunity-card__badge">{badgeLabel}</div>
-          <div className="opportunity-card__books" title="Number of sportsbooks included">
-            {bookCount} BOOKS
+          <div className="opportunity-card__books">
+            {bookCount} <br />
+            BOOKS
           </div>
         </div>
       </header>
 
-      <div className="opportunity-card__metrics">
+      <section className="opportunity-card__metrics">
         <div>
           <span className="opportunity-card__metric-label">EV %</span>
-          <strong>{Number.isFinite(evPercent) ? `${evPercent!.toFixed(2)}%` : "--"}</strong>
+          <strong style={{ color: evColor }}>
+            {typeof evPercent === "number" ? `${evPercent.toFixed(2)}%` : "n/a"}
+          </strong>
         </div>
         <div>
           <span className="opportunity-card__metric-label">Arb %</span>
-          <strong>{hasArb ? `${arbPercent?.toFixed(2)}%` : "--"}</strong>
+          <strong>{hasArb ? `${arbPercent?.toFixed(2)}%` : "n/a"}</strong>
         </div>
         <div>
           <span className="opportunity-card__metric-label">Guaranteed profit</span>
-          <strong>{guaranteedProfit ? `$${guaranteedProfit.toFixed(2)}` : "--"}</strong>
-          <span className="opportunity-card__hint">Simulated @ ${stakeUnit}</span>
+          <strong>
+            {hasArb && guaranteedProfit ? formatMoney(guaranteedProfit) : "n/a"}
+          </strong>
+          <span className="opportunity-card__hint">
+            Simulated @ {formatMoney(stakeUnit)}
+          </span>
         </div>
         <div>
           <span className="opportunity-card__metric-label">Stake</span>
-          <strong>${stakeUnit.toFixed(0)}.00</strong>
+          <strong>{formatMoney(stakeUnit)}</strong>
         </div>
-      </div>
+      </section>
 
-      <div className="opportunity-card__lines">
+      {hasArb && stakeEntries.length === 2 && (
+        <section className="opportunity-card__lines">
+          {stakeEntries.map(([team, stake]) => (
+            <div key={team} className="line-pill">
+              Stake on {team}
+              <span>{formatMoney(stake)}</span>
+            </div>
+          ))}
+        </section>
+      )}
+
+      <section className="opportunity-card__lines">
         {lines.map((line) => (
           <div key={line.team} className="line-pill">
             {line.team} @ {line.american}
             <span>
-              {line.bookmaker} · Stake {line.stake ? `$${line.stake.toFixed(2)}` : "--"}
+              {line.sportsbook} ·{" "}
+              {line.stake ? `Stake ${formatMoney(line.stake)}` : "Stake flexible"}
             </span>
             <span className="line-pill__profit">
-              Sim profit {line.simProfit !== null ? `$${line.simProfit.toFixed(2)}` : "--"}
+              Sim profit: {formatMoney(line.simProfit)}
             </span>
           </div>
         ))}
-      </div>
+      </section>
+
+      <p className="text-xs text-white/50">{statusCopy}</p>
     </article>
   );
 }
