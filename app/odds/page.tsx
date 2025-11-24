@@ -1,4 +1,4 @@
-import OpportunitiesView from "@/components/OpportunitiesView";
+import OpportunitiesView from "@/app/components/OpportunitiesView";
 
 export const revalidate = 0;
 

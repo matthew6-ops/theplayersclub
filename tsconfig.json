@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+
     "jsx": "react-jsx",
     "module": "esnext",
     "target": "esnext",
@@ -23,6 +28,7 @@
       }
     ]
   },
+
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
@@ -31,6 +37,7 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+
   "exclude": [
     "node_modules"
   ]
