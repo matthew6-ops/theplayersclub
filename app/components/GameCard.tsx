@@ -336,7 +336,9 @@ export default function GameCard({
         <section className="space-y-2">
           <button
             type="button"
-            className="text-xs uppercase tracking-[0.3em] text-white/50 hover:text-white transition border border-white/15 rounded-full px-4 py-1"
+            className={`full-board-toggle${
+              showAllBooks ? " full-board-toggle--active" : ""
+            }`}
             onClick={() => setShowAllBooks((prev) => !prev)}
           >
             {showAllBooks ? "Hide full board" : "View full board"}

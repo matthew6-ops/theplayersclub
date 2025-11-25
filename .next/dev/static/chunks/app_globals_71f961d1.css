@@ -421,6 +421,34 @@ button {
   border-color: #ffffff14;
 }
 
+.full-board-toggle {
+  color: #ffffffb3;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  background: #160f1c;
+  border: 1px solid #ffffff1f;
+  border-radius: 999px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  padding: 6px 16px;
+  font-size: 10px;
+  transition: background .18s, color .18s, box-shadow .18s, transform .18s;
+  display: inline-flex;
+}
+
+.full-board-toggle--active {
+  color: #1f1104;
+  background: linear-gradient(120deg, #f7d17e, #f39c2d);
+  border-color: #0000;
+  box-shadow: 0 8px 20px #f39c2d4d;
+}
+
+.full-board-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px #00000073;
+}
+
 @keyframes oddsFadeIn {
   from {
     opacity: .4;
