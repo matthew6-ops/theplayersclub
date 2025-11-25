@@ -1,114 +1,14 @@
-[00:00:02.413] Server  LOG      ✓ Ready in 1449ms
-[00:00:06.064] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:16.464] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:33.449] Server  LOG      ✓ Compiled in 18ms
-[00:01:44.628] Server  LOG      ✓ Compiled in 13ms
-[00:09:20.148] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:09:23.991] Server  LOG      ✓ Compiled in 23ms
-[00:12:46.298] Server  LOG      ✓ Compiled in 52ms
-[00:14:39.609] Server  LOG      ✓ Compiled in 26ms
-[00:14:53.626] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:14:56.961] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:19:04.824] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:19:49.919] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:01:01.886] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:03:06.261] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:09:54.420] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:11:05.838] Server  LOG      ✓ Compiled in 235ms
-[05:11:20.651] Server  LOG      ✓ Compiled in 31ms
-[05:13:57.677] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:15:10.116] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:17:58.252] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:19:07.457] Server  LOG      ✓ Compiled in 84ms
-[05:19:35.273] Server  LOG      ✓ Compiled in 28ms
-[05:19:58.673] Server  LOG      ✓ Compiled in 30ms
-[05:20:22.979] Server  LOG      ✓ Compiled in 72ms
-[05:20:24.007] Browser ERROR   uncaughtError: ReferenceError: filterMode is not defined
-[05:20:48.960] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:20:48.981] Server  LOG      ✓ Compiled in 34ms
-[05:20:50.076] Server  ERROR    ⨯ ReferenceError: calculateArbPercent is not defined
-[05:20:50.127] Browser ERROR   uncaughtError: ReferenceError: calculateArbPercent is not defined
-[05:20:51.287] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:20:52.007] Browser ERROR   uncaughtError: ReferenceError: calculateArbPercent is not defined
-[05:21:20.628] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:21:21.180] Server  LOG      ✓ Compiled in 29ms
-[05:21:22.272] Server  ERROR    ⨯ ReferenceError: calculateArbPercent is not defined
-[05:21:23.281] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:21:24.007] Browser ERROR   uncaughtError: ReferenceError: calculateArbPercent is not defined
-[05:21:54.144] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:21:54.383] Server  LOG      ✓ Compiled in 164ms
-[05:21:55.447] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:22:25.328] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:22:30.849] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:23:29.189] Server  LOG      ✓ Compiled in 30ms
-[05:23:47.264] Server  LOG      ✓ Compiled in 65ms
-[05:23:47.353] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:24:05.721] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:24:05.994] Server  LOG      ✓ Compiled in 24ms
-[05:24:06.102] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:24:06.138] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:24:06.805] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:24:06.961] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:24:55.346] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:24:55.369] Server  LOG      ✓ Compiled in 23ms
-[05:24:55.678] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:24:56.372] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:24:56.531] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:25:06.703] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:25:06.738] Server  LOG      ✓ Compiled in 19ms
-[05:25:07.266] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:25:07.951] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:25:08.129] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:25:25.221] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:25:25.455] Server  LOG      ✓ Compiled in 12ms
-[05:25:25.555] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:25:26.226] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:25:26.375] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:27:09.032] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:27:09.695] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:27:09.829] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:27:24.798] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:27:25.410] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:27:25.559] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:28:27.062] Server  ERROR    ⨯ ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:28:27.754] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:28:27.948] Browser ERROR   uncaughtError: ReferenceError: Cannot access 'showArbDetails' before initialization
-[05:29:01.213] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:29:01.244] Server  LOG      ✓ Compiled in 23ms
-[05:29:01.632] Server  ERROR    ⨯ ReferenceError: statusCopy is not defined
-[05:29:02.336] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:29:02.492] Browser ERROR   uncaughtError: ReferenceError: statusCopy is not defined
-[05:29:15.242] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[05:29:15.267] Server  LOG      ✓ Compiled in 24ms
-[05:29:16.391] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:31:36.702] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:31:49.150] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:36:09.448] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:38:08.930] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:38:22.444] Server  LOG      ✓ Compiled in 43ms
-[05:38:51.093] Server  LOG      ✓ Compiled in 11ms
-[05:39:10.520] Server  LOG      ✓ Compiled in 17ms
-[05:40:01.747] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:03.162] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:07.378] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:09.085] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:20.443] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:22.347] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:24.581] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:40:30.119] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:41:20.737] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:41:26.856] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:41:32.389] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:42:00.045] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:48:53.957] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[05:56:27.425] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[06:01:38.378] Server  LOG      ✓ Compiled in 37ms
-[06:02:01.055] Server  LOG      ✓ Compiled in 44ms
-[06:02:16.998] Server  LOG      ✓ Compiled in 19ms
-[06:02:38.662] Server  LOG      ✓ Compiled in 30ms
-[06:04:33.789] Server  LOG      ✓ Compiled in 28ms
-[06:05:49.413] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[06:07:40.426] Server  LOG      ✓ Compiled in 34ms
-[06:07:52.517] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[06:08:06.366] Server  LOG      ✓ Compiled in 24ms
-[06:08:20.958] Server  LOG      ✓ Compiled in 11ms
+[00:00:02.451] Server  LOG      ✓ Ready in 1596ms
+[00:00:05.803] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:17.198] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:11.741] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:34.490] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:25.810] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:27:54.340] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:32:08.695] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:34:00.570] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:35:09.753] Server  LOG      ✓ Compiled in 54ms
+[00:35:24.078] Server  LOG      ✓ Compiled in 11ms
+[00:35:41.376] Server  LOG      ✓ Compiled in 31ms
+[00:35:54.620] Server  LOG      ✓ Compiled in 15ms
+[00:37:00.110] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

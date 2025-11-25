@@ -25,6 +25,18 @@ type Bookmaker = {
   markets?: Market[];
 };
 
+type Scoreboard = {
+  status?: string;
+  in_progress?: boolean;
+  completed?: boolean;
+  period?: string | number;
+  display_clock?: string;
+  clock?: string;
+  home_score?: number;
+  away_score?: number;
+  scores?: { name?: string; score?: number }[];
+};
+
 type Game = {
   id?: string;
   sport_key: string;
@@ -33,6 +45,7 @@ type Game = {
   away_team: string;
   commence_time: string;
   bookmakers?: Bookmaker[];
+  scoreboard?: Scoreboard;
 };
 
 type GameCardProps = {
@@ -40,6 +53,7 @@ type GameCardProps = {
   stakeUnit: number;
   allowedBooks: string[];
   viewType?: "arb" | "ev";
+  oddsDisplay?: "american" | "decimal";
 };
 
 const formatMoney = (value: number) =>
@@ -52,11 +66,28 @@ const formatStartTime = (iso: string) =>
     minute: "2-digit"
   });
 
+const formatScoreboardStatus = (scoreboard?: Scoreboard) => {
+  if (!scoreboard) return null;
+  if (scoreboard.status) return scoreboard.status;
+  if (scoreboard.completed) return "Final";
+  if (scoreboard.in_progress) return "Live";
+  return null;
+};
+
+const getTeamScore = (scoreboard: Scoreboard | undefined, teamName: string, fallback: "home" | "away") => {
+  if (!scoreboard) return null;
+  const fromArray = scoreboard.scores?.find((s) => s.name === teamName)?.score;
+  if (typeof fromArray === "number") return fromArray;
+  if (fallback === "home") return scoreboard.home_score ?? null;
+  return scoreboard.away_score ?? null;
+};
+
 export default function GameCard({
   game,
   stakeUnit,
   allowedBooks,
-  viewType = "ev"
+  viewType = "ev",
+  oddsDisplay = "american"
 }: GameCardProps) {
   const home = game.home_team;
   const away = game.away_team;
@@ -119,6 +150,7 @@ export default function GameCard({
       return {
         team,
         american: decimalToAmerican(line.price),
+        decimal: line.price,
         sportsbook: line.bookmaker ?? "Sportsbook",
         stake: arb?.stakes?.[team] ?? null,
         highlightStake: stakeForTeam,
@@ -196,6 +228,11 @@ export default function GameCard({
     });
   }
 
+  const scoreboard = game.scoreboard;
+  const scoreboardStatus = formatScoreboardStatus(scoreboard);
+  const homeScore = getTeamScore(scoreboard, home, "home");
+  const awayScore = getTeamScore(scoreboard, away, "away");
+
   return (
     <article className={`opportunity-card ${variantClass}`}>
       <header className="opportunity-card__header">
@@ -216,6 +253,37 @@ export default function GameCard({
           </div>
         </div>
       </header>
+
+      {scoreboard && scoreboardStatus && (
+        <section className="rounded-2xl bg-[#160d1f] border border-white/10 p-4 text-sm text-white/70 flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.35em] text-white/40">
+              Status
+            </p>
+            <p className="font-semibold text-white">{scoreboardStatus}</p>
+            {(scoreboard.period || scoreboard.display_clock || scoreboard.clock) && (
+              <p className="text-xs text-white/50">
+                {scoreboard.period ? `Period ${scoreboard.period}` : ""}
+                {(scoreboard.display_clock || scoreboard.clock) &&
+                  ` · ${scoreboard.display_clock ?? scoreboard.clock}`}
+              </p>
+            )}
+          </div>
+          {typeof awayScore === "number" && typeof homeScore === "number" && (
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <p className="text-xs text-white/50">{away}</p>
+                <p className="text-xl font-semibold">{awayScore}</p>
+              </div>
+              <span className="text-white/40 text-lg">:</span>
+              <div className="text-center">
+                <p className="text-xs text-white/50">{home}</p>
+                <p className="text-xl font-semibold">{homeScore}</p>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {metrics.length > 0 && (
         <section className="opportunity-card__metrics">
@@ -246,7 +314,10 @@ export default function GameCard({
         {lines.map((line) => (
           <div key={line.team} className="line-pill">
             <p className="font-semibold">
-              {line.team} @ {line.american}
+              {line.team} @{" "}
+              {oddsDisplay === "american"
+                ? line.american
+                : `${line.decimal.toFixed(2)} (${(100 / line.decimal).toFixed(1)}%)`}
             </p>
             <p className="text-xs text-white/60">Sportsbook: {line.sportsbook}</p>
             {showArbDetails && line.stake && (

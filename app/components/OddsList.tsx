@@ -10,9 +10,16 @@ type OddsListProps = {
   data?: { odds?: any[] } | null;
   stakeUnit: number;
   allowedBooks: string[];
+  oddsDisplay?: "american" | "decimal";
 };
 
-export default function OddsList({ results, data, stakeUnit, allowedBooks }: OddsListProps) {
+export default function OddsList({
+  results,
+  data,
+  stakeUnit,
+  allowedBooks,
+  oddsDisplay = "american"
+}: OddsListProps) {
   const games = results ?? data?.odds ?? [];
   const entries: OpportunityEntry[] = games.map((item: any) =>
     item && item.game
@@ -32,6 +39,7 @@ export default function OddsList({ results, data, stakeUnit, allowedBooks }: Odd
           stakeUnit={stakeUnit}
           allowedBooks={allowedBooks}
           viewType={entry.viewType}
+          oddsDisplay={oddsDisplay}
         />
       ))}
     </div>

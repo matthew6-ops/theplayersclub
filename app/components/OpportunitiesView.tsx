@@ -18,6 +18,7 @@ export default function OpportunitiesView({
   const [activeSport, setActiveSport] = useState<string>("all");
   const [opportunityTab, setOpportunityTab] = useState<"ev" | "arb">("ev");
   const [stakeUnit, setStakeUnit] = useState<number>(50);
+  const [oddsDisplay, setOddsDisplay] = useState<"american" | "decimal">("american");
   const [stakeInput, setStakeInput] = useState<string>("50");
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<string[] | null>(null);
@@ -202,6 +203,17 @@ export default function OpportunitiesView({
         </div>
       </div>
 
+      <div className="flex items-center gap-3 text-xs text-white/60">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={oddsDisplay === "decimal"}
+            onChange={(e) => setOddsDisplay(e.target.checked ? "decimal" : "american")}
+          />
+          Show decimal odds
+        </label>
+      </div>
+
       <SportTabs activeSport={activeSport} onChange={(sport) => setActiveSport(sport)} sports={sports} />
 
       {bookmakerOptions.length > 0 && (
@@ -276,7 +288,12 @@ export default function OpportunitiesView({
           scraper is asleep.
         </div>
       ) : (
-        <OddsList results={displayEntries} stakeUnit={stakeUnit} allowedBooks={activeBooks} />
+        <OddsList
+          results={displayEntries}
+          stakeUnit={stakeUnit}
+          allowedBooks={activeBooks}
+          oddsDisplay={oddsDisplay}
+        />
       )}
     </div>
   );
