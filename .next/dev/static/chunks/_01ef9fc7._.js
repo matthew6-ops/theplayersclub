@@ -126,6 +126,48 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/lib/marketConfig.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "MARKET_OPTIONS",
+    ()=>MARKET_OPTIONS,
+    "getMarketConfig",
+    ()=>getMarketConfig
+]);
+const MARKET_OPTIONS = [
+    {
+        key: "h2h",
+        label: "Moneyline",
+        outcomes: (game)=>[
+                game.away_team ?? "Away",
+                game.home_team ?? "Home"
+            ]
+    },
+    {
+        key: "spreads",
+        label: "Spreads",
+        outcomes: (game)=>[
+                game.away_team ?? "Away",
+                game.home_team ?? "Home"
+            ]
+    },
+    {
+        key: "totals",
+        label: "Totals",
+        outcomes: ()=>[
+                "Over",
+                "Under"
+            ]
+    }
+];
+function getMarketConfig(key) {
+    return MARKET_OPTIONS.find((m)=>m.key === key) ?? MARKET_OPTIONS[0];
+}
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/app/components/GameCard.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -136,9 +178,11 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/oddsMath.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$marketConfig$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/marketConfig.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 const formatMoney = (value)=>value.toLocaleString("en-US", {
@@ -164,7 +208,7 @@ const getTeamScore = (scoreboard, teamName, fallback)=>{
     if (fallback === "home") return scoreboard.home_score ?? null;
     return scoreboard.away_score ?? null;
 };
-function GameCard({ game, stakeUnit, allowedBooks, viewType = "ev", oddsDisplay = "american" }) {
+function GameCard({ game, stakeUnit, allowedBooks, viewType = "ev", oddsDisplay = "american", marketKey = "h2h" }) {
     _s();
     const home = game.home_team;
     const away = game.away_team;
@@ -175,22 +219,16 @@ function GameCard({ game, stakeUnit, allowedBooks, viewType = "ev", oddsDisplay 
         const label = bm.title ?? bm.key ?? "";
         return allowedSet.has(label);
     });
+    const marketConfig = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$marketConfig$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getMarketConfig"])(marketKey);
+    const outcomeLabels = marketConfig.outcomes(game);
+    const bestLines = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["buildBestLines"])(filteredBooks, outcomeLabels, marketKey);
     const bestPrices = {};
-    filteredBooks.forEach((bm)=>{
-        bm.markets?.forEach((market)=>{
-            if (market.key !== "h2h") return;
-            market.outcomes?.forEach((outcome)=>{
-                if (!outcome?.name || typeof outcome.price !== "number") return;
-                if (!bestPrices[outcome.name] || outcome.price > bestPrices[outcome.name]) {
-                    bestPrices[outcome.name] = outcome.price;
-                }
-            });
-        });
+    outcomeLabels.forEach((label)=>{
+        const info = bestLines[label];
+        if (info?.price) {
+            bestPrices[label] = info.price;
+        }
     });
-    const bestLines = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["buildBestLines"])(filteredBooks, [
-        away,
-        home
-    ]);
     const fair = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["computeFairProbabilities"])(bestPrices);
     const homeEv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcEvPercent"])(fair[home], bestLines[home]?.price ?? undefined);
     const awayEv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcEvPercent"])(fair[away], bestLines[away]?.price ?? undefined);
@@ -205,10 +243,7 @@ function GameCard({ game, stakeUnit, allowedBooks, viewType = "ev", oddsDisplay 
     const hasArb = typeof arbPercent === "number" && arbPercent > 0;
     const hasPositiveEv = typeof evPercent === "number" && evPercent > 0;
     const evColor = typeof evPercent === "number" ? evPercent >= 0 ? "#36c98e" : "#f37575" : "#b8b3c7";
-    const lines = [
-        away,
-        home
-    ].map((team)=>{
+    const lines = outcomeLabels.map((team)=>{
         const line = bestLines[team];
         if (!line?.price) return null;
         const stakeForTeam = arb?.stakes?.[team] ?? stakeUnit;
@@ -548,7 +583,7 @@ function GameCard({ game, stakeUnit, allowedBooks, viewType = "ev", oddsDisplay 
                                     line.team,
                                     " @",
                                     " ",
-                                    oddsDisplay === "american" ? line.american : `${line.decimal.toFixed(2)} (${(100 / line.decimal).toFixed(1)}%)`
+                                    oddsDisplay === "american" ? line.american : `${line.decimal.toFixed(2)} (${(1 / line.decimal * 100).toFixed(1)}%)`
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/GameCard.tsx",
@@ -777,8 +812,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$GameCar
 ;
 function OddsList({ results, data, stakeUnit, allowedBooks, oddsDisplay = "american" }) {
     const games = results ?? data?.odds ?? [];
-    const entries = games.map((item)=>item && item.game ? item : {
-            game: item
+    const entries = games.map((item)=>item && item.game ? {
+            game: item.game,
+            viewType: item.viewType,
+            marketKey: item.marketKey ?? "h2h"
+        } : {
+            game: item,
+            marketKey: "h2h"
         });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "opps-grid odds-list",
@@ -787,15 +827,16 @@ function OddsList({ results, data, stakeUnit, allowedBooks, oddsDisplay = "ameri
                 stakeUnit: stakeUnit,
                 allowedBooks: allowedBooks,
                 viewType: entry.viewType,
-                oddsDisplay: oddsDisplay
+                oddsDisplay: oddsDisplay,
+                marketKey: entry.marketKey
             }, entry.game.id ?? `${entry.game.sport_key}-${entry.game.home_team}-${entry.game.away_team}-${idx}`, false, {
                 fileName: "[project]/app/components/OddsList.tsx",
-                lineNumber: 33,
+                lineNumber: 38,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/OddsList.tsx",
-        lineNumber: 31,
+        lineNumber: 36,
         columnNumber: 5
     }, this);
 }
@@ -819,9 +860,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SportTabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/SportTabs.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OddsList$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/OddsList.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/oddsMath.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$marketConfig$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/marketConfig.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -838,6 +881,7 @@ function OpportunitiesView({ initialResults }) {
     const [stakeInput, setStakeInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("50");
     const [bookMenuOpen, setBookMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [selectedBooks, setSelectedBooks] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [marketKey, setMarketKey] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("h2h");
     const bookMenuRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const API_URL = ("TURBOPACK compile-time value", "http://localhost:3001");
     // derive sports from data
@@ -936,21 +980,26 @@ function OpportunitiesView({ initialResults }) {
     const enrichedGames = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "OpportunitiesView.useMemo[enrichedGames]": ()=>{
             const base = filteredResults ?? [];
+            const marketConfig = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$marketConfig$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getMarketConfig"])(marketKey);
             return base.map({
                 "OpportunitiesView.useMemo[enrichedGames]": (game)=>{
-                    const evScore = calculateEvScore(game, activeBooks);
-                    const arbPercent = calculateArbPercent(game, activeBooks);
+                    const outcomes = marketConfig.outcomes(game);
+                    const best = computeBestPriceMap(game, activeBooks, marketConfig.key, outcomes);
+                    if (Object.keys(best).length < outcomes.length) return null;
+                    const evScore = calculateEvScoreFromBest(best);
+                    const arbPercent = calculateArbPercentFromBest(best);
                     return {
                         game,
                         evScore,
                         arbPercent
                     };
                 }
-            }["OpportunitiesView.useMemo[enrichedGames]"]);
+            }["OpportunitiesView.useMemo[enrichedGames]"]).filter(Boolean);
         }
     }["OpportunitiesView.useMemo[enrichedGames]"], [
         filteredResults,
-        activeBooks
+        activeBooks,
+        marketKey
     ]);
     const arbEntries = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "OpportunitiesView.useMemo[arbEntries]": ()=>enrichedGames.filter({
@@ -960,11 +1009,13 @@ function OpportunitiesView({ initialResults }) {
             }["OpportunitiesView.useMemo[arbEntries]"]).map({
                 "OpportunitiesView.useMemo[arbEntries]": (entry)=>({
                         game: entry.game,
-                        viewType: "arb"
+                        viewType: "arb",
+                        marketKey
                     })
             }["OpportunitiesView.useMemo[arbEntries]"])
     }["OpportunitiesView.useMemo[arbEntries]"], [
-        enrichedGames
+        enrichedGames,
+        marketKey
     ]);
     const evEntries = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "OpportunitiesView.useMemo[evEntries]": ()=>enrichedGames.filter({
@@ -974,11 +1025,13 @@ function OpportunitiesView({ initialResults }) {
             }["OpportunitiesView.useMemo[evEntries]"]).map({
                 "OpportunitiesView.useMemo[evEntries]": (entry)=>({
                         game: entry.game,
-                        viewType: "ev"
+                        viewType: "ev",
+                        marketKey
                     })
             }["OpportunitiesView.useMemo[evEntries]"])
     }["OpportunitiesView.useMemo[evEntries]"], [
-        enrichedGames
+        enrichedGames,
+        marketKey
     ]);
     const displayEntries = opportunityTab === "arb" ? arbEntries : evEntries;
     // auto-refresh loop
@@ -1031,27 +1084,27 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Live board"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 158,
+                                lineNumber: 166,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                 children: "Arbitrage Radar"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 159,
+                                lineNumber: 167,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: "Scan every book for two-way edges and instantly size simulated stakes."
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 160,
+                                lineNumber: 168,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 157,
+                        lineNumber: 165,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1068,7 +1121,7 @@ function OpportunitiesView({ initialResults }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 164,
+                                lineNumber: 172,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1080,19 +1133,19 @@ function OpportunitiesView({ initialResults }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 168,
+                                lineNumber: 176,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 162,
+                        lineNumber: 170,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 156,
+                lineNumber: 164,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1105,7 +1158,7 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Bet simulator"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 174,
+                                lineNumber: 182,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1113,13 +1166,13 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Enter a bankroll to preview recommended stakes per play."
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 175,
+                                lineNumber: 183,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 173,
+                        lineNumber: 181,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1150,18 +1203,18 @@ function OpportunitiesView({ initialResults }) {
                             }
                         }, void 0, false, {
                             fileName: "[project]/app/components/OpportunitiesView.tsx",
-                            lineNumber: 178,
+                            lineNumber: 186,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 177,
+                        lineNumber: 185,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 172,
+                lineNumber: 180,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1175,19 +1228,19 @@ function OpportunitiesView({ initialResults }) {
                             onChange: (e)=>setOddsDisplay(e.target.checked ? "decimal" : "american")
                         }, void 0, false, {
                             fileName: "[project]/app/components/OpportunitiesView.tsx",
-                            lineNumber: 208,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, this),
                         "Show decimal odds"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/OpportunitiesView.tsx",
-                    lineNumber: 207,
+                    lineNumber: 215,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 206,
+                lineNumber: 214,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SportTabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1196,7 +1249,24 @@ function OpportunitiesView({ initialResults }) {
                 sports: sports
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 217,
+                lineNumber: 225,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "filter-chips",
+                children: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$marketConfig$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MARKET_OPTIONS"].map((market)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        className: `filter-chip${marketKey === market.key ? " active" : ""}`,
+                        onClick: ()=>setMarketKey(market.key),
+                        children: market.label
+                    }, market.key, false, {
+                        fileName: "[project]/app/components/OpportunitiesView.tsx",
+                        lineNumber: 229,
+                        columnNumber: 11
+                    }, this))
+            }, void 0, false, {
+                fileName: "[project]/app/components/OpportunitiesView.tsx",
+                lineNumber: 227,
                 columnNumber: 7
             }, this),
             bookmakerOptions.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1214,7 +1284,7 @@ function OpportunitiesView({ initialResults }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 221,
+                        lineNumber: 242,
                         columnNumber: 11
                     }, this),
                     bookMenuOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1227,7 +1297,7 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Select all"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 226,
+                                lineNumber: 247,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1237,7 +1307,7 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Clear all"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 233,
+                                lineNumber: 254,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1263,38 +1333,38 @@ function OpportunitiesView({ initialResults }) {
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                                lineNumber: 245,
+                                                lineNumber: 266,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: book
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                                lineNumber: 258,
+                                                lineNumber: 279,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, book, true, {
                                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                        lineNumber: 244,
+                                        lineNumber: 265,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 240,
+                                lineNumber: 261,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 225,
+                        lineNumber: 246,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 220,
+                lineNumber: 241,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1315,12 +1385,12 @@ function OpportunitiesView({ initialResults }) {
                         children: chip.label
                     }, chip.key, false, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 273,
+                        lineNumber: 294,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 268,
+                lineNumber: 289,
                 columnNumber: 7
             }, this),
             displayEntries.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1328,7 +1398,7 @@ function OpportunitiesView({ initialResults }) {
                 children: "No opportunities right now. Either the books are sharp, or your scraper is asleep."
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 286,
+                lineNumber: 307,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OddsList$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 results: displayEntries,
@@ -1337,71 +1407,42 @@ function OpportunitiesView({ initialResults }) {
                 oddsDisplay: oddsDisplay
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 291,
+                lineNumber: 312,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/OpportunitiesView.tsx",
-        lineNumber: 155,
+        lineNumber: 163,
         columnNumber: 5
     }, this);
 }
-_s(OpportunitiesView, "xr79i0fGKeVCB2pp+7O/9c+Pi4U=");
+_s(OpportunitiesView, "O8DRXvjeCcYZK15b1uzJ27dJ7pg=");
 _c = OpportunitiesView;
-function calculateEvScore(game, allowedBooks) {
-    const home = game?.home_team;
-    const away = game?.away_team;
-    if (!home || !away) return null;
+function computeBestPriceMap(game, allowedBooks, marketKey, outcomes) {
     const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
     const filteredBooks = (game?.bookmakers ?? []).filter((bm)=>{
         if (!allowedSet) return true;
         return allowedSet.has(bm?.title ?? bm?.key ?? "");
     });
-    const bestLines = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["buildBestLines"])(filteredBooks, [
-        home,
-        away
-    ]);
+    const bestLines = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["buildBestLines"])(filteredBooks, outcomes, marketKey);
     const best = {};
-    [
-        home,
-        away
-    ].forEach((team)=>{
-        const line = bestLines[team];
-        if (line?.price) best[team] = line.price;
+    outcomes.forEach((outcome)=>{
+        const line = bestLines[outcome];
+        if (line?.price) best[outcome] = line.price;
     });
-    if (Object.keys(best).length < 2) return null;
+    return best;
+}
+function calculateEvScoreFromBest(best) {
+    const outcomes = Object.keys(best);
+    if (outcomes.length < 2) return null;
     const fair = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["computeFairProbabilities"])(best);
-    const homeEv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcEvPercent"])(fair[home], best[home]);
-    const awayEv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcEvPercent"])(fair[away], best[away]);
-    const evs = [
-        homeEv,
-        awayEv
-    ].filter((val)=>typeof val === "number");
+    const evs = outcomes.map((team)=>(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcEvPercent"])(fair[team], best[team])).filter((val)=>typeof val === "number");
     if (!evs.length) return null;
     return Math.max(...evs);
 }
-function calculateArbPercent(game, allowedBooks) {
-    const home = game?.home_team;
-    const away = game?.away_team;
-    if (!home || !away) return null;
-    const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
-    const filteredBooks = (game?.bookmakers ?? []).filter((bm)=>{
-        if (!allowedSet) return true;
-        return allowedSet.has(bm?.title ?? bm?.key ?? "");
-    });
-    const best = {};
-    filteredBooks.forEach((bm)=>{
-        bm.markets?.forEach((market)=>{
-            if (market.key !== "h2h") return;
-            market.outcomes?.forEach((outcome)=>{
-                if (!outcome?.name || typeof outcome.price !== "number") return;
-                if (!best[outcome.name] || outcome.price > best[outcome.name]) {
-                    best[outcome.name] = outcome.price;
-                }
-            });
-        });
-    });
+function calculateArbPercentFromBest(best) {
+    if (Object.keys(best).length < 2) return null;
     const breakdown = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$oddsMath$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calcArbBreakdown"])(best, 100);
     return breakdown?.profitPercent ?? null;
 }
@@ -1640,4 +1681,4 @@ else {
 }),
 ]);
 
-//# sourceMappingURL=_a826068a._.js.map
+//# sourceMappingURL=_01ef9fc7._.js.map

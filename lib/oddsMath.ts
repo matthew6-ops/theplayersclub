@@ -15,21 +15,25 @@ export function decimalToAmerican(decimal?: number | null) {
   return `${Math.round(-100 / (decimal - 1))}`;
 }
 
-export function buildBestLines(bookmakers: Bookmaker[] = [], teams: string[]) {
+export function buildBestLines(
+  bookmakers: Bookmaker[] = [],
+  outcomes: string[],
+  marketKey = "h2h"
+) {
   const best: Record<string, LineInfo | null> = {};
-  teams.forEach((team) => {
+  outcomes.forEach((team) => {
     best[team] = null;
   });
 
   bookmakers?.forEach((bm) => {
-    const h2h = bm?.markets?.find?.((m) => m?.key === "h2h");
-    h2h?.outcomes?.forEach((o) => {
+    const market = bm?.markets?.find?.((m) => m?.key === marketKey);
+    market?.outcomes?.forEach((o) => {
       if (!o?.name || typeof o.price !== "number") return;
-      if (!teams.includes(o.name)) return;
+      if (!best.hasOwnProperty(o.name)) return;
       if (!best[o.name] || o.price > (best[o.name]?.price ?? 0)) {
         best[o.name] = {
           price: o.price,
-          bookmaker: bm?.title ?? bm?.key ?? "Book",
+          bookmaker: bm?.title ?? bm?.key ?? "Book"
         };
       }
     });

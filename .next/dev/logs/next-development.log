@@ -33,3 +33,16 @@
 [00:54:14.536] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:54:50.954] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:56:25.762] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:57:20.423] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:59:03.919] Server  LOG      ✓ Compiled in 13ms
+[00:59:31.265] Server  LOG      ✓ Compiled in 59ms
+[01:00:16.813] Server  LOG      ✓ Compiled in 32ms
+[01:01:57.524] Server  LOG      ✓ Compiled in 41ms
+[01:01:57.617] Browser ERROR   uncaughtError: ReferenceError: computeBestPriceMap is not defined
+[01:03:12.606] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:03:12.652] Server  LOG      ✓ Compiled in 27ms
+[01:03:13.873] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:03:32.749] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:04:30.873] Server  LOG      ✓ Compiled in 9ms
+[01:04:48.985] Server  LOG      ✓ Compiled in 25ms
+[01:07:05.569] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

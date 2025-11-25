@@ -3,6 +3,7 @@ import GameCard from "./GameCard";
 type OpportunityEntry = {
   game: any;
   viewType?: "arb" | "ev";
+  marketKey: string;
 };
 
 type OddsListProps = {
@@ -23,8 +24,12 @@ export default function OddsList({
   const games = results ?? data?.odds ?? [];
   const entries: OpportunityEntry[] = games.map((item: any) =>
     item && item.game
-      ? item
-      : { game: item }
+      ? {
+          game: item.game,
+          viewType: item.viewType,
+          marketKey: item.marketKey ?? "h2h"
+        }
+      : { game: item, marketKey: "h2h" }
   );
 
   return (
@@ -40,6 +45,7 @@ export default function OddsList({
           allowedBooks={allowedBooks}
           viewType={entry.viewType}
           oddsDisplay={oddsDisplay}
+          marketKey={entry.marketKey}
         />
       ))}
     </div>

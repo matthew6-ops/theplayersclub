@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import SportTabs from "./SportTabs";
 import OddsList from "./OddsList";
-import { buildBestLines, calcArbBreakdown, calcEvPercent, computeFairProbabilities } from "@/lib/oddsMath";
+import { calcArbBreakdown, calcEvPercent, computeFairProbabilities, buildBestLines } from "@/lib/oddsMath";
+import { MARKET_OPTIONS, getMarketConfig } from "@/lib/marketConfig";
 
 type OpportunitiesViewProps = {
   initialResults: any[];
@@ -22,6 +23,7 @@ export default function OpportunitiesView({
   const [stakeInput, setStakeInput] = useState<string>("50");
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<string[] | null>(null);
+  const [marketKey, setMarketKey] = useState<string>("h2h");
   const bookMenuRef = useRef<HTMLDivElement | null>(null);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -91,20 +93,26 @@ export default function OpportunitiesView({
 
   const enrichedGames = useMemo(() => {
     const base = filteredResults ?? [];
-    return base.map((game: any) => {
-      const evScore = calculateEvScore(game, activeBooks);
-      const arbPercent = calculateArbPercent(game, activeBooks);
-      return { game, evScore, arbPercent };
-    });
-  }, [filteredResults, activeBooks]);
+    const marketConfig = getMarketConfig(marketKey);
+    return base
+      .map((game: any) => {
+        const outcomes = marketConfig.outcomes(game);
+        const best = computeBestPriceMap(game, activeBooks, marketConfig.key, outcomes);
+        if (Object.keys(best).length < outcomes.length) return null;
+        const evScore = calculateEvScoreFromBest(best);
+        const arbPercent = calculateArbPercentFromBest(best);
+        return { game, evScore, arbPercent };
+      })
+      .filter(Boolean) as { game: any; evScore: number | null; arbPercent: number | null }[];
+  }, [filteredResults, activeBooks, marketKey]);
 
   const arbEntries = useMemo(
     () =>
       enrichedGames
         .filter((entry) => typeof entry.arbPercent === "number" && entry.arbPercent > 0)
         .sort((a, b) => (b.arbPercent ?? 0) - (a.arbPercent ?? 0))
-        .map((entry) => ({ game: entry.game, viewType: "arb" as const })),
-    [enrichedGames]
+        .map((entry) => ({ game: entry.game, viewType: "arb" as const, marketKey })),
+    [enrichedGames, marketKey]
   );
 
   const evEntries = useMemo(
@@ -112,8 +120,8 @@ export default function OpportunitiesView({
       enrichedGames
         .filter((entry) => typeof entry.evScore === "number" && entry.evScore > 0)
         .sort((a, b) => (b.evScore ?? 0) - (a.evScore ?? 0))
-        .map((entry) => ({ game: entry.game, viewType: "ev" as const })),
-    [enrichedGames]
+        .map((entry) => ({ game: entry.game, viewType: "ev" as const, marketKey })),
+    [enrichedGames, marketKey]
   );
 
   const displayEntries = opportunityTab === "arb" ? arbEntries : evEntries;
@@ -216,6 +224,19 @@ export default function OpportunitiesView({
 
       <SportTabs activeSport={activeSport} onChange={(sport) => setActiveSport(sport)} sports={sports} />
 
+      <div className="filter-chips">
+        {MARKET_OPTIONS.map((market) => (
+          <button
+            key={market.key}
+            type="button"
+            className={`filter-chip${marketKey === market.key ? " active" : ""}`}
+            onClick={() => setMarketKey(market.key)}
+          >
+            {market.label}
+          </button>
+        ))}
+      </div>
+
       {bookmakerOptions.length > 0 && (
         <div className="book-filter" ref={bookMenuRef}>
           <button type="button" className="book-filter__button" onClick={() => setBookMenuOpen((o) => !o)}>
@@ -299,57 +320,40 @@ export default function OpportunitiesView({
   );
 }
 
-function calculateEvScore(game: any, allowedBooks: string[]) {
-  const home = game?.home_team;
-  const away = game?.away_team;
-  if (!home || !away) return null;
-
+function computeBestPriceMap(
+  game: any,
+  allowedBooks: string[],
+  marketKey: string,
+  outcomes: string[]
+) {
   const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
   const filteredBooks = (game?.bookmakers ?? []).filter((bm: any) => {
     if (!allowedSet) return true;
     return allowedSet.has(bm?.title ?? bm?.key ?? "");
   });
 
-  const bestLines = buildBestLines(filteredBooks, [home, away]);
+  const bestLines = buildBestLines(filteredBooks, outcomes, marketKey);
   const best: Record<string, number> = {};
-  [home, away].forEach((team) => {
-    const line = bestLines[team];
-    if (line?.price) best[team] = line.price;
+  outcomes.forEach((outcome) => {
+    const line = bestLines[outcome];
+    if (line?.price) best[outcome] = line.price;
   });
-  if (Object.keys(best).length < 2) return null;
-
-  const fair = computeFairProbabilities(best);
-  const homeEv = calcEvPercent(fair[home], best[home]);
-  const awayEv = calcEvPercent(fair[away], best[away]);
-  const evs = [homeEv, awayEv].filter((val) => typeof val === "number");
-  if (!evs.length) return null;
-  return Math.max(...(evs as number[]));
+  return best;
 }
 
-function calculateArbPercent(game: any, allowedBooks: string[]) {
-  const home = game?.home_team;
-  const away = game?.away_team;
-  if (!home || !away) return null;
+function calculateEvScoreFromBest(best: Record<string, number>) {
+  const outcomes = Object.keys(best);
+  if (outcomes.length < 2) return null;
+  const fair = computeFairProbabilities(best);
+  const evs = outcomes
+    .map((team) => calcEvPercent(fair[team], best[team]))
+    .filter((val): val is number => typeof val === "number");
+  if (!evs.length) return null;
+  return Math.max(...evs);
+}
 
-  const allowedSet = allowedBooks?.length ? new Set(allowedBooks) : null;
-  const filteredBooks = (game?.bookmakers ?? []).filter((bm: any) => {
-    if (!allowedSet) return true;
-    return allowedSet.has(bm?.title ?? bm?.key ?? "");
-  });
-
-  const best: Record<string, number> = {};
-  filteredBooks.forEach((bm: any) => {
-    bm.markets?.forEach((market: any) => {
-      if (market.key !== "h2h") return;
-      market.outcomes?.forEach((outcome: any) => {
-        if (!outcome?.name || typeof outcome.price !== "number") return;
-        if (!best[outcome.name] || outcome.price > best[outcome.name]) {
-          best[outcome.name] = outcome.price;
-        }
-      });
-    });
-  });
-
+function calculateArbPercentFromBest(best: Record<string, number>) {
+  if (Object.keys(best).length < 2) return null;
   const breakdown = calcArbBreakdown(best, 100);
   return breakdown?.profitPercent ?? null;
 }

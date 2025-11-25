@@ -8,6 +8,7 @@ import {
   computeFairProbabilities,
   decimalToAmerican
 } from "@/lib/oddsMath";
+import { getMarketConfig } from "@/lib/marketConfig";
 
 type Outcome = {
   name: string;
@@ -54,6 +55,7 @@ type GameCardProps = {
   allowedBooks: string[];
   viewType?: "arb" | "ev";
   oddsDisplay?: "american" | "decimal";
+  marketKey?: string;
 };
 
 const formatMoney = (value: number) =>
@@ -87,7 +89,8 @@ export default function GameCard({
   stakeUnit,
   allowedBooks,
   viewType = "ev",
-  oddsDisplay = "american"
+  oddsDisplay = "american",
+  marketKey = "h2h"
 }: GameCardProps) {
   const home = game.home_team;
   const away = game.away_team;
@@ -100,20 +103,17 @@ export default function GameCard({
     return allowedSet.has(label);
   });
 
-  const bestPrices: Record<string, number> = {};
-  filteredBooks.forEach((bm) => {
-    bm.markets?.forEach((market) => {
-      if (market.key !== "h2h") return;
-      market.outcomes?.forEach((outcome) => {
-        if (!outcome?.name || typeof outcome.price !== "number") return;
-        if (!bestPrices[outcome.name] || outcome.price > bestPrices[outcome.name]) {
-          bestPrices[outcome.name] = outcome.price;
-        }
-      });
-    });
-  });
+  const marketConfig = getMarketConfig(marketKey);
+  const outcomeLabels = marketConfig.outcomes(game);
 
-  const bestLines = buildBestLines(filteredBooks, [away, home]);
+  const bestLines = buildBestLines(filteredBooks, outcomeLabels, marketKey);
+  const bestPrices: Record<string, number> = {};
+  outcomeLabels.forEach((label) => {
+    const info = bestLines[label];
+    if (info?.price) {
+      bestPrices[label] = info.price;
+    }
+  });
   const fair = computeFairProbabilities(bestPrices);
   const homeEv = calcEvPercent(fair[home], bestLines[home]?.price ?? undefined);
   const awayEv = calcEvPercent(fair[away], bestLines[away]?.price ?? undefined);
@@ -141,7 +141,7 @@ export default function GameCard({
       : "#f37575"
     : "#b8b3c7";
 
-  const lines = [away, home]
+  const lines = outcomeLabels
     .map((team) => {
       const line = bestLines[team];
       if (!line?.price) return null;
@@ -317,7 +317,7 @@ export default function GameCard({
               {line.team} @{" "}
               {oddsDisplay === "american"
                 ? line.american
-                : `${line.decimal.toFixed(2)} (${(100 / line.decimal).toFixed(1)}%)`}
+                : `${line.decimal.toFixed(2)} (${((1 / line.decimal) * 100).toFixed(1)}%)`}
             </p>
             <p className="text-xs text-white/60">Sportsbook: {line.sportsbook}</p>
             {showArbDetails && line.stake && (
