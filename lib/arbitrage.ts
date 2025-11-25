@@ -29,14 +29,35 @@ const DEFAULT_SPORTS = [
 ];
 
 async function fetchOddsForSport(apiKey: string, sportKey: string) {
-  const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds?apiKey=${apiKey}&regions=us&markets=h2h&oddsFormat=decimal`;
+  const url = new URL(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds`);
+  url.searchParams.set("apiKey", apiKey);
+  url.searchParams.set("regions", "us");
+  url.searchParams.set("markets", "h2h");
+  url.searchParams.set("oddsFormat", "decimal");
 
-  const res = await fetch(url, {
+  const res = await fetch(url.toString(), {
     next: { revalidate: 10 }
   });
 
   if (!res.ok) {
     console.error("Error fetching odds:", sportKey, res.status);
+    return [];
+  }
+
+  return res.json();
+}
+
+async function fetchScoresForSport(apiKey: string, sportKey: string) {
+  const url = new URL(`https://api.the-odds-api.com/v4/sports/${sportKey}/scores`);
+  url.searchParams.set("apiKey", apiKey);
+  url.searchParams.set("daysFrom", "2");
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 30 }
+  });
+
+  if (!res.ok) {
+    console.error("Error fetching scores:", sportKey, res.status);
     return [];
   }
 
@@ -55,44 +76,69 @@ export default async function getOpportunities() {
     .filter(Boolean);
   const sportKeys = configuredSports?.length ? configuredSports : DEFAULT_SPORTS;
 
-  const resultsBySport = await Promise.all(
-    sportKeys.map((sport) => fetchOddsForSport(API_KEY, sport))
+  const bundles = await Promise.all(
+    sportKeys.map(async (sport) => {
+      const [odds, scores] = await Promise.all([
+        fetchOddsForSport(API_KEY, sport),
+        fetchScoresForSport(API_KEY, sport)
+      ]);
+      return { odds, scores };
+    })
   );
 
-  const games = resultsBySport
-    .flat()
-    .filter(Boolean)
-    .map((game: any) => {
-    const bookmakers = game.bookmakers ?? [];
+  const now = Date.now();
 
-    const best: Record<string, number> = {};
-
-    bookmakers.forEach((bm: any) => {
-      bm.markets?.forEach((m: any) => {
-        if (m.key !== "h2h") return;
-
-        m.outcomes?.forEach((o: any) => {
-          if (!best[o.name] || o.price > best[o.name]) {
-            best[o.name] = o.price;
-          }
-        });
+  const games = bundles
+    .flatMap(({ odds, scores }) => {
+      const scoreMap = new Map<string, any>();
+      scores?.forEach((score: any) => {
+        if (score?.id) {
+          scoreMap.set(score.id, score);
+        }
       });
+
+      return (odds ?? []).map((game: any) => {
+        const bookmakers = game.bookmakers ?? [];
+
+        const best: Record<string, number> = {};
+
+        bookmakers.forEach((bm: any) => {
+          bm.markets?.forEach((m: any) => {
+            if (m.key !== "h2h") return;
+
+            m.outcomes?.forEach((o: any) => {
+              if (!best[o.name] || o.price > best[o.name]) {
+                best[o.name] = o.price;
+              }
+            });
+          });
+        });
+
+        const arb = detectArbitrageWithStakes(best);
+        const scoreboard = scoreMap.get(game.id);
+
+        return {
+          id: game.id,
+          sport_key: game.sport_key,
+          sport_title: game.sport_title,
+          home_team: game.home_team,
+          away_team: game.away_team,
+          commence_time: game.commence_time,
+          bookmakers,
+          best,
+          arb,
+          scoreboard
+        };
+      });
+    })
+    .filter(Boolean)
+    .filter((game: any) => {
+      const scoreboard = game?.scoreboard;
+      if (scoreboard?.completed) return false;
+      const status = scoreboard?.status ? String(scoreboard.status).toLowerCase() : null;
+      if (status && status.includes("final")) return false;
+      return true;
     });
-
-    const arb = detectArbitrageWithStakes(best);
-
-    return {
-      id: game.id,
-      sport_key: game.sport_key,
-      sport_title: game.sport_title,
-      home_team: game.home_team,
-      away_team: game.away_team,
-      commence_time: game.commence_time,
-      bookmakers,
-      best,
-      arb
-    };
-  });
 
   return games;
 }
