@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import SportTabs from "./SportTabs";
 import OddsList from "./OddsList";
-import { buildBestLines, calcEvPercent, computeFairProbabilities } from "@/lib/oddsMath";
+import { buildBestLines, calcArbBreakdown, calcEvPercent, computeFairProbabilities } from "@/lib/oddsMath";
 
 type OpportunitiesViewProps = {
   initialResults: any[];
@@ -14,9 +14,9 @@ export default function OpportunitiesView({
 }: OpportunitiesViewProps) {
   const [results, setResults] = useState<any[]>(initialResults ?? []);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [secondsToRefresh, setSecondsToRefresh] = useState(15);
+  const [secondsToRefresh, setSecondsToRefresh] = useState(5);
   const [activeSport, setActiveSport] = useState<string>("all");
-  const [filterMode, setFilterMode] = useState<"all" | "arb" | "ev" | "value">("value");
+  const [opportunityTab, setOpportunityTab] = useState<"ev" | "arb">("ev");
   const [stakeUnit, setStakeUnit] = useState<number>(50);
   const [stakeInput, setStakeInput] = useState<string>("50");
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
@@ -88,34 +88,34 @@ export default function OpportunitiesView({
 
   const activeBooks = selectedBooks ?? bookmakerOptions;
 
-  const preparedResults = useMemo(() => {
+  const enrichedGames = useMemo(() => {
     const base = filteredResults ?? [];
-    const withMeta = base.map((game: any) => {
+    return base.map((game: any) => {
       const evScore = calculateEvScore(game, activeBooks);
-      const valueScore = calculateValueScore(game, activeBooks);
-      return {
-        ...game,
-        _evScore: evScore,
-        _valueScore: valueScore,
-        _priorityScore: calculatePriorityScore(game, evScore, valueScore),
-      };
+      const arbPercent = calculateArbPercent(game, activeBooks);
+      return { game, evScore, arbPercent };
     });
+  }, [filteredResults, activeBooks]);
 
-    let filtered = withMeta;
-    if (filterMode === "arb") {
-      filtered = filtered.filter((g) => g?.arb?.exists);
-    } else if (filterMode === "ev") {
-      filtered = filtered.filter((g) => Number.isFinite(g._evScore));
-    } else if (filterMode === "value") {
-      filtered = filtered.filter((g) => g._valueScore !== null);
-    }
+  const arbEntries = useMemo(
+    () =>
+      enrichedGames
+        .filter((entry) => typeof entry.arbPercent === "number" && entry.arbPercent > 0)
+        .sort((a, b) => (b.arbPercent ?? 0) - (a.arbPercent ?? 0))
+        .map((entry) => ({ game: entry.game, viewType: "arb" as const })),
+    [enrichedGames]
+  );
 
-    const sorted = [...filtered].sort(
-      (a, b) => (b?._priorityScore ?? -Infinity) - (a?._priorityScore ?? -Infinity)
-    );
+  const evEntries = useMemo(
+    () =>
+      enrichedGames
+        .filter((entry) => typeof entry.evScore === "number" && entry.evScore > 0)
+        .sort((a, b) => (b.evScore ?? 0) - (a.evScore ?? 0))
+        .map((entry) => ({ game: entry.game, viewType: "ev" as const })),
+    [enrichedGames]
+  );
 
-    return sorted;
-  }, [filteredResults, filterMode, activeBooks]);
+  const displayEntries = opportunityTab === "arb" ? arbEntries : evEntries;
 
   // auto-refresh loop
   useEffect(() => {
@@ -129,7 +129,7 @@ export default function OpportunitiesView({
         if (!cancelled) {
           setResults(json ?? []);
           setLastUpdated(new Date());
-          setSecondsToRefresh(15);
+          setSecondsToRefresh(5);
         }
       } catch {
         // keep last good data, user doesn't need to see the API crying
@@ -138,7 +138,7 @@ export default function OpportunitiesView({
 
     refresh();
 
-    const refreshTimer = setInterval(refresh, 15000);
+    const refreshTimer = setInterval(refresh, 5000);
     const countdownTimer = setInterval(() => {
       setSecondsToRefresh((s) => (s > 0 ? s - 1 : 0));
     }, 1000);
@@ -168,7 +168,7 @@ export default function OpportunitiesView({
         </div>
       </div>
 
-      <div className="bet-simulator">
+      <div className="bet-simulator sticky-sim">
         <div>
           <p className="bet-simulator__label">Bet simulator</p>
           <p className="bet-simulator__hint">Enter a bankroll to preview recommended stakes per play.</p>
@@ -255,15 +255,14 @@ export default function OpportunitiesView({
 
       <div className="filter-chips">
         {[
-          { key: "value", label: "All bets" },
-          { key: "arb", label: "Arb only" },
-          { key: "ev", label: "+EV only" },
+          { key: "ev", label: "Positive EV Bets" },
+          { key: "arb", label: "Arbitrage Plays" },
         ].map((chip) => (
           <button
             key={chip.key}
             type="button"
-            className={`filter-chip${filterMode === chip.key ? " active" : ""}`}
-            onClick={() => setFilterMode(chip.key as "arb" | "ev" | "value")}
+            className={`filter-chip${opportunityTab === chip.key ? " active" : ""}`}
+            onClick={() => setOpportunityTab(chip.key as "ev" | "arb")}
           >
             {chip.label}
           </button>
@@ -271,13 +270,13 @@ export default function OpportunitiesView({
       </div>
 
       {/* Content */}
-      {preparedResults.length === 0 ? (
+      {displayEntries.length === 0 ? (
         <div className="empty-card">
           No opportunities right now. Either the books are sharp, or your
           scraper is asleep.
         </div>
       ) : (
-        <OddsList results={preparedResults} stakeUnit={stakeUnit} allowedBooks={activeBooks} />
+        <OddsList results={displayEntries} stakeUnit={stakeUnit} allowedBooks={activeBooks} />
       )}
     </div>
   );
@@ -310,7 +309,7 @@ function calculateEvScore(game: any, allowedBooks: string[]) {
   return Math.max(...(evs as number[]));
 }
 
-function calculateValueScore(game: any, allowedBooks: string[]) {
+function calculateArbPercent(game: any, allowedBooks: string[]) {
   const home = game?.home_team;
   const away = game?.away_team;
   if (!home || !away) return null;
@@ -321,29 +320,19 @@ function calculateValueScore(game: any, allowedBooks: string[]) {
     return allowedSet.has(bm?.title ?? bm?.key ?? "");
   });
 
-  const bestLines = buildBestLines(filteredBooks, [home, away]);
-  const prices = [bestLines[home]?.price, bestLines[away]?.price].filter(
-    (val): val is number => typeof val === "number"
-  );
-  if (!prices.length) return null;
-  return Math.max(...prices);
-}
+  const best: Record<string, number> = {};
+  filteredBooks.forEach((bm: any) => {
+    bm.markets?.forEach((market: any) => {
+      if (market.key !== "h2h") return;
+      market.outcomes?.forEach((outcome: any) => {
+        if (!outcome?.name || typeof outcome.price !== "number") return;
+        if (!best[outcome.name] || outcome.price > best[outcome.name]) {
+          best[outcome.name] = outcome.price;
+        }
+      });
+    });
+  });
 
-function calculatePriorityScore(game: any, evScore: number | null, valueScore: number | null) {
-  const arbPercent =
-    typeof game?.arb?.profitPercent === "number" ? game.arb.profitPercent : null;
-
-  if (arbPercent !== null && arbPercent > 0) {
-    return 3000 + arbPercent;
-  }
-
-  if (typeof evScore === "number" && evScore > 0) {
-    return 2000 + evScore;
-  }
-
-  if (valueScore !== null) {
-    return 1000 + valueScore;
-  }
-
-  return 0;
+  const breakdown = calcArbBreakdown(best, 100);
+  return breakdown?.profitPercent ?? null;
 }

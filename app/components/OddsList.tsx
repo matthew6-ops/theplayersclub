@@ -1,7 +1,12 @@
 import GameCard from "./GameCard";
 
+type OpportunityEntry = {
+  game: any;
+  viewType?: "arb" | "ev";
+};
+
 type OddsListProps = {
-  results?: any[];
+  results?: OpportunityEntry[] | any[];
   data?: { odds?: any[] } | null;
   stakeUnit: number;
   allowedBooks: string[];
@@ -9,18 +14,24 @@ type OddsListProps = {
 
 export default function OddsList({ results, data, stakeUnit, allowedBooks }: OddsListProps) {
   const games = results ?? data?.odds ?? [];
+  const entries: OpportunityEntry[] = games.map((item: any) =>
+    item && item.game
+      ? item
+      : { game: item }
+  );
 
   return (
-    <div className="opps-grid">
-      {games.map((game: any, idx: number) => (
+    <div className="opps-grid odds-list">
+      {entries.map((entry, idx) => (
         <GameCard
           key={
-            game.id ??
-            `${game.sport_key}-${game.home_team}-${game.away_team}-${idx}`
+            entry.game.id ??
+            `${entry.game.sport_key}-${entry.game.home_team}-${entry.game.away_team}-${idx}`
           }
-          game={game}
+          game={entry.game}
           stakeUnit={stakeUnit}
           allowedBooks={allowedBooks}
+          viewType={entry.viewType}
         />
       ))}
     </div>

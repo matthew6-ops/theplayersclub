@@ -39,6 +39,7 @@ type GameCardProps = {
   game: Game;
   stakeUnit: number;
   allowedBooks: string[];
+  viewType?: "arb" | "ev";
 };
 
 const formatMoney = (value: number) =>
@@ -51,7 +52,12 @@ const formatStartTime = (iso: string) =>
     minute: "2-digit"
   });
 
-export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProps) {
+export default function GameCard({
+  game,
+  stakeUnit,
+  allowedBooks,
+  viewType = "ev"
+}: GameCardProps) {
   const home = game.home_team;
   const away = game.away_team;
   const allowedSet = allowedBooks.length ? new Set(allowedBooks) : null;
@@ -100,26 +106,22 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
   const hasPositiveEv = typeof evPercent === "number" && evPercent > 0;
   const evColor = typeof evPercent === "number"
     ? evPercent >= 0
-      ? "#86efac"
-      : "#fda4af"
+      ? "#36c98e"
+      : "#f37575"
     : "#b8b3c7";
-
-  const statusCopy = hasArb
-    ? `Bet both sides as shown to lock in ${arbPercent?.toFixed(2)}% profit.`
-    : hasPositiveEv
-    ? "Positive EV detected but the books never cross for arbitrage."
-    : "Market vig overwhelms the edge — this matchup is expected to lose over time.";
 
   const lines = [away, home]
     .map((team) => {
       const line = bestLines[team];
       if (!line?.price) return null;
+      const stakeForTeam = arb?.stakes?.[team] ?? stakeUnit;
       const simProfit = stakeUnit * (line.price - 1);
       return {
         team,
         american: decimalToAmerican(line.price),
         sportsbook: line.bookmaker ?? "Sportsbook",
         stake: arb?.stakes?.[team] ?? null,
+        highlightStake: stakeForTeam,
         simProfit
       };
     })
@@ -140,10 +142,62 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
     };
   });
 
-  const badgeLabel = hasArb ? "ARB + EV" : hasPositiveEv ? "+EV" : "VALUE";
+  const isArbCard = viewType === "arb";
+  const isEvCard = viewType === "ev";
+
+  if (isArbCard && !hasArb) {
+    return null;
+  }
+  if (isEvCard && !hasPositiveEv) {
+    return null;
+  }
+
+  const showArbDetails = isArbCard || (!viewType && hasArb);
+  const showEvDetails = isEvCard || (!viewType && hasPositiveEv);
+
+  const badgeLabel = showArbDetails ? "ARB" : showEvDetails ? "+EV" : "VALUE";
+  const variantClass = showArbDetails
+    ? "opportunity-card--arb"
+    : showEvDetails
+    ? "opportunity-card--ev"
+    : "opportunity-card--value";
+
+  const statusCopy = showArbDetails
+    ? `Bet both sides as shown to lock in ${arbPercent?.toFixed(2)}% profit.`
+    : showEvDetails
+    ? "Positive EV detected but the books never cross for arbitrage."
+    : "Market vig overwhelms the edge — this matchup is expected to lose over time.";
+
+  const metrics: { label: string; value: string; highlight?: string; sub?: string }[] = [];
+  if (showEvDetails && typeof evPercent === "number") {
+    metrics.push({
+      label: "EV %",
+      value: `${evPercent.toFixed(2)}%`,
+      highlight: evColor
+    });
+  }
+  if (showArbDetails && typeof arbPercent === "number") {
+    metrics.push({
+      label: "Arb %",
+      value: `${arbPercent.toFixed(2)}%`,
+      highlight: "#facc15"
+    });
+  }
+  if (showArbDetails && guaranteedProfit) {
+    metrics.push({
+      label: "Guaranteed profit",
+      value: formatMoney(guaranteedProfit),
+      sub: `Sim @ ${formatMoney(stakeUnit)}`
+    });
+  } else {
+    metrics.push({
+      label: "Simulated stake",
+      value: formatMoney(stakeUnit)
+    });
+  }
 
   return (
-    <article className="opportunity-card">
+    <article className={`opportunity-card ${variantClass}`}>
       <header className="opportunity-card__header">
         <div>
           <p className="opportunity-card__sport">
@@ -163,33 +217,21 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
         </div>
       </header>
 
-      <section className="opportunity-card__metrics">
-        <div>
-          <span className="opportunity-card__metric-label">EV %</span>
-          <strong style={{ color: evColor }}>
-            {typeof evPercent === "number" ? `${evPercent.toFixed(2)}%` : "n/a"}
-          </strong>
-        </div>
-        <div>
-          <span className="opportunity-card__metric-label">Arb %</span>
-          <strong>{hasArb ? `${arbPercent?.toFixed(2)}%` : "n/a"}</strong>
-        </div>
-        <div>
-          <span className="opportunity-card__metric-label">Guaranteed profit</span>
-          <strong>
-            {hasArb && guaranteedProfit ? formatMoney(guaranteedProfit) : "n/a"}
-          </strong>
-          <span className="opportunity-card__hint">
-            Simulated @ {formatMoney(stakeUnit)}
-          </span>
-        </div>
-        <div>
-          <span className="opportunity-card__metric-label">Stake</span>
-          <strong>{formatMoney(stakeUnit)}</strong>
-        </div>
-      </section>
+      {metrics.length > 0 && (
+        <section className="opportunity-card__metrics">
+          {metrics.map((metric) => (
+            <div key={metric.label}>
+              <span className="opportunity-card__metric-label">{metric.label}</span>
+              <strong style={metric.highlight ? { color: metric.highlight } : undefined}>
+                {metric.value}
+              </strong>
+              {metric.sub && <span className="opportunity-card__hint">{metric.sub}</span>}
+            </div>
+          ))}
+        </section>
+      )}
 
-      {hasArb && stakeEntries.length === 2 && (
+      {showArbDetails && hasArb && stakeEntries.length === 2 && (
         <section className="opportunity-card__lines">
           {stakeEntries.map(([team, stake]) => (
             <div key={team} className="line-pill">
@@ -203,14 +245,18 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
       <section className="opportunity-card__lines">
         {lines.map((line) => (
           <div key={line.team} className="line-pill">
-            {line.team} @ {line.american}
-            <span>
-              {line.sportsbook} ·{" "}
-              {line.stake ? `Stake ${formatMoney(line.stake)}` : "Stake flexible"}
-            </span>
-            <span className="line-pill__profit">
-              Sim profit: {formatMoney(line.simProfit)}
-            </span>
+            <p className="font-semibold">
+              {line.team} @ {line.american}
+            </p>
+            <p className="text-xs text-white/60">Sportsbook: {line.sportsbook}</p>
+            {showArbDetails && line.stake && (
+              <p className="text-xs text-white/60">
+                Stake: {formatMoney(line.stake)}
+              </p>
+            )}
+            <p className="text-xs text-white/60">
+              Sim profit: <span className="font-semibold">{formatMoney(line.simProfit)}</span>
+            </p>
           </div>
         ))}
       </section>
@@ -219,7 +265,7 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
         <section className="space-y-2">
           <button
             type="button"
-            className="text-xs uppercase tracking-[0.3em] text-white/50 hover:text-white transition"
+            className="text-xs uppercase tracking-[0.3em] text-white/50 hover:text-white transition border border-white/15 rounded-full px-4 py-1"
             onClick={() => setShowAllBooks((prev) => !prev)}
           >
             {showAllBooks ? "Hide full board" : "View full board"}
@@ -271,7 +317,12 @@ export default function GameCard({ game, stakeUnit, allowedBooks }: GameCardProp
         </section>
       )}
 
-      <p className="text-xs text-white/50">{statusCopy}</p>
+      <section className="rounded-3xl bg-[#150d22] border border-white/5 p-4 text-sm text-white/70">
+        <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-1">
+          Playbook
+        </p>
+        <p>{statusCopy}</p>
+      </section>
     </article>
   );
 }
