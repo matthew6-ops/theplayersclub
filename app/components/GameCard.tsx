@@ -146,13 +146,22 @@ export default function GameCard({
       const line = bestLines[team];
       if (!line?.price) return null;
       const stakeForTeam = arb?.stakes?.[team] ?? stakeUnit;
-      const simProfit = stakeUnit * (line.price - 1);
+      const simProfit = stakeForTeam * (line.price - 1);
+      const pointLabel =
+        typeof line.point === "number"
+          ? marketKey === "spreads"
+            ? `${line.point > 0 ? "+" : ""}${line.point}`
+            : marketKey === "totals"
+            ? `${line.point}`
+            : ""
+          : "";
+      const betLabel = pointLabel ? `${team} ${pointLabel}` : team;
       return {
-        team,
+        team: betLabel,
         american: decimalToAmerican(line.price),
         decimal: line.price,
         sportsbook: line.bookmaker ?? "Sportsbook",
-        stake: arb?.stakes?.[team] ?? null,
+        stake: arb?.stakes?.[team] ?? stakeUnit,
         highlightStake: stakeForTeam,
         simProfit
       };
@@ -162,7 +171,7 @@ export default function GameCard({
   const bookCount = filteredBooks.length || game.bookmakers?.length || 0;
 
   const bookBreakdowns = filteredBooks.map((bm) => {
-    const market = bm.markets?.find((m) => m.key === "h2h");
+    const market = bm.markets?.find((m) => m.key === marketKey);
     return {
       title: bm.title ?? bm.key ?? "Sportsbook",
       outcomes:
