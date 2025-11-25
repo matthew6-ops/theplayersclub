@@ -49,6 +49,31 @@ export default function OpportunitiesView({
     }
   }, [initialResults, lastUpdated]);
 
+  // Restore persisted UI state (sport, tab, market, odds display)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const storedSport = window.localStorage.getItem("tpc_active_sport");
+    if (storedSport) {
+      setActiveSport(storedSport);
+    }
+
+    const storedTab = window.localStorage.getItem("tpc_opportunity_tab");
+    if (storedTab === "ev" || storedTab === "arb") {
+      setOpportunityTab(storedTab);
+    }
+
+    const storedMarket = window.localStorage.getItem("tpc_market_key");
+    if (storedMarket) {
+      setMarketKey(storedMarket);
+    }
+
+    const storedOdds = window.localStorage.getItem("tpc_odds_display");
+    if (storedOdds === "american" || storedOdds === "decimal") {
+      setOddsDisplay(storedOdds);
+    }
+  }, []);
+
   const filteredResults = useMemo(() => {
     if (activeSport === "all") return results;
     return (results ?? []).filter(
@@ -74,6 +99,27 @@ export default function OpportunitiesView({
       return filtered;
     });
   }, [bookmakerOptions]);
+
+  // Persist key UI selections so they survive full page reloads
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("tpc_active_sport", activeSport);
+  }, [activeSport]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("tpc_opportunity_tab", opportunityTab);
+  }, [opportunityTab]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("tpc_market_key", marketKey);
+  }, [marketKey]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("tpc_odds_display", oddsDisplay);
+  }, [oddsDisplay]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

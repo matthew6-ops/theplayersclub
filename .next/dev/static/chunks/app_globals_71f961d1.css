@@ -250,11 +250,23 @@ button {
   display: flex;
 }
 
-.opps-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+.odds-list {
+  grid-template-columns: 1fr;
   gap: 18px;
   margin-top: 20px;
   display: grid;
+}
+
+@media (min-width: 768px) {
+  .odds-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .odds-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .opportunity-card {
@@ -396,7 +408,17 @@ button {
 }
 
 .odds-list .opportunity-card {
+  height: 100%;
   animation: .4s oddsFadeIn;
+}
+
+.opportunity-card--placeholder {
+  box-shadow: none;
+  opacity: .35;
+  pointer-events: none;
+  background: #0f172a99;
+  border-style: dashed;
+  border-color: #ffffff14;
 }
 
 @keyframes oddsFadeIn {
