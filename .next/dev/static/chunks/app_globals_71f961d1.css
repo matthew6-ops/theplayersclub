@@ -260,13 +260,13 @@ button {
 .opportunity-card {
   background: radial-gradient(circle at top, #ffffff14, #0000 65%), linear-gradient(#1b1523, #0b0811 80%);
   border: 1px solid #ffffff14;
-  border-radius: 26px;
+  border-radius: 22px;
   flex-direction: column;
-  gap: 20px;
-  padding: 24px;
+  gap: 14px;
+  padding: 18px 18px 20px;
   transition: background .3s, transform .3s, color .3s;
   display: flex;
-  box-shadow: inset 0 1px #ffffff0a, 0 25px 45px #030204e6;
+  box-shadow: inset 0 1px #ffffff0a, 0 22px 40px #030204e6;
 }
 
 .opportunity-card--arb {
@@ -286,8 +286,8 @@ button {
 
 .opportunity-card h3 {
   color: #fff7e5;
-  margin: 6px 0;
-  font-size: 20px;
+  margin: 4px 0;
+  font-size: 18px;
 }
 
 .opportunity-card__header {

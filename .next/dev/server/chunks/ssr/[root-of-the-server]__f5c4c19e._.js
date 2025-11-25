@@ -49,8 +49,6 @@ __turbopack_context__.n(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$c
 "use strict";
 
 __turbopack_context__.s([
-    "default",
-    ()=>getOpportunities,
     "detectArbitrageWithStakes",
     ()=>detectArbitrageWithStakes,
     "getOpportunities",
@@ -87,7 +85,9 @@ async function fetchOddsForSport(apiKey, sportKey) {
     const url = new URL(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds`);
     url.searchParams.set("apiKey", apiKey);
     url.searchParams.set("regions", "us");
-    url.searchParams.set("markets", "h2h");
+    // Request multiple markets so the UI can show
+    // moneyline, spreads, and totals in separate tabs.
+    url.searchParams.set("markets", "h2h,spreads,totals");
     url.searchParams.set("oddsFormat", "decimal");
     const res = await fetch(url.toString(), {
         next: {
@@ -178,7 +178,6 @@ async function getOpportunities() {
     });
     return games;
 }
-;
 }),
 "[project]/app/odds/page.tsx [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -197,30 +196,63 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$
 ;
 const revalidate = 0;
 async function OddsPage() {
-    let results = [];
+    let opportunities = [];
     try {
-        results = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getOpportunities"])();
+        opportunities = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$arbitrage$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getOpportunities"])();
     } catch (err) {
-        console.error("Failed to load opportunities server-side", err);
+        console.error("Unable to load opportunities", err);
     }
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "odds-shell",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunitiesView$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                initialResults: results
-            }, void 0, false, {
-                fileName: "[project]/app/odds/page.tsx",
-                lineNumber: 18,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+        className: "min-h-screen w-full bg-[#0b0f19] text-white",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "relative pt-10 pb-20",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "pointer-events-none absolute inset-0 blur-[200px] opacity-60",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "absolute top-0 left-1/4 h-72 w-72 rounded-full bg-[#22d3ee]/30"
+                        }, void 0, false, {
+                            fileName: "[project]/app/odds/page.tsx",
+                            lineNumber: 20,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "absolute bottom-10 right-0 h-80 w-80 rounded-full bg-[#facc15]/25"
+                        }, void 0, false, {
+                            fileName: "[project]/app/odds/page.tsx",
+                            lineNumber: 21,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/odds/page.tsx",
+                    lineNumber: 19,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OpportunitiesView$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
+                        initialResults: opportunities
+                    }, void 0, false, {
+                        fileName: "[project]/app/odds/page.tsx",
+                        lineNumber: 24,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/app/odds/page.tsx",
+                    lineNumber: 23,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
             fileName: "[project]/app/odds/page.tsx",
-            lineNumber: 17,
+            lineNumber: 18,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/odds/page.tsx",
-        lineNumber: 16,
+        lineNumber: 17,
         columnNumber: 5
     }, this);
 }

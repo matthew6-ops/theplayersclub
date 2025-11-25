@@ -16,7 +16,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 "use client";
 ;
 function SportTabs({ activeSport, onChange, sports }) {
-    const allTabs = [
+    const tabs = [
         {
             key: "all",
             label: "All"
@@ -24,20 +24,20 @@ function SportTabs({ activeSport, onChange, sports }) {
         ...sports
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "sport-tabs",
-        children: allTabs.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+        className: "flex flex-wrap items-center gap-2 border-b border-white/5 pb-4",
+        children: tabs.map((tab)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 type: "button",
-                className: `sport-tab${activeSport === s.key ? " active" : ""}`,
-                onClick: ()=>onChange(s.key),
-                children: s.label
-            }, s.key, false, {
+                onClick: ()=>onChange(tab.key),
+                className: `rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${activeSport === tab.key ? "bg-gradient-to-r from-[#facc15] to-[#f97316] text-black shadow-lg shadow-[#facc15]/50" : "bg-white/5 text-white/70 hover:bg-white/10"}`,
+                children: tab.label
+            }, tab.key, false, {
                 fileName: "[project]/app/components/SportTabs.tsx",
-                lineNumber: 19,
+                lineNumber: 15,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/SportTabs.tsx",
-        lineNumber: 17,
+        lineNumber: 13,
         columnNumber: 5
     }, this);
 }

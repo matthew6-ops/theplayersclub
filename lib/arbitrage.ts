@@ -32,7 +32,9 @@ async function fetchOddsForSport(apiKey: string, sportKey: string) {
   const url = new URL(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds`);
   url.searchParams.set("apiKey", apiKey);
   url.searchParams.set("regions", "us");
-  url.searchParams.set("markets", "h2h");
+  // Request multiple markets so the UI can show
+  // moneyline, spreads, and totals in separate tabs.
+  url.searchParams.set("markets", "h2h,spreads,totals");
   url.searchParams.set("oddsFormat", "decimal");
 
   const res = await fetch(url.toString(), {
@@ -64,7 +66,7 @@ async function fetchScoresForSport(apiKey: string, sportKey: string) {
   return res.json();
 }
 
-export default async function getOpportunities() {
+export async function getOpportunities() {
   const API_KEY = process.env.ODDS_API_KEY;
   if (!API_KEY) {
     console.error("Missing ODDS_API_KEY");
@@ -142,5 +144,3 @@ export default async function getOpportunities() {
 
   return games;
 }
-
-export { getOpportunities };
