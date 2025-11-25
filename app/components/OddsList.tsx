@@ -32,6 +32,13 @@ export default function OddsList({
       : { game: item, marketKey: "h2h" }
   );
 
+  // We aim for a 3-column layout on desktop; add placeholders
+  // so rows look balanced when there are 1 or 2 items.
+  const columnTarget = 3;
+  const remainder = entries.length % columnTarget;
+  const placeholderCount =
+    entries.length === 0 ? columnTarget : remainder === 0 ? 0 : columnTarget - remainder;
+
   return (
     <div className="odds-list">
       {entries.map((entry, idx) => (
@@ -47,6 +54,9 @@ export default function OddsList({
           oddsDisplay={oddsDisplay}
           marketKey={entry.marketKey}
         />
+      ))}
+      {Array.from({ length: placeholderCount }).map((_, idx) => (
+        <div key={`placeholder-${idx}`} className="opportunity-card opportunity-card--placeholder" />
       ))}
     </div>
   );
