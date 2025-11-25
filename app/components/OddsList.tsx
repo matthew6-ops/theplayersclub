@@ -33,7 +33,7 @@ export default function OddsList({
   );
 
   return (
-    <div className="opps-grid odds-list">
+    <div className="odds-list mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {entries.map((entry, idx) => (
         <GameCard
           key={
