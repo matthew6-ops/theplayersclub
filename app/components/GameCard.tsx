@@ -13,6 +13,7 @@ import { getMarketConfig } from "@/lib/marketConfig";
 type Outcome = {
   name: string;
   price: number;
+  point?: number;
 };
 
 type Market = {
@@ -84,6 +85,20 @@ const getTeamScore = (scoreboard: Scoreboard | undefined, teamName: string, fall
   return scoreboard.away_score ?? null;
 };
 
+const formatPoint = (point?: number) => {
+  if (point == null) return "";
+  if (point > 0) return `+${point}`;
+  return point.toString();
+};
+
+const formatBetLabel = (name: string, point: number | undefined, marketKey: string) => {
+  if (marketKey === "spreads" || marketKey === "totals") {
+    const pointStr = formatPoint(point);
+    return pointStr ? `${name} ${pointStr}` : name;
+  }
+  return name;
+};
+
 export default function GameCard({
   game,
   stakeUnit,
@@ -152,6 +167,7 @@ export default function GameCard({
         american: decimalToAmerican(line.price),
         decimal: line.price,
         sportsbook: line.bookmaker ?? "Sportsbook",
+        point: line.point,
         stake: arb?.stakes?.[team] ?? null,
         highlightStake: stakeForTeam,
         simProfit
@@ -169,7 +185,8 @@ export default function GameCard({
         market?.outcomes?.map((outcome) => ({
           team: outcome.name,
           decimal: outcome.price,
-          american: decimalToAmerican(outcome.price ?? 0)
+          american: decimalToAmerican(outcome.price ?? 0),
+          point: outcome.point
         })) ?? []
     };
   });
@@ -314,7 +331,7 @@ export default function GameCard({
         {lines.map((line) => (
           <div key={line.team} className="line-pill">
             <p className="font-semibold">
-              {line.team} @{" "}
+              {formatBetLabel(line.team, line.point, marketKey)} @{" "}
               {oddsDisplay === "american"
                 ? line.american
                 : `${line.decimal.toFixed(2)} (${((1 / line.decimal) * 100).toFixed(1)}%)`}

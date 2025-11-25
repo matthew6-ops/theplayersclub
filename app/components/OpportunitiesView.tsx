@@ -111,16 +111,29 @@ export default function OpportunitiesView({
       enrichedGames
         .filter((entry) => typeof entry.arbPercent === "number" && entry.arbPercent > 0)
         .sort((a, b) => (b.arbPercent ?? 0) - (a.arbPercent ?? 0))
-        .map((entry) => ({ game: entry.game, viewType: "arb" as const, marketKey })),
+        .map((entry) => ({
+          game: entry.game,
+          viewType: "arb" as const,
+          marketKey
+        })),
     [enrichedGames, marketKey]
   );
 
   const evEntries = useMemo(
     () =>
       enrichedGames
-        .filter((entry) => typeof entry.evScore === "number" && entry.evScore > 0)
+        .filter(
+          (entry) =>
+            (entry.arbPercent == null || entry.arbPercent <= 0) &&
+            typeof entry.evScore === "number" &&
+            entry.evScore > 0
+        )
         .sort((a, b) => (b.evScore ?? 0) - (a.evScore ?? 0))
-        .map((entry) => ({ game: entry.game, viewType: "ev" as const, marketKey })),
+        .map((entry) => ({
+          game: entry.game,
+          viewType: "ev" as const,
+          marketKey
+        })),
     [enrichedGames, marketKey]
   );
 
@@ -305,8 +318,7 @@ export default function OpportunitiesView({
       {/* Content */}
       {displayEntries.length === 0 ? (
         <div className="empty-card">
-          No opportunities right now. Either the books are sharp, or your
-          scraper is asleep.
+          No opportunities right now.
         </div>
       ) : (
         <OddsList

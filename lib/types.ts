@@ -1,6 +1,7 @@
 export type Outcome = {
   name: string;
   price: number;
+  point?: number;
 };
 
 export type Market = {

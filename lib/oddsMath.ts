@@ -1,12 +1,16 @@
 type Bookmaker = {
   title?: string;
   key?: string;
-  markets?: { key: string; outcomes?: { name: string; price: number }[] }[];
+  markets?: {
+    key: string;
+    outcomes?: { name: string; price: number; point?: number }[];
+  }[];
 };
 
 type LineInfo = {
   price: number;
   bookmaker: string;
+  point?: number;
 };
 
 export function decimalToAmerican(decimal?: number | null) {
@@ -33,7 +37,8 @@ export function buildBestLines(
       if (!best[o.name] || o.price > (best[o.name]?.price ?? 0)) {
         best[o.name] = {
           price: o.price,
-          bookmaker: bm?.title ?? bm?.key ?? "Book"
+          bookmaker: bm?.title ?? bm?.key ?? "Book",
+          point: o.point
         };
       }
     });
