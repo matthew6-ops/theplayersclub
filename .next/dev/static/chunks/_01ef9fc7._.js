@@ -1295,26 +1295,26 @@ function OpportunitiesView({ initialResults }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-3 text-xs text-white/60",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                    className: "flex items-center gap-2",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                            type: "checkbox",
-                            checked: oddsDisplay === "decimal",
-                            onChange: (e)=>setOddsDisplay(e.target.checked ? "decimal" : "american")
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/OpportunitiesView.tsx",
-                            lineNumber: 275,
-                            columnNumber: 11
-                        }, this),
-                        "Show decimal odds"
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/components/OpportunitiesView.tsx",
-                    lineNumber: 274,
-                    columnNumber: 9
-                }, this)
+                className: "filter-chips",
+                children: [
+                    {
+                        key: "american",
+                        label: "American odds"
+                    },
+                    {
+                        key: "decimal",
+                        label: "Decimal odds"
+                    }
+                ].map((mode)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        className: `filter-chip${oddsDisplay === mode.key ? " active" : ""}`,
+                        onClick: ()=>setOddsDisplay(mode.key),
+                        children: mode.label
+                    }, mode.key, false, {
+                        fileName: "[project]/app/components/OpportunitiesView.tsx",
+                        lineNumber: 278,
+                        columnNumber: 11
+                    }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
                 lineNumber: 273,
@@ -1326,7 +1326,7 @@ function OpportunitiesView({ initialResults }) {
                 sports: sports
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 284,
+                lineNumber: 289,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1338,12 +1338,12 @@ function OpportunitiesView({ initialResults }) {
                         children: market.label
                     }, market.key, false, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 288,
+                        lineNumber: 293,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 286,
+                lineNumber: 291,
                 columnNumber: 7
             }, this),
             bookmakerOptions.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1361,7 +1361,7 @@ function OpportunitiesView({ initialResults }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 301,
+                        lineNumber: 306,
                         columnNumber: 11
                     }, this),
                     bookMenuOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1374,7 +1374,7 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Select all"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 306,
+                                lineNumber: 311,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1384,7 +1384,7 @@ function OpportunitiesView({ initialResults }) {
                                 children: "Clear all"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 313,
+                                lineNumber: 318,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1410,38 +1410,38 @@ function OpportunitiesView({ initialResults }) {
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                                lineNumber: 325,
+                                                lineNumber: 330,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: book
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                                lineNumber: 338,
+                                                lineNumber: 343,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, book, true, {
                                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                        lineNumber: 324,
+                                        lineNumber: 329,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                                lineNumber: 320,
+                                lineNumber: 325,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 305,
+                        lineNumber: 310,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 300,
+                lineNumber: 305,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1462,12 +1462,12 @@ function OpportunitiesView({ initialResults }) {
                         children: chip.label
                     }, chip.key, false, {
                         fileName: "[project]/app/components/OpportunitiesView.tsx",
-                        lineNumber: 353,
+                        lineNumber: 358,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 348,
+                lineNumber: 353,
                 columnNumber: 7
             }, this),
             displayEntries.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1475,7 +1475,7 @@ function OpportunitiesView({ initialResults }) {
                 children: "No opportunities right now."
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 366,
+                lineNumber: 371,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$OddsList$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 results: displayEntries,
@@ -1484,7 +1484,7 @@ function OpportunitiesView({ initialResults }) {
                 oddsDisplay: oddsDisplay
             }, void 0, false, {
                 fileName: "[project]/app/components/OpportunitiesView.tsx",
-                lineNumber: 370,
+                lineNumber: 375,
                 columnNumber: 9
             }, this)
         ]

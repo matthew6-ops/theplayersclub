@@ -270,15 +270,20 @@ export default function OpportunitiesView({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 text-xs text-white/60">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={oddsDisplay === "decimal"}
-            onChange={(e) => setOddsDisplay(e.target.checked ? "decimal" : "american")}
-          />
-          Show decimal odds
-        </label>
+      <div className="filter-chips">
+        {[
+          { key: "american" as const, label: "American odds" },
+          { key: "decimal" as const, label: "Decimal odds" }
+        ].map((mode) => (
+          <button
+            key={mode.key}
+            type="button"
+            className={`filter-chip${oddsDisplay === mode.key ? " active" : ""}`}
+            onClick={() => setOddsDisplay(mode.key)}
+          >
+            {mode.label}
+          </button>
+        ))}
       </div>
 
       <SportTabs activeSport={activeSport} onChange={(sport) => setActiveSport(sport)} sports={sports} />
